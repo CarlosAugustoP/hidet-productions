@@ -4,7 +4,7 @@ import Header from './Header';
 export default function Hero() {
     return (
         <div className="flex h-[90vh]">
-            <div className="w-2/3 flex flex-col h-full justify-between p-10">
+            <div className="w-2/3 flex flex-col h-full justify-between p-16">
                 <Header />
                 <div className='h-2/3 flex justify-between flex-col mb-5'>
                     <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-8xl text-left font-semibold">

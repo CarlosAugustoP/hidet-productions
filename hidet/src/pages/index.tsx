@@ -1,10 +1,10 @@
 import '../app/globals.css';
 import React from 'react';
-import Header from '../components/desktop/Header';
+import Hero from '../components/desktop/Hero';
 export default function Index() {
     return (
         <div className="h-[100vh]">
-            <Header />
+           <Hero /> 
         </div>
     );
 }

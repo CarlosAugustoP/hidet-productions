@@ -15,6 +15,12 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontSize: {
+        'custom-md-lg': '1.125rem', 
+        'custom-3xl-4xl': '2.35rem',
+        'custom-5xl-6xl': '3.35rem',
+        'custom-xs-sm': '0.8125rem', 
+      },
     },
     screens: {
       sm: "640px",

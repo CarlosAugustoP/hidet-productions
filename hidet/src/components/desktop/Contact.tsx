@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../app/globals.css';
-
+import { StyledContainer, StyledContainer2, InsideContainer, InsideContainer2 } from './WhyChoose';
 const handleSubmit = async (event: any) => {
   event.preventDefault();
 
@@ -34,40 +34,36 @@ const handleSubmit = async (event: any) => {
 
 export default function Contact() {
   return (
-    <div className='mt-20 flex flex-col sm:flex-row md:flex-row items-center justify-center md:space-x-5 bg-black px-4 sm:space-x-5'>
-      <div className='w-full h-full md:h-1/2 md:w-1/2 flex justify-center items-center'>
-        <div
-          className='p-[6px] rounded-[15px]'
-          style={{
-            background: 'linear-gradient(297.08deg, #5E107D 3.94%, #0B0B0B 50.37%, #A11ED5 96.81%)',
-          }}
-        >
-          <div
-            className='rounded-[9px] p-6'
-            style={{
-              background: 'linear-gradient(292.11deg, rgba(176, 79, 109, 0.86) 2.98%, #631582 19.11%, #200829 42.46%, #0B0B0B 67.09%, #33158C 87.9%)',
-            }}
-          >
-            <p className='text-white sm:text-lg md:text-xl lg:text-2xl xl:text-3xl'>Preencha o formulário ao lado e solicite agora seu orçamento!</p>
-          </div>
-        </div>
+   <>
+   <div className='h-[60vh] w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white'>
+    <div className='w-4/5 h-4/5 flex items-center gap-10'>
+      <div className='flex flex-col w-1/2 h-full justify-center'>
+      <StyledContainer width = '100%'>
+                    <InsideContainer>
+                        <div className='w-full p-10'>
+                            <h1 className='2xl:text-5xl xl:text-5xl lg:text-4xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
+                                Preencha o formulário e solicite agora seu orçamento!
+                            </h1>
+                        </div>
+                    </InsideContainer>
+        </StyledContainer>
+
       </div>
-      <div className='mt-10 w-full md:w-1/2'>
-        <h1 className='text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-normal'>
+      <div className='flex flex-col w-1/2 h-full justify-center bg-black'>
+      <h1 className='text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-normal'>
           Contato
         </h1>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
           <label
-            htmlFor="email"
+            htmlFor="name"
             className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700"
           >
-            Email
+            Nome
           </label>
           <div className="mt-1">
             <input
-              type="email"
-              id="email"
-              name="email"
+              id="name"
+              name="name"
               className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
             />
           </div>
@@ -101,6 +97,9 @@ export default function Contact() {
           <img src='/img/linkedin.png' alt="LinkedIn" />
         </div>
       </div>
+      
     </div>
+   </div>
+   </>
   );
 }

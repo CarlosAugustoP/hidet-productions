@@ -73,7 +73,7 @@ export default function WhyChoose() {
                 </StyledContainer>
                 <StyledContainer2 width='30%'>
                     <InsideContainer2>
-                        <div className='w-full h-full p-10 text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light'>
+                        <div className='w-full h-full 2xl:p-16 xl:p-6 lg:p-6 md:p-6 text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light'>
                             <ul className='h-full w-5/6 md:w-full flex flex-col justify-between '>
                                 <li>• Alta qualidade audiovisual </li>
                                 <li>• Foco em detalhes invisíveis</li>
@@ -88,10 +88,10 @@ export default function WhyChoose() {
                 <div className='w-[65%] flex justify-between'>
                     <StyledContainer2 width='40%'>
                         <InsideContainer2 className='justify-center'>
-                            <div className='w-4/5 h-4/5 text-center flex flex-col justify-between text-white p-3'>
-                                <p className='2xl:text-3xl xl:text-2xl lg:text-lg md:text-sm '>PADRAO</p>
+                            <div className='w-4/5 text-center flex flex-col justify-between text-white p-3'>
+                                <p className='2xl:text-3xl xl:text-xl lg:text-lg md:text-sm '>PADRAO</p>
                                 <p className='2xl:text-7xl xl:text-7xl lg:text-4xl md:text-4xl font-extrabold'>4K</p>
-                                <p className='2xl:text-3xl xl:text-2xl lg:text-lg md:text-sm '>OU SUPERIOR</p>
+                                <p className='2xl:text-3xl xl:text-xl lg:text-lg md:text-sm '>OU SUPERIOR</p>
                             </div>
                         </InsideContainer2>
                     </StyledContainer2>

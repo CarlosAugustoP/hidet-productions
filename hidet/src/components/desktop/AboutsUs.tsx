@@ -6,7 +6,7 @@ import AboutUsSection from './AboutsUsSection';
 export default function AboutUs() {
     return (
         <>
-            <div className="gap-20 mb-10 mt-10 flex flex-col items-center justify-center ">
+            <div className="gap-20 mb-28 mt-28 flex flex-col items-center justify-center">
                 <AboutUsSection
                     direction="left"
                     title="Manifesto"
@@ -16,7 +16,7 @@ export default function AboutUs() {
                 <AboutUsSection
                     direction="right"
                     title="Sobre nós "
-                    description="Somos uma produtora que olha para onde ninguém mais olha, detalhes invisíveis aos olhares comuns, porém sensitivos a qualquer um. É justamente por isso que somos tão técnicos e sempre ligados às inovações, utilizando toda tecnologia disponível para oferecer a maior qualidade possível."
+                    description="Somos uma produtora que olha para onde ninguém mais olha, detalhes invisíveis aos olhares comuns, porém sensitivos a qualquer um. É justamente por isso que somos tão técnicos e sempre ligados às inovações, utilizando toda tecnologia disponível. "
                     photo="/img/3.jpg"
                 />
                 <AboutUsSection

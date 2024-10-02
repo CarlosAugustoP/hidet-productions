@@ -20,6 +20,7 @@ const config: Config = {
         'custom-3xl-4xl': '2.35rem',
         'custom-5xl-6xl': '3.35rem',
         'custom-xs-sm': '0.8125rem', 
+        'huge': '5.5rem'
       },
     },
     screens: {

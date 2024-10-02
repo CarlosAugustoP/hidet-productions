@@ -25,7 +25,7 @@ const ParallaxSection = () => {
 }
 export default function Index() {
     return (
-        <div className="h-[100vh]">
+        <div>
            <ParallaxSection/>
            <WhyChoose   />
 

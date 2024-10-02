@@ -6,7 +6,46 @@
 body {
   background: linear-gradient(45deg, #410758,#0B0B0B, #33158C);
   font-family: 'Anek Tamil', sans-serif;
-  
-
 }
+
+.ticker-wrapper {
+  width: 60%;
+  overflow: hidden;
+  background-color: #000;
+  color: white;
+  padding: 10px 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.ticker-content {
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  width: max-content; 
+  animation: ticker 15s linear infinite;
+  gap: 12px;
+}
+
+.ticker-content > div {
+  display: inline-block;
+  white-space: nowrap; 
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.white-logo img {
+  filter: brightness(0) invert(1); 
+  max-width: 100px;
+  max-height: 50px;
+}
+
 

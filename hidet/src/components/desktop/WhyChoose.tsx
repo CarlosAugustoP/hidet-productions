@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import '../../app/globals.css'
 
 // Define the type for width prop
 interface StyledContainer2Props {

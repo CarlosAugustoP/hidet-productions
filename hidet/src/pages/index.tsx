@@ -46,17 +46,19 @@ export default function Index() {
                 style={{
                     /* The scrollPos is multiplied by -0.4 to make the section scroll slower than the rest of the page */
                     marginTop: `${Math.min(scrollPos * -0.4, 150)}px`,
-                    transition: 'margin-top 0.1s ease-out', 
+                    transition: 'margin-top 0.1s ease-out',
                 }}
             >
                 <WhyChoose />
             </section>
             <section className="relative z-20">
 
-            <Companies />
+                <Companies />
             </section>
-            <AboutUs/>
-            <Contact/>
+            <section className="relative z-20">
+                <AboutUs />
+                <Contact />
+            </section>
 
         </div>
     );

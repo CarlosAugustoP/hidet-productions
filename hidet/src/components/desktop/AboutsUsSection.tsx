@@ -22,45 +22,39 @@ export default function AboutUsSection({ direction, title, description, photo }:
   return (
     <div className="w-4/5 flex items-center justify-between">
       {isLeftDirection && <TextBlock title={title} description={description} direction={direction} />}
-      <div className="flex items-center"> {/* Adicione 'items-center' para centralizar */}
-          <Image src={photo} width={500} height={752} alt="Imagem" className="border-4 border-white rounded-[15px] object-cover w-full" />
+      <div className="flex items-center">
+        <div
+          className="p-[4px] rounded-[15px]"
+          style={{
+            background: "linear-gradient(225deg, rgba(176, 79, 109, 0.86) 0%, #631582 19%, #200829 47%, #0B0B0B 75%, #33158C 100%)"
+          }}
+        >
+          <Image
+            src={photo}
+            width={500}
+            height={752}
+            alt="Imagem"
+            className="rounded-[15px] object-cover w-full"
+          />
+        </div>
       </div>
       {!isLeftDirection && <TextBlock title={title} description={description} direction={direction} />}
     </div>
   );
 }
 
-// <Image src={photo} width={500} height={752} alt="Imagem" className="border-4 border-white rounded-[15px] object-cover" />
 const TextBlock = ({ direction, title, description }: TextBlockProps) => {
   const alignRight = direction !== "left"
 
   return (
-    <div className={`${alignRight ? 'text-right' : ''} w-4/5`}>
-      <h1 className="text-white text-4xl md:text-6xl font-semibold leading-normal">
+    <div className={`${alignRight ? 'text-right ml-4 sm:ml-6 md:ml-8 lg:ml-10 xl:ml-12' : 'mr-4 sm:mr-6 md:mr-8 lg:mr-10 xl:mr-12'} w-5/6`}>
+      <h1 className="text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-semibold leading-normal">
         {title}
       </h1>
-      <p className="text-white text-[30px] font-medium leading-normal">
+      <p className="text-white sm:text-md md:text-lg lg:text-xl xl:text-3xl font-medium leading-normal">
         {description}
       </p>
     </div>
+
   );
 }
-
-interface ImageContainerProps {
-  width?: string;
-  height?: string;
-}
-
-const ImageContainer = styled.div<ImageContainerProps>`
-  width: ${props => props.width ? `${props.width}px` : '100%'};
-  height: ${props => props.height ? `${props.height}px` : 'auto'};
-
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-    border: 4px solid white;
-  }
-`;
-

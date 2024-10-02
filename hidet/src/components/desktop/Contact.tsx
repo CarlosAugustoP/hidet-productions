@@ -35,8 +35,8 @@ const handleSubmit = async (event: any) => {
 export default function Contact() {
   return (
    <>
-   <div className='h-[60vh] w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white'>
-    <div className='w-4/5 h-4/5 flex items-center gap-10'>
+   <div className='h-[70vh]  w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10'>
+    <div className='w-4/5 h-4/5 flex items-center gap-10 '>
       <div className='flex flex-col w-1/2 h-full justify-center'>
       <StyledContainer width = '100%'>
                     <InsideContainer>
@@ -91,10 +91,10 @@ export default function Contact() {
           </button>
         </form>
         <div className='flex items-start mb-5 space-x-4'>
-          <img src='/img/insta.png' alt="Instagram" />
-          <img src='/img/mail.png' alt="Email" />
-          <img src='/img/wpp.png' alt="WhatsApp" />
-          <img src='/img/linkedin.png' alt="LinkedIn" />
+          <img src='/img/insta.png' alt="Instagram" className='w-7 h-7' />
+          <img src='/img/mail.png' alt="Email" className='w-7 h-7' />
+          <img src='/img/wpp.png' alt="WhatsApp" className='w-7 h-7' />
+          <img src='/img/linkedin.png' alt="LinkedIn" className='w-7 h-7' />
         </div>
       </div>
       

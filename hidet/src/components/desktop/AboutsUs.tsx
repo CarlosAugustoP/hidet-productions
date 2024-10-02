@@ -6,7 +6,7 @@ import AboutUsSection from './AboutsUsSection';
 
 export default function AboutUs() {
   return (
-    <div className="gap-20 mb-28 mt-28 flex flex-col items-center justify-center">
+    <div className="gap-20 mb-28 mt-28 flex flex-col items-center justify-center" id ="about-us">
       <AboutUsSection
         direction="left"
         title="Manifesto"

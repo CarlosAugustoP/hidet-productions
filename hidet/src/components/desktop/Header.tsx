@@ -15,9 +15,9 @@ export default function Header() {
         <Image src="/img/logo.png" alt="logo" layout="responsive" width={500} height={500} objectFit="contain" />
       </div>
       <div className="text-white flex items-center gap-10 mb-2 w-3/4">
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl">Sobre nós</h1>
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl">Contato</h1>
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl">Portfolio</h1>
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110"><a href = "#about-us">Sobre nós</a></h1>
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110"><a href = "#contact">Contato</a></h1>
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110"><a>Portfolio</a></h1>
       </div>
     </div>
   );

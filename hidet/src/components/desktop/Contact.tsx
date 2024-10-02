@@ -35,7 +35,7 @@ const handleSubmit = async (event: any) => {
 export default function Contact() {
   return (
    <>
-   <div className='h-[70vh]  w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10'>
+   <div className='h-[70vh]  w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id = "contact">
     <div className='w-4/5 h-4/5 flex items-center gap-10 '>
       <div className='flex flex-col w-1/2 h-full justify-center'>
       <StyledContainer width = '100%'>

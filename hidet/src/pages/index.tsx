@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import '../app/globals.css';
 import Hero from '../components/desktop/Hero';
 import WhyChoose from '../components/desktop/WhyChoose';
 import Companies from '@/components/desktop/Companies';
+import AboutUs from '@/components/desktop/AboutsUs';
 
 export default function Index() {
     const [scrollPos, setScrollPos] = useState(0);
@@ -52,6 +54,7 @@ export default function Index() {
 
             <Companies />
             </section>
+            <AboutUs/>
 
         </div>
     );

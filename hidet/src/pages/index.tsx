@@ -5,6 +5,7 @@ import WhyChoose from '../components/desktop/WhyChoose';
 import Companies from '@/components/desktop/Companies';
 import AboutUs from '@/components/desktop/AboutsUs';
 import Contact from '@/components/desktop/Contact';
+import Footer from '@/components/desktop/Footer';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
@@ -59,6 +60,7 @@ export default function Index() {
         <AboutUs />
       </section>
         <Contact />
+        <Footer />
 
     </div>
   );

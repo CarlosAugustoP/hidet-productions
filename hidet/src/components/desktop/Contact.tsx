@@ -1,7 +1,10 @@
 import React from 'react';
 import '../../app/globals.css';
-import { StyledContainer, StyledContainer2, InsideContainer, InsideContainer2 } from './WhyChoose';
-const handleSubmit = async (event: any) => {
+import { StyledContainer, InsideContainer } from './WhyChoose';
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';   // Importing the Toaster component
+
+const handleSubmit = async (event: any, toast: any) => {
   event.preventDefault();
 
   const data = new FormData(event.target);
@@ -21,85 +24,87 @@ const handleSubmit = async (event: any) => {
 
     const result = await response.json();
     if (response.ok) {
-      console.log('Email sent:', result);
-      alert('Email sent successfully');
+      toast({
+        title: "Successo! ✓",
+        description: "Seu e-mail foi enviado para a HIDET.",
+        variant: "success",
+      });
     } else {
-      console.error('Error sending email:', result);
-      alert('Error sending email');
+      toast({
+        title: "Erro! X",
+        description: "Houve um problema desconhecido no envio.",
+        variant: "destructive",
+      });
     }
   } catch (error) {
-    console.error('Error:', error);
+    toast({
+      title: "Error",
+      description: "Something went wrong.",
+      variant: "destructive",
+    });
   }
 };
 
 export default function Contact() {
+  const { toast } = useToast(); // Using the toast hook from shadcn
+
   return (
-   <>
-   <div className='h-[70vh]  w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id = "contact">
-    <div className='w-3/5 h-4/5 flex items-center gap-10 '>
-      <div className='flex flex-col w-1/2 h-full justify-center'>
-      <StyledContainer width = '100%'>
-                    <InsideContainer>
-                        <div className='w-full p-10'>
-                            <h1 className='2xl:text-5xl xl:text-4xl lg:text-3xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
-                                Preencha o formulário e solicite agora seu orçamento!
-                            </h1>
-                        </div>
-                    </InsideContainer>
-        </StyledContainer>
-
-      </div>
-      <div className='flex flex-col w-1/2 h-full justify-center bg-black'>
-      <h1 className='text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-normal'>
-          Contato
-        </h1>
-      <form onSubmit={handleSubmit}>
-          <label
-            htmlFor="name"
-            className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700"
-          >
-            Nome
-          </label>
-          <div className="mt-1">
-            <input
-              id="name"
-              name="name"
-              className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
-            />
+    <>
+      <div className='h-[70vh] w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id="contact">
+        <div className='w-3/5 h-4/5 flex items-center gap-10 '>
+          <div className='flex flex-col w-1/2 h-full justify-center'>
+            <StyledContainer width='100%'>
+              <InsideContainer>
+                <div className='w-full p-10'>
+                  <h1 className='2xl:text-5xl xl:text-4xl lg:text-3xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
+                    Preencha o formulário e solicite agora seu orçamento!
+                  </h1>
+                </div>
+              </InsideContainer>
+            </StyledContainer>
           </div>
+          <div className='flex flex-col w-1/2 h-full justify-center bg-black'>
+            <h1 className='text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold leading-normal'>
+              Contato
+            </h1>
+            <form onSubmit={(event) => handleSubmit(event, toast)}>
+              <label htmlFor="name" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700">
+                Nome
+              </label>
+              <div className="mt-1">
+                <input
+                  id="name"
+                  name="name"
+                  className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
+                />
+              </div>
 
-          <label
-            htmlFor="message"
-            className="block text-lg font-medium text-gray-700 mt-4"
-          >
-            Recado
-          </label>
-          <div className="mt-1">
-            <input
-              type="text"
-              id="message"
-              name="message"
-              className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
-            />
+              <label htmlFor="message" className="block text-lg font-medium text-gray-700 mt-4">
+                Recado
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  id="message"
+                  name="message"
+                  className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
+                />
+              </div>
+
+              <button type="submit" className="mt-5 mb-10 sm:text-md md:text-lg lg:text-xl xl:text:2xl text-white bg-gray-600 w-full sm:text-sm rounded-md h-8">
+                Enviar
+              </button>
+            </form>
+            <div className='flex items-start mb-5 space-x-4'>
+              <img src='/img/insta.png' alt="Instagram" className='w-7 h-7' />
+              <img src='/img/mail.png' alt="Email" className='w-7 h-7' />
+              <img src='/img/wpp.png' alt="WhatsApp" className='w-7 h-7' />
+              <img src='/img/linkedin.png' alt="LinkedIn" className='w-7 h-7' />
+            </div>
           </div>
-
-          <button
-            type="submit"
-            className="mt-5 mb-10 sm:text-md md:text-lg lg:text-xl xl:text:2xl text-white bg-gray-600 w-full sm:text-sm rounded-md h-8"
-          >
-            Enviar
-          </button>
-        </form>
-        <div className='flex items-start mb-5 space-x-4'>
-          <img src='/img/insta.png' alt="Instagram" className='w-7 h-7' />
-          <img src='/img/mail.png' alt="Email" className='w-7 h-7' />
-          <img src='/img/wpp.png' alt="WhatsApp" className='w-7 h-7' />
-          <img src='/img/linkedin.png' alt="LinkedIn" className='w-7 h-7' />
         </div>
       </div>
-      
-    </div>
-   </div>
-   </>
+      <Toaster/> {/* This renders the toaster container */}
+    </>
   );
 }

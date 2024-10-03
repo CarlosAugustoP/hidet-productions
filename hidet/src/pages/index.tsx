@@ -45,7 +45,7 @@ export default function Index() {
       <section
         className="relative z-20"
         style={{
-          marginTop: `${Math.min(scrollPos * -0.4, 150)}px`,
+          marginTop: `${Math.min(scrollPos * -0.6, 200)}px`,
           transition: 'margin-top 0.1s ease-out',
         }}
       >

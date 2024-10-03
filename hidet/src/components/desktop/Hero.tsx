@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import '../../app/globals.css';
+import Router from 'next/router';
+import { Route } from 'lucide-react';
 
 export default function Hero() {
     const images = ['img/editing.svg', 'img/music.svg', 'img/photo.svg', 'img/video.svg'];
@@ -29,7 +31,7 @@ export default function Hero() {
     }, [currentImageIndex]);
 
     return (
-        <div className="flex h-[90vh]">
+        <div className="flex h-[90vh]" id = "hero">
             <div className="w-2/3 flex flex-col h-full justify-between p-16">
                 <Header />
                 <div className='h-3/4 flex justify-between flex-col mb-5'>
@@ -55,17 +57,17 @@ export default function Hero() {
                             Vídeo • Fotografia • Áudio • Edição
                         </p>
                     </div>
-                    <div className='flex gap-6 items-center'>
-                        <button className='rounded-[5px] bg-white text-black'>
-                            <p className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
+                    <div className='flex gap-6 items-center '>
+                        <button className=' hover:scale-110 cursor-pointer transition-transform duration-200 rounded-[5px] bg-white text-black flex items-center px-2 sm:px-4 lg:px-5'>
+                            <a href = "#contact" className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
                                 Entre em contato
-                            </p>
+                            </a>
                         </button>
-                        <button className='rounded-[5px] bg-white text-black flex items-center gap-1 px-3 sm:px-4 lg:px-5'>
+                        <button className=' hover:scale-110 cursor-pointer transition-transform duration-200 rounded-[5px] bg-white text-black flex items-center gap-1 px-3 sm:px-4 lg:px-5'>
                             <img className='w-5 sm:w-6 lg:w-5 h-5 sm:h-6 lg:h-7' src='img/play.svg' alt="Play" />
-                            <p className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
+                            <a onClick = {()=>Router.push('/portfolio')}className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
                                 Conheça-nos
-                            </p>
+                            </a>
                         </button>
                     </div>
                 </div>

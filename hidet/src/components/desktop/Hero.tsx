@@ -56,12 +56,12 @@ export default function Hero() {
                         </p>
                     </div>
                     <div className='flex gap-6 items-center'>
-                        <button className='rounded-lg bg-white text-black'>
+                        <button className='rounded-[5px] bg-white text-black'>
                             <p className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
                                 Entre em contato
                             </p>
                         </button>
-                        <button className='rounded-lg bg-white text-black flex items-center gap-1 px-3 sm:px-4 lg:px-5'>
+                        <button className='rounded-[5px] bg-white text-black flex items-center gap-1 px-3 sm:px-4 lg:px-5'>
                             <img className='w-5 sm:w-6 lg:w-5 h-5 sm:h-6 lg:h-7' src='img/play.svg' alt="Play" />
                             <p className='text-lg sm:text-xl md:text-sm lg:text-lg xl:text-2xl 2xl:text-2xl text-black py-2 sm:py-3 lg:py-2 px-4 sm:px-5 lg:px-4'>
                                 Conheça-nos

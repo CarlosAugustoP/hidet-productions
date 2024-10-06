@@ -6,6 +6,13 @@ import { UUID } from "crypto";
 const prisma = new PrismaClient();
 
 export default async function createPost(req: NextApiRequest, res: NextApiResponse) {
+
+    const apiKey = req.headers['api-key'];
+
+    if (apiKey !== process.env.API_KEY) {
+        return res.status(401).json({error: 'Unauthorized'});
+    }
+
     if (req.method === 'POST'){
         try {
             const newPost = await prisma.post.create({

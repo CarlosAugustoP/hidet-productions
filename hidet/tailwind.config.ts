@@ -67,12 +67,6 @@ const config: Config = {
         "huge": "5.5rem",
         "xl-2xl": "1.375rem",
       },
-      borderRadius: {
-        // Added from the second configuration
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
 	  height: {
 		'128': '30rem',
 	  }

@@ -104,7 +104,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
-      <Toaster/> {/* This renders the toaster container */}
+      <Toaster/> 
     </>
   );
 }

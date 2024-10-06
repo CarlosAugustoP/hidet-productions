@@ -16,6 +16,7 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
                     img: req.body.img,
                     description: req.body.description,
                 }
+                
             });
             res.status(200).json(newPost);
  

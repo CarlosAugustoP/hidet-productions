@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Prisma } from '@prisma/client'
 import { create } from "domain";
 import { UUID } from "crypto";
-import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
@@ -11,12 +10,11 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
         try {
             const newPost = await prisma.post.create({
                 data: {
-                    id: uuidv4(),
                     title: req.body.title,
                     img: req.body.img,
                     description: req.body.description,
                 }
-                
+
             });
             res.status(200).json(newPost);
  

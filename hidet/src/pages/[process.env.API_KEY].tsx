@@ -43,7 +43,7 @@ export default function Admin() {
           'Content-Type': 'application/json',
           'api-key': '123'
         },
-        body: JSON.stringify({ title, downloadURL, description })
+        body: JSON.stringify({ title, img: downloadURL, description })
       });
 
       if (response.ok) {
@@ -134,7 +134,7 @@ export default function Admin() {
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button variant="outline">Cancele</Button>
-                <Button onClick={() => publishPost(title, imgFile, description)}>Adicione</Button>
+                <Button onClick={() => publishPost(title, imgFile, "asdasd")}>Adicione</Button>
               </CardFooter>
             </Card>
             <div className=' w-[350px] flex justify-center items-center rounded-lg'>

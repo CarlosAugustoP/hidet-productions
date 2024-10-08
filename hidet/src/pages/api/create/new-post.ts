@@ -9,10 +9,6 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
 
     const apiKey = req.headers['api-key'];
 
-    if (apiKey !== process.env.API_KEY) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
-
     if (req.method === 'POST') {
         try {
             const newPost = await prisma.post.create({

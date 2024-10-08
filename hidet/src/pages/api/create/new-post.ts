@@ -15,9 +15,6 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
 
     if (req.method === 'POST') {
         try {
-            console.log("Title:", req.body.title);
-            console.log("Image URL:", req.body.img);
-            console.log("Description:", req.body.description);
             const newPost = await prisma.post.create({
                 data: {
                     title: req.body.title,
@@ -26,9 +23,17 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
                 }
             });
             res.status(200).json(newPost);
-        } catch (error) {
-            res.status(500).json({ error: 'Error creating post' });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Error creating post:', error.message); // Logar detalhes da mensagem do erro
+                res.status(500).json({ error: 'Error creating post', details: error.message }); // Enviar a mensagem de erro no response
+            } else {
+                console.error('Unknown error:', error); // Se o erro não for do tipo Error, logue o erro bruto
+                res.status(500).json({ error: 'Error creating post', details: 'Unknown error occurred' }); // Enviar resposta genérica
+            }
         }
+        
+        
     } else {
         res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);

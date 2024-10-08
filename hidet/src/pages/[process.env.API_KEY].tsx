@@ -41,7 +41,6 @@ export default function Admin() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': '123'
         },
         body: JSON.stringify({ title, img: downloadURL, description })
       });

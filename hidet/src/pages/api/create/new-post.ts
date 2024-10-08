@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client';
 import { create } from "domain";
 import { UUID } from "crypto";
 
@@ -21,10 +21,8 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
                     img: req.body.img,
                     description: req.body.description,
                 }
-
             });
             res.status(200).json(newPost);
- 
         } catch (error){
             res.status(500).json({error: 'Error creating post'});
         }

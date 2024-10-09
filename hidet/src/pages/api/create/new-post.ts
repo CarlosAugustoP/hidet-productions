@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from '@/lib/prisma';
+import { db } from '@/lib/prisma';
 import { create } from "domain";
 import { UUID } from "crypto";
 
@@ -9,7 +9,9 @@ export default async function createPost(req: NextApiRequest, res: NextApiRespon
 
     if (req.method === 'POST') {
         try {
-            const newPost = await prisma.post.create({
+            console.log('AQUI');
+            console.log(req.body.data);
+            const newPost = await db.post.create({
                 data: {
                     title: req.body.title,
                     img: req.body.img,

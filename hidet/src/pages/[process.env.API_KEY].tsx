@@ -37,7 +37,7 @@ export default function Admin() {
       const downloadURL = await getDownloadURL(snapshot.ref);
 
       // etapa 2: publicar no prisma
-      const response = await fetch('/api/create/new-post', {
+      const response = await fetch('/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

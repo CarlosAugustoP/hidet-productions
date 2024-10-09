@@ -14,6 +14,10 @@ interface TextBlockProps {
   title: string;
   description: string;
 }
+function helloWorld() {
+  console.log('Hello World');
+}
+
 
 function AboutUsSection({ direction, title, description, photo }: AboutUsSectionProps) {
   const isLeftDirection = direction === "left";

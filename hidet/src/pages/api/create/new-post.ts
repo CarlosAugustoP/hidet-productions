@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { create } from "domain";
 import { UUID } from "crypto";
-
-const prisma = new PrismaClient();
 
 export default async function createPost(req: NextApiRequest, res: NextApiResponse) {
 

@@ -73,11 +73,13 @@ const config: Config = {
     },
     screens: {
       // Screens are the same in both configurations
-      sm: "640px",
+      xs: { max: "450px" },
+      sm: "451px",
       md: "768px",
       lg: "1024px",
       xl: "1280px",
       "2xl": "1536px",
+      
     },
   },
   plugins: [

@@ -1,3 +1,4 @@
+
 import '../../app/globals.css';
 import Image from 'next/image';
 import React from 'react';
@@ -31,14 +32,14 @@ export default function Header({ className: className }: HeaderProps) {
   };
 
   return (
-    <div className={`flex w-full justify-between gap-10 ${className}`}>
+    <div className={`flex flex-col md:flex-row w-full justify-center items-center md:gap-10 gap-4 md:mt-0 mt-6 ${className}`}>
       <div className="w-1/3">
         <Image onClick={() => handleNavigation('#hero')} src="/img/logo.png" alt="logo" layout="responsive" width={500} height={500} objectFit="contain" className='cursor-pointer' />
       </div>
-      <div className="text-white flex items-center gap-10 mb-2 w-3/4">
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => handleNavigation('#about-us')}>Sobre nós</h1>
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => handleNavigation('#contact')}>Contato</h1>
-        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => Router.push('/portfolio')}>Portfolio</h1>
+      <div className="text-white flex md:flex-row items-center gap-10 mb-2 md:w-3/4">
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl sm:text-2xl xs:text-lg transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => handleNavigation('#about-us')}>Sobre nós</h1>
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl sm:text-2xl xs:text-lg transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => handleNavigation('#contact')}>Contato</h1>
+        <h1 className="2xl:text-4xl xl:text-3xl lg:text-2xl md:text-xl sm:text-2xl xs:text-lg transition-transform duration-200 hover:scale-110 cursor-pointer" onClick={() => Router.push('/portfolio')}>Portfolio</h1>
       </div>
     </div>
   );

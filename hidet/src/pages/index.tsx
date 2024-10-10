@@ -6,11 +6,31 @@ import Companies from '@/components/desktop/Companies';
 import AboutUs from '@/components/desktop/AboutsUs';
 import Contact from '@/components/desktop/Contact';
 import Footer from '@/components/desktop/Footer';
+import Header from '@/components/desktop/Header';
+import MobileHero from '@/components/mobile/Hero';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
+  const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
   const threshold = 375; // Define the scroll threshold
   const ticking = useRef(false);
+
+  // Check if the screen size is smaller than the 'sm' breakpoint
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 765) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Initial check and adding event listener for resizing
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,30 +58,38 @@ export default function Index() {
 
   return (
     <div>
-      <section className="relative z-10">
-        <Hero />
-      </section>
+      {isMobile ? (
+        <>
+         <Header />
+        </>
+      ) : (
+        <>
+          <section className="relative z-10">
+            <Hero />
+          </section>
 
-      <section
-        className="relative z-20"
-        style={{
-          marginTop: `${Math.min(scrollPos * -0.6, 200)}px`,
-          transition: 'margin-top 0.1s ease-out',
-        }}
-      >
-        <WhyChoose />
-      </section>
+          <section
+            className="relative z-20"
+            style={{
+              marginTop: `${Math.min(scrollPos * -0.6, 200)}px`,
+              transition: 'margin-top 0.1s ease-out',
+            }}
+          >
+            <WhyChoose />
+          </section>
 
-      <section className="relative z-20">
-        <Companies />
-      </section>
+          <section className="relative z-20">
+            <Companies />
+          </section>
 
-      <section className="relative z-20">
-        <AboutUs />
-      </section>
-        <Contact />
-        <Footer />
+          <section className="relative z-20">
+            <AboutUs />
+          </section>
 
+          <Contact />
+          <Footer />
+        </>
+      )}
     </div>
   );
 }

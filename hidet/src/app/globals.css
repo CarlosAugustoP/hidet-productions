@@ -12,6 +12,16 @@ body {
   overflow-x: hidden;
 }
 
+.small-ticker-wrapper {
+  width: 80%;
+  overflow: hidden;
+  background-color: #000;
+  color: white;
+  padding: 10px 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
 .ticker-wrapper {
   width: 60%;
   overflow: hidden;
@@ -52,4 +62,8 @@ body {
   max-height: 50px;
 }
 
-
+.small-white-logo img {
+  filter: brightness(0) invert(1); 
+  max-width: 70px;
+  max-height: 35px;
+}

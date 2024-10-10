@@ -30,7 +30,7 @@ export default function MobileHero() {
 
     return (
         <div className="flex flex-col w-full items-center justify-center mt-10 " id = "hero">
-            <div className="w-5/6 h-full flex flex-col gap-10 tablet:gap-12">            
+            <div className="w-5/6  h-full flex flex-col gap-10 tablet:gap-12">            
             <div className="border-2 h-[300px] tablet:h-[400px] flex flex-col justify-center items-center border-white rounded-lg">
                 <img className="w-full h-full object-cover rounded-lg" src="img/1.jpg" alt="Background" />
             </div>

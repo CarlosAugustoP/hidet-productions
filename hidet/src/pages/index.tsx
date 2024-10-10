@@ -8,6 +8,7 @@ import Contact from '@/components/desktop/Contact';
 import Footer from '@/components/desktop/Footer';
 import Header from '@/components/desktop/Header';
 import MobileHero from '@/components/mobile/Hero';
+import MobileHeader from '@/components/mobile/Header';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
@@ -18,7 +19,7 @@ export default function Index() {
   // Check if the screen size is smaller than the 'sm' breakpoint
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 765) {
+      if (window.innerWidth <= 768) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -59,9 +60,10 @@ export default function Index() {
   return (
     <div>
       {isMobile ? (
-        <>
-         <Header />
-        </>
+        <div className=''>
+         <MobileHeader />
+         <MobileHero />
+        </div>
       ) : (
         <>
           <section className="relative z-10">

@@ -42,7 +42,6 @@ interface TickerProps {
   
     return (
       <div className=' w-full flex flex-col items-center justify-center gap-2 bg-black  border-white'>
-        <h1 className='text-white text-lg tablet:text-xl mt-6'>Empresas que confiaram na HIDET</h1>
         <Ticker logos={logos} />
       </div>
     );

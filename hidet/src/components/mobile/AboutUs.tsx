@@ -6,7 +6,7 @@ import AboutUsSection from './AboutUsSection';
 export default function MobileAboutUs() {
   return (
     <div
-      className="gap-20 mb-28 mt-16 flex flex-col items-center justify-center"
+      className="gap-20 mb-16 mt-16 flex flex-col items-center justify-center"
       id="about-us"
     >
       <AboutUsSection

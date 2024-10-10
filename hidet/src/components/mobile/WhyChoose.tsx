@@ -88,7 +88,7 @@ export default function MobileWhyChoose() {
                 {/* Right side with a list of features */}
                 <StyledContainer2 width="50%">
                     <InsideContainer2>
-                        <div className='w-full h-full p-8 text-white text-xl xs:text-sm xs:p-8 tiny:p-0 flex items-center justify-center font-light'>
+                        <div className='w-full h-full p-8 text-white text-xl xs:text-sm xs:p-6 tiny:p-0 flex items-center justify-center font-light'>
                             <ul className='h-5/6 w-5/6 md:w-full flex flex-col justify-between '>
                                 <li>• Alta qualidade audiovisual </li>
                                 <li>• Foco em detalhes invisíveis</li>

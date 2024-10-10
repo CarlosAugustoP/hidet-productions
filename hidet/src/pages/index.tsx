@@ -6,12 +6,12 @@ import Companies from '@/components/desktop/Companies';
 import AboutUs from '@/components/desktop/AboutsUs';
 import Contact from '@/components/desktop/Contact';
 import Footer from '@/components/desktop/Footer';
-import Header from '@/components/desktop/Header';
 import MobileHero from '@/components/mobile/Hero';
 import MobileHeader from '@/components/mobile/Header';
 import MobileWhyChoose from '@/components/mobile/WhyChoose';
 import MobileCompanies from '@/components/mobile/Companies';
 import MobileAboutUs from '@/components/mobile/AboutUs';
+import MobileFooter from '@/components/mobile/Footer';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
@@ -67,10 +67,12 @@ export default function Index() {
          <MobileHeader />
          <MobileHero />
          <div className='flex flex-col tiny:h-[100vh]xs:h-[85vh] border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black'>
-           <MobileCompanies />
            <MobileWhyChoose />
+           <MobileCompanies />
+
          </div>
           <MobileAboutUs />
+          <MobileFooter />
         </div>
       ) : (
         <>

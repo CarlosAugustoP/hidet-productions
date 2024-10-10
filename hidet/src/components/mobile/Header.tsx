@@ -32,7 +32,7 @@ export default function MobileHeader({ className: className }: HeaderProps) {
   };
 
   return (
-    <div className={`flex flex-col w-full justify-center items-center gap-4 mt-6 ${className}`}>
+    <div className={`flex h-1/5 flex-col w-full justify-center items-center gap-4 ${className}`}>
       <div className="w-1/3">
         <Image onClick={() => handleNavigation('#hero')} src="/img/logo.png" alt="logo" layout="responsive" width={500} height={500} objectFit="contain" className='cursor-pointer' />
       </div>

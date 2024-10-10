@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
-
-
+import MobileHeader from './Header';
+import Header from '../desktop/Header';
 export default function MobileHero() {
     const images = ['img/editing.svg', 'img/music.svg', 'img/photo.svg', 'img/video.svg'];
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -29,13 +29,15 @@ export default function MobileHero() {
     }, [currentImageIndex]);
 
     return (
-        <div className="flex flex-col w-full items-center justify-center mt-10 " id = "hero">
-            <div className="w-5/6  h-full flex flex-col gap-10 tablet:gap-12">            
-            <div className="border-2 h-[300px] tablet:h-[400px] flex flex-col justify-center items-center border-white rounded-lg">
+        <div className="flex h-[100vh] flex-col w-full items-center justify-center" id = "hero">
+            <MobileHeader />
+            
+            <div className="w-5/6 h-4/5 flex flex-col gap-10 tablet:gap-12">            
+            <div className="border-2 h-1/2 flex flex-col justify-center items-center border-white rounded-lg">
                 <img className="w-full h-full object-cover rounded-lg" src="img/1.jpg" alt="Background" />
             </div>
             <div className='flex h-2/5 gap-10 flex-col'>
-                    <h1 className="text-white text-3xl tablet:text-6xl text-left font-semibold">
+                    <h1 className="text-white text-3xl tiny:text-2xl tablet:text-6xl md:text-4xl text-left font-semibold">
                         Soluções audiovisuais compatíveis com seu negócio.
                     </h1>
                     <div className='flex items-center gap-5'>

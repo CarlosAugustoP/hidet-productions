@@ -65,7 +65,6 @@ export default function Index() {
     <div>
       {isMobile ? (
         <div className=''>
-         <MobileHeader />
          <MobileHero />
          <div className='flex flex-col tiny:h-[100vh]xs:h-[85vh] border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black'>
            <MobileWhyChoose />

@@ -11,6 +11,7 @@ import MobileHero from '@/components/mobile/Hero';
 import MobileHeader from '@/components/mobile/Header';
 import MobileWhyChoose from '@/components/mobile/WhyChoose';
 import MobileCompanies from '@/components/mobile/Companies';
+import MobileAboutUs from '@/components/mobile/AboutUs';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
@@ -65,10 +66,11 @@ export default function Index() {
         <div className=''>
          <MobileHeader />
          <MobileHero />
-         <div className='flex flex-col h-[85vh] border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black'>
+         <div className='flex flex-col tiny:h-[100vh]xs:h-[85vh] border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black'>
            <MobileCompanies />
            <MobileWhyChoose />
          </div>
+          <MobileAboutUs />
         </div>
       ) : (
         <>

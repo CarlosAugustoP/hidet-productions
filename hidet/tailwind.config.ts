@@ -74,6 +74,7 @@ const config: Config = {
     screens: {
       // Screens are the same in both configurations
       xs: { max: "450px" },
+      tiny: { max: "380px" },
       sm: "451px",
       tablet: '640px',
       md: "768px",

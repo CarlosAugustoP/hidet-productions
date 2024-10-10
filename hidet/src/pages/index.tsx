@@ -12,6 +12,7 @@ import MobileWhyChoose from '@/components/mobile/WhyChoose';
 import MobileCompanies from '@/components/mobile/Companies';
 import MobileAboutUs from '@/components/mobile/AboutUs';
 import MobileFooter from '@/components/mobile/Footer';
+import MobileContact from '@/components/mobile/Contact';
 
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
@@ -72,6 +73,7 @@ export default function Index() {
 
          </div>
           <MobileAboutUs />
+          <MobileContact />
           <MobileFooter />
         </div>
       ) : (

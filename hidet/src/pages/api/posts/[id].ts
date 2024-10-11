@@ -1,9 +1,3 @@
-export const config = {
-    api: {
-        bodyParser: true, // Next.js usa o bodyParser por padrão, mas adicione para garantir
-    },
-};
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/lib/prisma';
 
@@ -46,10 +40,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             if (password !== process.env.API_KEY) {
                 res.status(401).json({ error: 'Invalid key' });
-                console.log('Invalid key');
-                console.log('req.body:', req.body);
-                console.log('req.body.password:', password);
-                console.log('process.env.API_KEY:', process.env.API_KEY);
                 return;
             }
 

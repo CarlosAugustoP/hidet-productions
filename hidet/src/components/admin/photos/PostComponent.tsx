@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast, useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 interface PostProps {
     id: string;
@@ -16,25 +19,41 @@ interface PostProps {
     postedAt: string;
 }
 
-function removePost(id: string, password: string) {
-    console.log("Removing post with id:", id);
-    console.log("Password:", password);
-    fetch(`/api/posts/${id}`, {
+async function removePost(id: string, password: string) {
+    const res = await fetch(`/api/posts/${id}`, {
         method: "DELETE",
         body: JSON.stringify({ password }),
     });
+    return res;
 }
 
 export default function PostComponent({ id, title, img, description, postedAt }: PostProps) {
+    const { toast } = useToast();
+
     const [password, setPassword] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
+        setErrorMessage("");
     };
 
-    const handleConfirmClick = () => {
-        console.log(password);
-        removePost(id, password);
+    const handleConfirmClick = async () => {
+        const res = await removePost(id, password);
+        if (res.status === 204) {
+            if (res.status === 204) {
+                toast({
+                    title: "Successo! ✓",
+                    description: "Imagem deletada com sucesso!",
+                    variant: "default",
+                });
+                setIsDialogOpen(false);
+            }
+            return true;
+        }
+        setErrorMessage("Chave de segurança inválida.");
+        return false;
     };
 
     return (
@@ -60,7 +79,11 @@ export default function PostComponent({ id, title, img, description, postedAt }:
                                 value={password}
                                 onChange={handlePasswordChange}
                             />
+                            {errorMessage && (
+                                <div className="text-red-500 mb-4">{errorMessage}</div>
+                            )}
                             <div className="flex justify-center">
+                                <DialogClose className="bg-black hover:bg-blue-700 text-white px-4 py-2 rounded border border-white mr-4">Cancelar</DialogClose>
                                 <button
                                     className="bg-black hover:bg-red-700 text-white px-4 py-2 rounded border border-white"
                                     onClick={handleConfirmClick}
@@ -70,6 +93,7 @@ export default function PostComponent({ id, title, img, description, postedAt }:
                     </DialogContent>
                 </Dialog>
             </div>
+            <Toaster />
         </div>
     )
 }

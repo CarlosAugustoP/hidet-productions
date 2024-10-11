@@ -29,6 +29,7 @@
     "react": "^18",
     "react-dom": "^18",
     "resend": "^4.0.0",
+    "shadcn": "^2.1.0",
     "sqlite3": "^5.1.7",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.2",

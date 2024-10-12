@@ -69,43 +69,54 @@ export default function Posts() {
             }
             // etapa 1: publica no firebase
             // TODO: API do Firebase Storage
-            // TODO: Verificação de senha na API do firebase
-            const fileName = imgFile.name + "_" + uuidv4();
-            const imageRef = ref(storage, `images/${fileName}`);
-            const snapshot = await uploadBytes(imageRef, imgFile);
-            const downloadURL = await getDownloadURL(snapshot.ref);
+            const formData = new FormData();
+            formData.append('file', imgFile);
+            formData.append('password', password);
 
-            // etapa 2: publicar no prisma
-            const response = await fetch('/api/posts', {
+            const responseFirebase = await fetch('/api/firebase/upload', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title, img: downloadURL, description, password })
+                body: formData,
             });
 
-            if (response.ok) {
-                const responseData = await response.json();
-                toast({
-                    title: "Successo! ✓",
-                    description: "Imagem adicionada com sucesso!",
-                    variant: "default",
-                });
-                setIsDialogOpen(false);
-                setPosts(prevPosts => [
-                    {
-                        id: responseData.id,
-                        title,
-                        img: downloadURL,
-                        description,
-                        postedAt: new Date().toISOString(),
+            if (responseFirebase.ok) {
+                const { downloadURL } = await responseFirebase.json();
+
+                // etapa 2: publicar no prisma
+                const response = await fetch('/api/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                    ...prevPosts,
-                ]);
-            } else if (response.status === 401) {
+                    body: JSON.stringify({ title, img: downloadURL, description, password })
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    toast({
+                        title: "Successo! ✓",
+                        description: "Imagem adicionada com sucesso!",
+                        variant: "default",
+                    });
+                    setIsDialogOpen(false);
+                    setPosts(prevPosts => [
+                        {
+                            id: responseData.id,
+                            title,
+                            img: downloadURL,
+                            description,
+                            postedAt: new Date().toISOString(),
+                        },
+                        ...prevPosts,
+                    ]);
+                } else if (response.status === 401) {
+                    setErrorMessage('Chave de segurança inválida');
+                } else {
+                    setErrorMessage('Erro ao criar post');
+                }
+            } else if (responseFirebase.status === 401) {
                 setErrorMessage('Chave de segurança inválida');
             } else {
-                setErrorMessage('Erro ao criar post');
+                setErrorMessage('Erro ao fazer upload da imagem');
             }
         } catch (error) {
             setErrorMessage('Error creating post');

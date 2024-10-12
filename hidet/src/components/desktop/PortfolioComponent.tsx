@@ -10,8 +10,25 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { title } from 'process';
+import MobileHeader from '../mobile/Header';
 
 export default function PortfolioComponent() {
+    const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 820) {
+                setIsMobile(true);
+            } else {
+                setIsMobile(false);
+            }
+        };
+
+        // Initial check and adding event listener for resizing
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const slides = [
         {
             largeImage: {
@@ -97,12 +114,33 @@ export default function PortfolioComponent() {
         setCurrentIndex(newIndex);
     };
 
+    if (isMobile) {
+        return (
+            <div className='w-full flex flex-col items-center'>
+                <MobileHeader />
+                <div className='w-4/5 flex flex-col gap-4 mt-4'>
+                    {slides.map((slide, index) => (
+                        <div key={index} className='flex flex-col'>
+                            <div className='bg-gray-300 w-full h-24 rounded-md mb-4'></div>
+                            <div className='grid grid-cols-2 gap-2'>
+                                {slide.smallImages.map((image, idx) => (
+                                    <div key={idx} className='bg-gray-300 w-full h-24 rounded-md'></div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+
     return (
         <div className="relative h-screen">
+
             <div className="w-2/3 flex flex-col justify-between p-12 absolute">
                 <Header />
             </div>
-
             <div className="flex items-center justify-center w-full h-full">
                 <div className="flex items-center justify-center w-full max-w-7xl gap-4 px-4 mt-16">
                     <button
@@ -118,63 +156,63 @@ export default function PortfolioComponent() {
                             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                         >
                             {slides.map((slide, index) => (
-                               <div className="flex-shrink-0 w-full flex gap-2 items-stretch" key={index}>
-                               <div className="w-1/2 flex items-center justify-center">
-                                   <Dialog>
-                                       <DialogTrigger>
-                                           <img
-                                               src={slide.largeImage.src}
-                                               alt={`Slide ${index + 1} Large`}
-                                               className="w-full h-full object-cover"
-                                               style={{ maxHeight: '400px' }} 
-                                           />
-                                       </DialogTrigger>
-                                               <DialogContent className=' text-white bg-black'>
-                                                   <DialogHeader>
-                                                       <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2><p className='text-lg font-thin'>{slide.largeImage.date}</p></DialogTitle>
-                                                       <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
-                                                         <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={slide.largeImage.src} alt={slide.largeImage.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
-                                                   </DialogHeader>
-                                               </DialogContent>
-                                           </Dialog>
-                               </div>
-                               <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2">
-                                   {slide.smallImages.map((image, idx) => (
-                                       <div key={idx} className="flex items-center justify-center">
-                                           <Dialog>
-                                               <DialogTrigger>
-                                                   <img
-                                                       src={image.src}
-                                                       alt={`Slide ${index + 1} Small ${idx + 1}`}
-                                                       className="w-full h-full object-cover"
-                                                       style={{ maxHeight: '200px' }}
-                                                   />
-                                               </DialogTrigger>
-                                               <DialogContent className=' text-white bg-black'>
-                                                   <DialogHeader>
-                                                       <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{image.title}</h2><p className='text-lg font-thin'>{image.date}</p></DialogTitle>
-                                                       <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
-                                                         <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={image.src} alt={image.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
-                                                   </DialogHeader>
-                                               </DialogContent>
-                                           </Dialog>
-                                       </div>
-                                   ))}
-                               </div>
-                           </div>
+                                <div className="flex-shrink-0 w-full flex gap-2 items-stretch" key={index}>
+                                    <div className="w-1/2 flex items-center justify-center">
+                                        <Dialog>
+                                            <DialogTrigger>
+                                                <img
+                                                    src={slide.largeImage.src}
+                                                    alt={`Slide ${index + 1} Large`}
+                                                    className="w-full h-full object-cover"
+                                                    style={{ maxHeight: '400px' }}
+                                                />
+                                            </DialogTrigger>
+                                            <DialogContent className=' text-white bg-black'>
+                                                <DialogHeader>
+                                                    <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2><p className='text-lg font-thin'>{slide.largeImage.date}</p></DialogTitle>
+                                                    <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
+                                                    <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={slide.largeImage.src} alt={slide.largeImage.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
+                                                </DialogHeader>
+                                            </DialogContent>
+                                        </Dialog>
+                                    </div>
+                                    <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2">
+                                        {slide.smallImages.map((image, idx) => (
+                                            <div key={idx} className="flex items-center justify-center">
+                                                <Dialog>
+                                                    <DialogTrigger>
+                                                        <img
+                                                            src={image.src}
+                                                            alt={`Slide ${index + 1} Small ${idx + 1}`}
+                                                            className="w-full h-full object-cover"
+                                                            style={{ maxHeight: '200px' }}
+                                                        />
+                                                    </DialogTrigger>
+                                                    <DialogContent className=' text-white bg-black'>
+                                                        <DialogHeader>
+                                                            <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{image.title}</h2><p className='text-lg font-thin'>{image.date}</p></DialogTitle>
+                                                            <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
+                                                            <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={image.src} alt={image.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
+                                                        </DialogHeader>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             ))}
+                        </div>
                     </div>
-                </div>
 
-                <button
-                    onClick={nextSlide}
-                    className="bg-gray-800 text-white p-2 rounded-full"
-                >
-                    &#10095;
-                </button>
+                    <button
+                        onClick={nextSlide}
+                        className="bg-gray-800 text-white p-2 rounded-full"
+                    >
+                        &#10095;
+                    </button>
+                </div>
             </div>
-        </div>
         </div >
-        
+
     );
 }

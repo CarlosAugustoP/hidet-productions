@@ -23,7 +23,7 @@ export default function Index() {
   // Check if the screen size is smaller than the 'sm' breakpoint
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 820) {
         setIsMobile(true);
       } else {
         setIsMobile(false);

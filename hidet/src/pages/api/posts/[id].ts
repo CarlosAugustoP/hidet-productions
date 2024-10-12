@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/lib/prisma';
+import { deleteObject, ref } from 'firebase/storage';
+import { storage } from '../firebase/firebase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query;
@@ -43,7 +45,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return;
             }
 
-            try {
+            const post = await db.post.findUnique({
+                where: { id: String(id) },
+            });
+
+            if (!post) {
+                res.status(404).json({ error: 'Post not found' });
+                return;
+            }
+
+            if (post.img) { // Delete image from Firebase Storage
+                const imageRef = ref(storage, post.img);
+                await deleteObject(imageRef);
+            }
+
+            try { // Delete post from Prisma
                 await db.post.delete({
                     where: { id: String(id) },
                 });

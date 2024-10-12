@@ -17,9 +17,11 @@ interface PostProps {
     img: string;
     description: string;
     postedAt: string;
+    onPostRemoval: (id: string) => void;
 }
 
 async function removePost(id: string, password: string) {
+    // TODO: Remover post do firebase
     const res = await fetch(`/api/posts/${id}`, {
         method: "DELETE",
         body: JSON.stringify({ password }),
@@ -27,7 +29,7 @@ async function removePost(id: string, password: string) {
     return res;
 }
 
-export default function PostComponent({ id, title, img, description, postedAt }: PostProps) {
+export default function PostComponent({ id, title, img, description, postedAt, onPostRemoval }: PostProps) {
     const { toast } = useToast();
 
     const [password, setPassword] = useState("");
@@ -49,6 +51,7 @@ export default function PostComponent({ id, title, img, description, postedAt }:
                     variant: "default",
                 });
                 setIsDialogOpen(false);
+                onPostRemoval(id);
             }
             return true;
         }
@@ -65,7 +68,7 @@ export default function PostComponent({ id, title, img, description, postedAt }:
                     <p className="text-gray-700 mb-4">{description}</p>
                 </div>
                 <div className="text-gray-500 text-sm mb-4">Publicado em: {new Date(postedAt).toLocaleDateString()}</div>
-                <Dialog>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger className="bg-black hover:bg-red-700 text-white py-2 px-4 rounded">Remover</DialogTrigger>
                     <DialogContent className="bg-black p-6 rounded-lg">
                         <DialogHeader>

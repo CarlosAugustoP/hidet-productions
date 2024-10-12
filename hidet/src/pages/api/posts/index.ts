@@ -3,6 +3,7 @@ import { db } from '@/lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
+    const { body } = req;
 
     switch (method) {
         case 'GET':
@@ -17,6 +18,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         case 'POST':
             try {
+                if (body.password !== process.env.API_KEY) {
+                    res.status(401).json({ error: 'Invalid key' });
+                    return;
+                }
+                
                 const newPost = await db.post.create({
                     data: {
                         title: req.body.title,

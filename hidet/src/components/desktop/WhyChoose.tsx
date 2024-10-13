@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import '../../app/globals.css'
+import { useState, useEffect } from 'react';
 
 // Define the type for width prop
 interface StyledContainer2Props {
@@ -59,6 +60,22 @@ export const InsideContainer2 = styled.div`
 `;
 
 export default function WhyChoose() {
+    const [isHeightExceeded, setIsHeightExceeded] = useState(false);
+
+    // Verifica a altura da janela e atualiza o estado
+    useEffect(() => {
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setIsHeightExceeded(window.innerHeight > 950);
+            }
+        };
+
+        handleResize(); // Inicializa o estado com a altura atual
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
 
     return (
         <div className='h-[95vh] p-20 bg-black border-t-2 border-white flex flex-col justify-between'>
@@ -66,7 +83,7 @@ export default function WhyChoose() {
                 <StyledContainer>
                     <InsideContainer>
                         <div className='w-10/12 p-10'>
-                            <h1 className='2xl:text-7xl xl:text-5xl lg:text-4xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
+                            <h1 className='2xl:text-6xl xl:text-5xl lg:text-4xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
                                 Somos Orientados a <strong>High Detail Production</strong>
                             </h1>
                         </div>
@@ -74,8 +91,8 @@ export default function WhyChoose() {
                 </StyledContainer>
                 <StyledContainer2 width='30%'>
                     <InsideContainer2>
-                        <div className='w-full h-full 2xl:p-16 xl:p-6 lg:p-6 md:p-6 text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light'>
-                            <ul className='h-full w-5/6 md:w-full flex flex-col justify-between '>
+                        <div className={`w-full h-full ${isHeightExceeded ? '2xl:p-14': '2xl:p-8 xl:p-6 lg:p-6 md:p-6'} text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light`}>
+                            <ul className='h-full w-5/6 md:w-full flex flex-col justify-between'>
                                 <li>• Alta qualidade audiovisual </li>
                                 <li>• Foco em detalhes invisíveis</li>
                                 <li>• Uso das mais recentes tecnologias</li>

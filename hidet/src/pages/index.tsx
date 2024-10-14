@@ -31,7 +31,7 @@ export default function Index() {
       }
 
       // Check if the height is smaller than 842px
-      if (window.innerHeight < 842) {
+      if (window.innerHeight < 1000) {
         setIsSmallHeight(true);
       } else {
         setIsSmallHeight(false);

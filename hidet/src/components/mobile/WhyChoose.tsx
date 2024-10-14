@@ -67,7 +67,7 @@ export default function MobileWhyChoose() {
     useEffect(() => {
         const handleResize = () => {
             if (typeof window !== 'undefined') {
-                setIsHeightExceeded(window.innerHeight < 842);
+                setIsHeightExceeded(window.innerHeight < 1000);
             }
         };
 

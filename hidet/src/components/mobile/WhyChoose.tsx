@@ -79,7 +79,7 @@ export default function MobileWhyChoose() {
 
     return (
         <div className='bg-black'>
-        <div className={`h-[50vh] w-full flex items-center justify-center bg-black`}>
+        <div className={`h-[50vh] ${isHeightExceeded && 'sm:h-[600px]'} w-full flex items-center justify-center bg-black`}>
             <div className='flex w-4/5 h-5/6 xs:w-11/12 gap-6'>
                 {/* Left side with two sections */}
                 <div className='flex flex-col w-1/2 gap-6'>

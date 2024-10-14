@@ -13,12 +13,12 @@ interface TickerProps {
         <div className="ticker-content">
           {logos.map((logo, index) => (
             <div key={index} className="small-white-logo">
-              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} />
+              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} loading = 'lazy' />
             </div>
           ))}
           {logos.map((logo, index) => (
             <div key={index} className="small-white-logo">
-              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} />
+              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} loading = 'lazy' />
             </div>
           ))}
         </div>
@@ -54,11 +54,12 @@ interface TickerProps {
       '/img/logo/portu.png', 
       '/img/logo/vitor_andrade.png', 
       '/img/logo/premia_pao.png',
+      '/img/logo/odontomedica.png',
 
     ];
   
     return (
-      <div className={` w-full flex flex-col items-center justify-center gap-2 bg-black  border-white`}>
+      <div className={` w-full flex flex-col items-center justify-center gap-2 bg-black  border-white py-12`}>
         <Ticker logos={logos} />
       </div>
     );

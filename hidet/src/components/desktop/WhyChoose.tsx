@@ -78,7 +78,7 @@ export default function WhyChoose() {
 
 
     return (
-        <div className='h-[95vh] p-20 bg-black border-t-2 border-white flex flex-col justify-between'>
+        <div className='h-[100vh] p-20 bg-black border-t-2 border-white flex flex-col justify-between'>
             <div className='w-full h-3/5 flex items-center justify-between'>
                 <StyledContainer>
                     <InsideContainer>

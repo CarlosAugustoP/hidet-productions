@@ -17,11 +17,11 @@ import MobileContact from '@/components/mobile/Contact';
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
   const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
-  const [isSmallHeight, setIsSmallHeight] = useState(false); // State to track if height is less than 842px
+  const [isSmallHeight, setIsSmallHeight] = useState(false); // State to track if height is less than 1000px
+  const [isTinyHeight, setIsTinyHeight] = useState(false); // State to track if height is less than 600px
   const threshold = 375; // Define the scroll threshold
   const ticking = useRef(false);
 
-  // Check if the screen size is smaller than the 'sm' breakpoint
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 820) {
@@ -30,11 +30,17 @@ export default function Index() {
         setIsMobile(false);
       }
 
-      // Check if the height is smaller than 842px
       if (window.innerHeight < 1000) {
         setIsSmallHeight(true);
       } else {
         setIsSmallHeight(false);
+      }
+
+      // Set the tiny height state for very small heights
+      if (window.innerHeight < 600) {
+        setIsTinyHeight(true);
+      } else {
+        setIsTinyHeight(false);
       }
     };
 
@@ -74,7 +80,7 @@ export default function Index() {
       {isMobile ? (
         <div className=''>
          <MobileHero />
-         <div className={`flex flex-col tiny:h-[100vh] xs:h-[100vh] border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black`}>
+         <div className={`flex flex-col ${isTinyHeight ? 'tiny:[h-200vh] xs:[' : 'tiny:h-[100vh] xs:h-[100vh]'}  border-b-2 border-t-2 border-white mt-16 justify-center items-center bg-black`}>
            <MobileWhyChoose />
            <MobileCompanies />
 

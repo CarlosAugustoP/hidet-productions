@@ -60,14 +60,15 @@ export const InsideContainer2 = styled.div`
 
 
 export default function MobileWhyChoose() {
-
     const [isHeightExceeded, setIsHeightExceeded] = useState(false);
+    const [isTinyHeight, setIsTinyHeight] = useState(false); // New state for heights below 600px
 
     // Verifica a altura da janela e atualiza o estado
     useEffect(() => {
         const handleResize = () => {
             if (typeof window !== 'undefined') {
                 setIsHeightExceeded(window.innerHeight < 1000);
+                setIsTinyHeight(window.innerHeight < 630); // Set if height is below 600px
             }
         };
 
@@ -76,10 +77,9 @@ export default function MobileWhyChoose() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
     return (
         <div className='bg-black'>
-        <div className={`h-[50vh] ${isHeightExceeded && 'sm:h-[600px]'} w-full flex items-center justify-center bg-black`}>
+        <div className={`h-[50vh] ${isHeightExceeded && 'sm:h-[600px]'} ${isTinyHeight && 'tiny:h-[400px] xs:h-[500px]'} w-full flex items-center justify-center bg-black`}>
             <div className='flex w-4/5 h-5/6 xs:w-11/12 gap-6'>
                 {/* Left side with two sections */}
                 <div className='flex flex-col w-1/2 gap-6'>

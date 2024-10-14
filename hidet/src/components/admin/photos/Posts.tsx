@@ -123,10 +123,17 @@ export default function Posts() {
         }
     }
 
+    const handlePostUpdate = (updatedPost: Post) => {
+        setPosts(prevPosts =>
+          prevPosts.map(post => (post.id === updatedPost.id ? updatedPost : post))
+        );
+      };
+      
+
     return (
         <div className="flex flex-col items-center w-full h-full p-6 bg-gray-200">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger className="text-4xl text-white bg-gradient-to-r from-gray-500 to-white rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
+                <DialogTrigger className="text-4xl text-white bg-black rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
                 <DialogContent className="bg-black p-6 rounded-lg">
                     <DialogHeader>
                         <DialogTitle className="text-white mb-4">Publique uma nova foto</DialogTitle>
@@ -190,6 +197,7 @@ export default function Posts() {
                     description={post.description}
                     postedAt={post.postedAt}
                     onPostRemoval={handlePostRemoval}
+                    onPostUpdate={handlePostUpdate}
                 />
             ))}
         </div>

@@ -8,7 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (method) {
         case 'GET':
             try {
-                const posts = await db.post.findMany();
+                const posts = await db.post.findMany({
+                    orderBy: {postedAt: 'desc'},
+                });
                 res.status(200).json(posts);
             } catch (error) {
                 console.error('Error fetching posts:', error);

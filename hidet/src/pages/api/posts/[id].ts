@@ -20,22 +20,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             break;
 
-        case 'PUT':
-            try {
-                const updatedPost = await db.post.update({
+            case 'PUT': {
+                const { title, img, description, password } = req.body;
+          
+                // Password validation
+                if (password !== process.env.API_KEY) {
+                  return res.status(403).json({ error: 'Chave de segurança inválida.' });
+                }
+          
+                const dataToUpdate: any = {};
+                if (title !== undefined) dataToUpdate.title = title;
+                if (img !== undefined) dataToUpdate.img = img;
+                if (description !== undefined) dataToUpdate.description = description;
+          
+                try {
+                  const updatedPost = await db.post.update({
                     where: { id: String(id) },
-                    data: {
-                        title: req.body.title,
-                        img: req.body.img,
-                        description: req.body.description || null,
-                    }
-                });
-                res.status(200).json(updatedPost);
-            } catch (error) {
-                console.error('Error updating post:', error);
-                res.status(500).json({ error: 'Error updating post' });
-            }
-            break;
+                    data: dataToUpdate,
+                  });
+                  return res.status(200).json(updatedPost);
+                } catch (error) {
+                  console.error('Error updating post:', error);
+                  return res.status(500).json({ error: 'Error updating post' });
+                }
+              }
 
         case 'DELETE':
             const password = JSON.parse(req.body).password;

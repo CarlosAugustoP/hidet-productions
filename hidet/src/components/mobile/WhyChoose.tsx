@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import '../../app/globals.css'
+import { useState, useEffect } from 'react';
 
 interface StyledContainer2Props {
     width?: string;
@@ -59,9 +60,26 @@ export const InsideContainer2 = styled.div`
 
 
 export default function MobileWhyChoose() {
+
+    const [isHeightExceeded, setIsHeightExceeded] = useState(false);
+
+    // Verifica a altura da janela e atualiza o estado
+    useEffect(() => {
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setIsHeightExceeded(window.innerHeight < 842);
+            }
+        };
+
+        handleResize(); // Inicializa o estado com a altura atual
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <div className='bg-black'>
-        <div className='h-[50vh] w-full flex items-center justify-center bg-black'>
+        <div className={`h-[50vh] w-full flex items-center justify-center bg-black`}>
             <div className='flex w-4/5 h-5/6 xs:w-11/12 gap-6'>
                 {/* Left side with two sections */}
                 <div className='flex flex-col w-1/2 gap-6'>
@@ -100,7 +118,7 @@ export default function MobileWhyChoose() {
                 </StyledContainer2>
             </div>
         </div>
-        <div className=' w-full flex items-center justify-center bg-black  border-white'>
+        <div className={`w-full flex items-center justify-center bg-black border-white`}>
                     <div className='w-full text-center flex-col p-4'>
                         <h1 className='text-xl text-white h-full'>
                             PADRÃO

@@ -29,8 +29,8 @@ export default function MobileHero() {
     }, [currentImageIndex]);
 
     return (
-        <div className="flex h-[100vh] flex-col w-full items-center justify-center" id = "hero">
-            <MobileHeader />
+        <div className="flex min-h-[100vh] flex-col w-full items-center justify-center gap-12" id = "hero">
+            <MobileHeader/>
             
             <div className="w-5/6 h-4/5 flex flex-col gap-10 tablet:gap-12">            
             <div className="border-2 h-1/2 flex flex-col justify-center items-center border-white rounded-lg">

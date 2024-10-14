@@ -50,7 +50,7 @@ export default function MobileContact() {
 
   return (
     <>
-      <div className='w-full h-[50vh] tiny:h-[60vh] flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id="contact">
+      <div className='w-full py-10 flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id="contact">
         <div className='w-3/5 tiny:w-4/5 h-4/5 flex items-center gap-10 '>
 
           <div className='flex flex-col w-full h-full justify-center bg-black'>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import '../../app/globals.css'
 import Image from 'next/image';
-
+import { useState, useEffect } from 'react';
 interface TickerProps {
     logos: string[]; 
   }
@@ -27,6 +27,23 @@ interface TickerProps {
   };
 
   const MobileCompanies: React.FC = () => {
+    const [isHeightExceeded, setIsHeightExceeded] = useState(false);
+
+    // Verifica a altura da janela e atualiza o estado
+    useEffect(() => {
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setIsHeightExceeded(window.innerHeight <842);
+            }
+        };
+
+        handleResize(); // Inicializa o estado com a altura atual
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+
     const logos = [
       '/img/logo/carvalheira.png', 
       '/img/logo/above_branding.png', 
@@ -41,7 +58,7 @@ interface TickerProps {
     ];
   
     return (
-      <div className=' w-full flex flex-col items-center justify-center gap-2 bg-black  border-white'>
+      <div className={` w-full flex flex-col items-center justify-center gap-2 bg-black  border-white`}>
         <Ticker logos={logos} />
       </div>
     );

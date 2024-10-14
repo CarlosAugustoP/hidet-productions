@@ -17,6 +17,7 @@ import MobileContact from '@/components/mobile/Contact';
 export default function Index() {
   const [scrollPos, setScrollPos] = useState(0);
   const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
+  const [isSmallHeight, setIsSmallHeight] = useState(false); // State to track if height is less than 842px
   const threshold = 375; // Define the scroll threshold
   const ticking = useRef(false);
 
@@ -27,6 +28,13 @@ export default function Index() {
         setIsMobile(true);
       } else {
         setIsMobile(false);
+      }
+
+      // Check if the height is smaller than 842px
+      if (window.innerHeight < 842) {
+        setIsSmallHeight(true);
+      } else {
+        setIsSmallHeight(false);
       }
     };
 
@@ -103,6 +111,8 @@ export default function Index() {
           <Footer />
         </>
       )}
+
+
     </div>
   );
 }

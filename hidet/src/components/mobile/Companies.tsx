@@ -13,12 +13,12 @@ interface TickerProps {
         <div className="ticker-content">
           {logos.map((logo, index) => (
             <div key={index} className="small-white-logo">
-              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} loading = 'lazy' />
+              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} />
             </div>
           ))}
           {logos.map((logo, index) => (
             <div key={index} className="small-white-logo">
-              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} loading = 'lazy' />
+              <Image src={logo} alt={`Logo ${index}`} width={100} height={50} />
             </div>
           ))}
         </div>

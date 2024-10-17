@@ -27,8 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const newSlide = await db.slide.create({
                     data: {
                         title: req.body.title,
-                        posts: req.body.post,
-                        
+                        order: req.body.order,                        
                     },
                 });
                 res.status(201).json(newSlide);

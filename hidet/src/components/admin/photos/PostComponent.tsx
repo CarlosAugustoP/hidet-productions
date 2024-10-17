@@ -149,7 +149,6 @@ async function removePost(id: string, password: string) {
           Publicado em: {new Date(postedAt).toLocaleDateString()}
         </div>
         <div className="flex w-full gap-4">
-          {/* Remove Dialog */}
           <Dialog
             open={isRemoveDialogOpen}
             onOpenChange={setIsRemoveDialogOpen}

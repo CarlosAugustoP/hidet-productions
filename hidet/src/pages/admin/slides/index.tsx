@@ -20,7 +20,7 @@ export default function SlidePage (){
     return (
         <>
             <div className='bg-gray-200 min-h-screen'>
-                <Header />
+                <Header slideName="Slides" />
                 <Slides />
             </div>
         </>

@@ -25,9 +25,9 @@ model Post {
 }
 
 model Slide {
-  id      Int    @id @default(autoincrement())
-  title   String
-  posts   Post[]
-  order   Int   @default(autoincrement())
+  id       Int      @id @default(autoincrement())
+  title    String
+  posts    Post[]
+  order    Int      @default(autoincrement()) @unique
   postedAt DateTime @default(now())
 }

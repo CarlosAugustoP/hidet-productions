@@ -2,13 +2,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const {slideId} = req.query;
-    const {method} = req;
+    const { slideId } = req.query;
+    const { method } = req;
 
     if (method === 'POST') {
-        try{
+        try {
             if (req.body.password !== process.env.API_KEY) {
-                res.status(401).json({error: 'Invalid key'});
+                res.status(401).json({ error: 'Invalid key' });
                 return;
             }
 
@@ -25,20 +25,42 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     id: parseInt(slideId as string, 10)
                 },
                 data: {
-                    posts:{
-                        // Used to create or update a relationship between two models without creating a new instance in the db
-                        connect: {id:validPostId}
+                    posts: {
+                        connect: { id: validPostId }
                     }
                 }
-            })
-            res.status(200).json(updatedSlide)
+            });
 
-        }catch (error) {
-            res.status(500).json({error: 'Internal Server Error'});
+            res.status(200).json(updatedSlide);
+
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error' });
         }
 
-    }else {
-        console.error(`Bad request error. Expected POST but got ${method}`)
-        res.status(400).json
+    } else if (method === 'GET') {
+        try {
+            const slide = await db.slide.findUnique({
+                where: {
+                    id: parseInt(slideId as string, 10)
+                },
+                include: {
+                    posts: true, 
+                },
+            });
+
+            if (!slide) {
+                return res.status(404).json({ error: 'Slide not found' });
+            }
+
+            res.status(200).json(slide.posts);
+
+        } catch (error) {
+            console.error('Error fetching slide:', error);
+            res.status(500).json({ error: 'Error fetching slide' });
+        }
+
+    } else {
+        console.error(`Bad request error. Expected POST but got ${method}`);
+        res.status(400).json({ error: 'Bad request' });
     }
 }

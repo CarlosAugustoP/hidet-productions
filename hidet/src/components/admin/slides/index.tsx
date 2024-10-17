@@ -65,15 +65,15 @@ export default function Slides() {
     return (
         <div className="w-full flex items-center justify-center mt-16" >
             {slides.map((slide) => (
-                <div key={slide.id} className="slide w-4/5 flex flex-col gap-3 bg-white shadow-md p-8 cursor-pointer" onClick={()=>Router.push(`/admin/slides/${slide.id}`)}>
+                <div key={slide.id} className="slide w-4/5 flex flex-col gap-3 bg-white shadow-md rounded-lg p-8 cursor-pointer" onClick={()=>Router.push(`/admin/slides/${slide.id}`)}>
                     <h2 className="text-black font-bold text-3xl">{slide.title}</h2>
                     <p>Ordem de apresentação: {slide.order}</p>
                     <p>Identificação: {slide.id}</p>
                     {slidesPosts[slide.id] ? (
-                        <div className="flex items-center justify-start w-full overflow-x-auto">
+                        <div className="flex items-center gap-6 justify-start w-full overflow-x-auto">
                             {slidesPosts[slide.id].map((post) => (
                                 <div key={post.id} className="post">
-                                    <img src = {post.img}></img>
+                                    <img className= 'h-36' src = {post.img}></img>
                                     <p>{post.content}</p>
                                 </div>
                             ))}

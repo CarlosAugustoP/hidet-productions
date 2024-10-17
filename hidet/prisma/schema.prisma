@@ -19,4 +19,12 @@ model Post {
   img         String?
   description String?
   postedAt    DateTime @default(now())
+  slideId     Int?
+  slide     Slide?   @relation(fields: [slideId], references: [id])
+}
+
+model Slide {
+  id      Int    @id @default(autoincrement())
+  title   String
+  posts   Post[] 
 }

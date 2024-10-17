@@ -21,10 +21,13 @@ model Post {
   postedAt    DateTime @default(now())
   slideId     Int?
   slide     Slide?   @relation(fields: [slideId], references: [id])
+  order      Int?
 }
 
 model Slide {
   id      Int    @id @default(autoincrement())
   title   String
-  posts   Post[] 
+  posts   Post[]
+  order   Int   @default(autoincrement())
+  postedAt DateTime @default(now())
 }

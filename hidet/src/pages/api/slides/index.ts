@@ -27,10 +27,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const newSlide = await db.slide.create({
                     data: {
                         title: req.body.title,
-                        img: req.body.img,
-                        description: req.body.description || null,
+                        posts: req.body.post,
+                        
                     },
                 });
                 res.status(201).json(newSlide);
             }
+            catch (error) {
+                console.error('Error creating slide:', error);
+                res.status(500).json({error: 'Error creating slide'});
+            }
+            break;
+        default:
+            res.setHeader('Allow', ['GET', 'POST']);
+            res.status(405).end(`Method ${method} Not Allowed`);
+        }
 }

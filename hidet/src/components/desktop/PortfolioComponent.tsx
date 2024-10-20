@@ -11,9 +11,49 @@ import {
 } from "@/components/ui/dialog"
 import { title } from 'process';
 import MobileHeader from '../mobile/Header';
+import slidesMock from '../../mock/slides';
+import Layout5 from './Layout5';
+import Layout2 from './Layout2';
+import { cp } from 'fs';
+import Layout1 from './Layout1';
+import Layout3 from './Layout3';
 
 export default function PortfolioComponent() {
+    var slides2: { largeImage: { img: string; title: string; description: string; date: string; }; smallImages: { img: string; title: string; description: string; date: string; }[]; }[] = [];
+
+    async function fetchSlides() {
+        try {
+            const res = await fetch('/api/slides');
+            const data = await res.json();
+            data.sort((a: { order: number; }, b: { order: number; }) => a.order - b.order);
+
+
+            for (let i = 0; i < data.length; i++) {
+                const res = await fetch(`/api/slides/${data[i].id}/posts`);
+                const slideData = await res.json();
+                slides2[i] = slides2[i] || {};
+                slides2[i].largeImage = slideData[0];
+                slides2[i] = slides2[i] || {};
+                slides2[i].smallImages = slides2[i].smallImages || [];
+                slides2[i].smallImages.push(...slideData.slice(1));
+            }
+            console.log(slides2);
+            setSlides(slides2);
+        } catch (error) {
+            console.error('Failed to fetch slides', error);
+        }
+    }
+
+    var useMock = false;
+    if (!useMock) {
+        useEffect(() => {
+            fetchSlides();
+        }, []);
+    }
+
     const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
+    const [slides, setSlides] = useState(slidesMock);
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 820) {
@@ -29,76 +69,7 @@ export default function PortfolioComponent() {
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-    const slides = [
-        {
-            largeImage: {
-                src: 'https://via.placeholder.com/600x400?text=Large+Image+1',
-                title: 'Large Image 1',
-                description: 'Description for Large Image 1',
-                date: '2023-01-01',
-            },
-            smallImages: [
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+1-1',
-                    title: 'Small Image 1-1',
-                    description: '1dawwwwwwdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                    date: '2023-01-02',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+1-2',
-                    title: 'Small Image 1-2',
-                    description: 'Description for Small Image 1-2',
-                    date: '2023-01-03',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+1-3',
-                    title: 'Small Image 1-3',
-                    description: 'Description for Small Image 1-3',
-                    date: '2023-01-04',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+1-4',
-                    title: 'Small Image 1-4',
-                    description: 'Description for Small Image 1-4',
-                    date: '2023-01-05',
-                },
-            ],
-        },
-        {
-            largeImage: {
-                src: 'https://via.placeholder.com/600x400?text=Large+Image+2',
-                title: 'Large Image 2',
-                description: 'Description for Large Image 2',
-                date: '2023-02-01',
-            },
-            smallImages: [
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+2-1',
-                    title: 'Small Image 2-1',
-                    description: 'Description for Small Image 2-1',
-                    date: '2023-02-02',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+2-2',
-                    title: 'Small Image 2-2',
-                    description: 'Description for Small Image 2-2',
-                    date: '2023-02-03',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+2-3',
-                    title: 'Small Image 2-3',
-                    description: 'Description for Small Image 2-3',
-                    date: '2023-02-04',
-                },
-                {
-                    src: 'https://via.placeholder.com/300x200?text=Small+2-4',
-                    title: 'Small Image 2-4',
-                    description: 'Description for Small Image 2-4',
-                    date: '2023-02-05',
-                },
-            ],
-        },
-    ];
+
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -126,6 +97,7 @@ export default function PortfolioComponent() {
                                 {slide.smallImages.map((image, idx) => (
                                     <div key={idx} className='bg-gray-300 w-full h-24 rounded-md'></div>
                                 ))}
+
                             </div>
                         </div>
                     ))}
@@ -137,7 +109,6 @@ export default function PortfolioComponent() {
 
     return (
         <div className="relative h-screen">
-
             <div className="w-2/3 flex flex-col justify-between p-12 absolute">
                 <Header />
             </div>
@@ -150,57 +121,25 @@ export default function PortfolioComponent() {
                         &#10094;
                     </button>
 
-                    <div className="relative w-full overflow-hidden">
+                    <div className="overflow-hidden">
                         <div
                             className="flex transition-transform duration-700 ease-in-out"
                             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                         >
-                            {slides.map((slide, index) => (
-                                <div className="flex-shrink-0 w-full flex gap-2 items-stretch" key={index}>
-                                    <div className="w-1/2 flex items-center justify-center">
-                                        <Dialog>
-                                            <DialogTrigger>
-                                                <img
-                                                    src={slide.largeImage.src}
-                                                    alt={`Slide ${index + 1} Large`}
-                                                    className="w-full h-full object-cover"
-                                                    style={{ maxHeight: '400px' }}
-                                                />
-                                            </DialogTrigger>
-                                            <DialogContent className=' text-white bg-black'>
-                                                <DialogHeader>
-                                                    <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2><p className='text-lg font-thin'>{slide.largeImage.date}</p></DialogTitle>
-                                                    <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
-                                                    <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={slide.largeImage.src} alt={slide.largeImage.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
-                                                </DialogHeader>
-                                            </DialogContent>
-                                        </Dialog>
-                                    </div>
-                                    <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2">
-                                        {slide.smallImages.map((image, idx) => (
-                                            <div key={idx} className="flex items-center justify-center">
-                                                <Dialog>
-                                                    <DialogTrigger>
-                                                        <img
-                                                            src={image.src}
-                                                            alt={`Slide ${index + 1} Small ${idx + 1}`}
-                                                            className="w-full h-full object-cover"
-                                                            style={{ maxHeight: '200px' }}
-                                                        />
-                                                    </DialogTrigger>
-                                                    <DialogContent className=' text-white bg-black'>
-                                                        <DialogHeader>
-                                                            <DialogTitle className='flex gap-4 items-center'><h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{image.title}</h2><p className='text-lg font-thin'>{image.date}</p></DialogTitle>
-                                                            <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>This is a very long description that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.This is a very long description that should wrap to the next line when it exceeds the width of the dialog. that should wrap to the next line when it exceeds the width of the dialog. If it doesn't wrap, it will overflow horizontally and cause layout issues.</DialogDescription>
-                                                            <div className='mt-6 mb-6 w-full items-center justify-center flex'><img src={image.src} alt={image.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' /></div>
-                                                        </DialogHeader>
-                                                    </DialogContent>
-                                                </Dialog>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
+                            {slides.map((slide, index) => {
+                                if (slide.smallImages.length === 0) {
+                                    return <Layout1 key={index} slide={slide} />;
+                                } else if (slide.smallImages.length === 1) {
+                                    return <Layout2 key={index} slide={slide} />;
+                                } else if (slide.smallImages.length === 2) {
+                                    return <Layout3 key={index} slide={slide} />;
+                                } else if (slide.smallImages.length === 4) {
+                                    return <Layout5 key={index} slide={slide} />;
+                                }
+                                else {
+                                    return null;
+                                }
+                            })}
                         </div>
                     </div>
 
@@ -212,7 +151,6 @@ export default function PortfolioComponent() {
                     </button>
                 </div>
             </div>
-        </div >
-
+        </div>
     );
 }

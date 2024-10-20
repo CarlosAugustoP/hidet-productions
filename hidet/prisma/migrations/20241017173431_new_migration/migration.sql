@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "Post" ADD COLUMN     "order" INTEGER;
-
--- AlterTable
-ALTER TABLE "Slide" ADD COLUMN     "order" SERIAL NOT NULL,
-ADD COLUMN     "postedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

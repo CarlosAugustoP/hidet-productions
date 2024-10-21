@@ -44,7 +44,7 @@ export default function PortfolioComponent() {
         }
     }
 
-    var useMock = false;
+    var useMock = true;
     if (!useMock) {
         useEffect(() => {
             fetchSlides();

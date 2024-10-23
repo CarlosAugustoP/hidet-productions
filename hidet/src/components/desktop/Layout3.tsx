@@ -14,62 +14,20 @@ interface Slide {
     }[];
 }
 
-const Layout3 = ({ slide }: { slide: Slide }) => {
+const Layout3 = (/*{ slide }: { slide: Slide }*/) => {
     return (
-        <div className="flex-shrink-0 w-full flex gap-2 items-stretch h-[600px]">
-            <div className="w-1/2 flex items-center justify-center h-full">
-                <Dialog>
-                    <DialogTrigger>
-                        <img
-                            src={slide.largeImage.img}
-                            alt={`Slide Large`}
-                            className="w-full h-full object-cover"
-                        />
-                    </DialogTrigger>
-                    <DialogContent className=' text-white bg-black'>
-                        <DialogHeader>
-                            <DialogTitle className='flex gap-4 items-center'>
-                                <h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2>
-                                <p className='text-lg font-thin'>{slide.largeImage.date}</p>
-                            </DialogTitle>
-                            <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>
-                                This is a very long description that should wrap to the next line when it exceeds the width of the dialog.
-                            </DialogDescription>
-                            <div className='mt-6 mb-6 w-full items-center justify-center flex'>
-                                <img src={slide.largeImage.img} alt={slide.largeImage.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' />
-                            </div>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
+        <div className='2xl:h-[600px]  xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
+            <div className="h-full w-3/5 bg-black items-center justify-center">
+                <img src = '/img/1.jpg' alt='Slide Large' className='w-full h-full object-contain border-white border'/>
             </div>
-            <div className="w-1/2 grid grid-cols-1 grid-rows-2 gap-1 h-full">
-                {slide.smallImages.map((image, idx) => (
-                    <div key={idx} className="flex items-center justify-center h-full">
-                        <Dialog>
-                            <DialogTrigger>
-                                <img
-                                    src={image.img}
-                                    alt={`Slide Small ${idx + 1}`}
-                                    className="w-full h-full object-cover"
-                                />
-                            </DialogTrigger>
-                            <DialogContent className=' text-white bg-black'>
-                                <DialogHeader>
-                                    <DialogTitle className='flex gap-4 items-center'>
-                                        <h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{image.title}</h2>
-                                        <p className='text-lg font-thin'>{image.date}</p>
-                                    </DialogTitle>
-                                    <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>
-                                        This is a very long description that should wrap to the next line when it exceeds the width of the dialog.
-                                    </DialogDescription>
-                                    <div className='mt-6 mb-6 w-full items-center justify-center flex'>
-                                        <img src={image.img} alt={image.title} className=' w-4/5 object-cover rounded-[10px] border-white border-2' />
-                                    </div>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                ))}
+            <div className='flex flex-col w-2/5 h-full justify-between'
+            >
+                <div className="h-[49%] bg-black items-center justify-center">
+                    <img src = '/img/2.jpg' alt='Slide Small 1' className='w-full h-full object-contain border-white border'/>
+                </div>
+                <div className="h-[49%] bg-black items-center justify-center">
+                    <img src = '/img/3.jpg' alt='Slide Small 2' className='w-full h-full object-contain border-white border'/>
+                </div>
             </div>
         </div>
     );

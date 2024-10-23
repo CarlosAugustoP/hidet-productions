@@ -17,9 +17,10 @@ import Layout2 from './Layout2';
 import { cp } from 'fs';
 import Layout1 from './Layout1';
 import Layout3 from './Layout3';
-
+import HomeMadeCarousel from './HomeMadeCarousel';
 export default function PortfolioComponent() {
     var slides2: { largeImage: { img: string; title: string; description: string; date: string; }; smallImages: { img: string; title: string; description: string; date: string; }[]; }[] = [];
+
 
     async function fetchSlides() {
         try {
@@ -53,6 +54,20 @@ export default function PortfolioComponent() {
 
     const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
     const [slides, setSlides] = useState(slidesMock);
+    const [isHeightExceeded, setIsHeightExceeded] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (typeof window !== 'undefined') {
+                setIsHeightExceeded(window.innerHeight < 400);
+            }
+        };
+
+        handleResize(); // Inicializa o estado com a altura atual
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -108,48 +123,12 @@ export default function PortfolioComponent() {
 
 
     return (
-        <div className="relative h-screen">
+        <div className={`relative ${!isHeightExceeded? 'h-screen':'h-[120vh]'}`}>
             <div className="w-2/3 flex flex-col justify-between p-12 absolute">
                 <Header />
             </div>
             <div className="flex items-center justify-center w-full h-full">
-                <div className="flex items-center justify-center w-full max-w-7xl gap-4 px-4 mt-16">
-                    <button
-                        onClick={prevSlide}
-                        className="bg-gray-800 text-white p-2 rounded-full"
-                    >
-                        &#10094;
-                    </button>
-
-                    <div className="overflow-hidden">
-                        <div
-                            className="flex transition-transform duration-700 ease-in-out"
-                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                        >
-                            {slides.map((slide, index) => {
-                                if (slide.smallImages.length === 0) {
-                                    return <Layout1 key={index} slide={slide} />;
-                                } else if (slide.smallImages.length === 1) {
-                                    return <Layout2 key={index} slide={slide} />;
-                                } else if (slide.smallImages.length === 2) {
-                                    return <Layout3 key={index} slide={slide} />;
-                                } else if (slide.smallImages.length === 4) {
-                                    return <Layout5 key={index} slide={slide} />;
-                                }
-                                else {
-                                    return null;
-                                }
-                            })}
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={nextSlide}
-                        className="bg-gray-800 text-white p-2 rounded-full"
-                    >
-                        &#10095;
-                    </button>
-                </div>
+                <HomeMadeCarousel />
             </div>
         </div>
     );

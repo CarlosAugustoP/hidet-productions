@@ -16,15 +16,14 @@ interface Slide {
 
 const Layout5 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className="flex-shrink-0 w-full flex gap-2 items-stretch">
-            <div className="w-1/2 flex items-center justify-center">
+        <div className="flex-shrink-0 w-full flex gap-2 items-stretch h-[600px]">
+            <div className="w-1/2 flex items-center justify-center h-full">
                 <Dialog>
                     <DialogTrigger>
                         <img
                             src={slide.largeImage.img}
                             alt={`Slide Large`}
                             className="w-full h-full object-cover"
-                            style={{ maxHeight: '400px' }}
                         />
                     </DialogTrigger>
                     <DialogContent className=' text-white bg-black'>
@@ -43,16 +42,15 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2">
+            <div className="w-1/2 grid grid-cols-2 grid-rows-2 gap-2 h-full">
                 {slide.smallImages.map((image, idx) => (
-                    <div key={idx} className="flex items-center justify-center">
+                    <div key={idx} className="flex items-center justify-center h-full">
                         <Dialog>
                             <DialogTrigger>
                                 <img
                                     src={image.img}
                                     alt={`Slide Small ${idx + 1}`}
                                     className="w-full h-full object-cover"
-                                    style={{ maxHeight: '200px' }}
                                 />
                             </DialogTrigger>
                             <DialogContent className=' text-white bg-black'>

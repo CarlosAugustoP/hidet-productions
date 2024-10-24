@@ -19,7 +19,7 @@ interface Slide {
 
 const Layout3 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[600px]  xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
+        <div className='2xl:h-[500px]  xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
             <div className="h-full w-3/5 bg-black items-center justify-center">
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>

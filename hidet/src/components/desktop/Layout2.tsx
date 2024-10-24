@@ -19,7 +19,7 @@ interface Slide {
 
 const Layout2 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
+        <div className='2xl:h-[500px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
             {/* Ensure the container has overflow-hidden */}
             <div className="h-full w-1/2 bg-black items-center justify-center overflow-hidden relative">
                 <Dialog>

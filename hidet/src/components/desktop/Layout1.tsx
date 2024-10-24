@@ -18,8 +18,8 @@ interface Slide {
 
 const Layout1 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6'>
-            <div className="h-full w-full bg-black border-2 border-white items-center justify-center">
+        <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 overflow-hidden'> {/* Ensure overflow is hidden */}
+            <div className="h-full w-full bg-black border-2 border-white items-center justify-center overflow-hidden"> {/* Ensure overflow is hidden */}
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
                         <Image
@@ -28,11 +28,11 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                             quality={80}
                             width={1920}
                             height={1080}
-                            className='w-full h-full object-contain'
+                            className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                             loading='lazy'
                         />
                     </DialogTrigger>
-                    <DialogContent className=' text-white bg-black'>
+                    <DialogContent className='text-white bg-black'>
                         <DialogHeader>
                             <DialogTitle className='flex gap-4 items-center'>
                                 <h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2>
@@ -49,6 +49,7 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                                     width={1920}
                                     height={1080}
                                     loading='lazy'
+                                    className='max-w-[70vh] max-h-[60vh] object-contain'
                                 />
                             </div>
                         </DialogHeader>

@@ -25,15 +25,17 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                            <Image
-                                src={slide.largeImage.img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full h-full object-contain'
-                                loading='lazy'
-                            />
+                            <div className="w-full h-full overflow-hidden border-2 border-white">
+                                <Image
+                                    src={slide.largeImage.img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                />
+                            </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>
@@ -51,7 +53,7 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                                         quality={80}
                                         width={1920}
                                         height={1080}
-                                        className='w-full h-full object-contain'
+                                        className='max-w-[70vh] max-h-[60vh] object-contain'
                                         loading='lazy'
                                     />
                                 </div>
@@ -62,15 +64,17 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                            <Image
-                                src={slide.smallImages[0].img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full h-full object-contain'
-                                loading='lazy'
-                            />
+                            <div className="w-full h-full overflow-hidden border-2 border-white">
+                                <Image
+                                    src={slide.smallImages[0].img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                />
+                            </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>
@@ -88,7 +92,7 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                                         quality={80}
                                         width={1920}
                                         height={1080}
-                                        className='w-full h-full object-contain'
+                                        className='max-w-[70vh] max-h-[60vh] object-contain'
                                         loading='lazy'
                                     />
                                 </div>
@@ -102,15 +106,17 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
+                        <div className="w-full h-full overflow-hidden border-2 border-white">
                             <Image
                                 src={slide.smallImages[1].img}
                                 alt='Slide Large'
                                 quality={80}
                                 width={1920}
                                 height={1080}
-                                className='w-full h-full object-contain'
+                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                 loading='lazy'
                             />
+                        </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>
@@ -128,7 +134,7 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                                         quality={80}
                                         width={1920}
                                         height={1080}
-                                        className='w-full h-full object-contain'
+                                        className='max-w-[70vh] max-h-[60vh] object-contain'
                                         loading='lazy'
                                     />
                                 </div>
@@ -139,15 +145,17 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
+                        <div className="w-full h-full overflow-hidden border-2 border-white">
                             <Image
                                 src={slide.smallImages[2].img}
                                 alt='Slide Large'
                                 quality={80}
                                 width={1920}
                                 height={1080}
-                                className='w-full h-full object-contain'
+                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                 loading='lazy'
                             />
+                        </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>
@@ -165,7 +173,7 @@ const Layout3 = ({ slide }: { slide: Slide }) => {
                                         quality={80}
                                         width={1920}
                                         height={1080}
-                                        className='w-full h-full object-contain'
+                                        className='max-w-[70vh] max-h-[60vh] object-contain'
                                         loading='lazy'
                                     />
                                 </div>

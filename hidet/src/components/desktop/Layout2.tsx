@@ -19,21 +19,25 @@ interface Slide {
 
 const Layout2 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[600px]  xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
-            <div className="h-full w-1/2 bg-black items-center justify-center">
-            <Dialog>
+        <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
+            {/* Ensure the container has overflow-hidden */}
+            <div className="h-full w-1/2 bg-black items-center justify-center overflow-hidden relative">
+                <Dialog>
                     <DialogTrigger className='w-full h-full'>
-                        <Image
-                            src={slide.largeImage.img}
-                            alt='Slide Large'
-                            quality={80}
-                            width={1920}
-                            height={1080}
-                            className='w-full h-full object-contain'
-                            loading='lazy'
-                        />
+                        <div className="w-full h-full overflow-hidden border-2 border-white">
+                            <Image
+                                src={slide.largeImage.img}
+                                alt='Slide Large'
+                                quality={80}
+                                width={1920}
+                                height={1080}
+                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                loading='lazy'
+                            />
+                        </div>
                     </DialogTrigger>
-                    <DialogContent className=' text-white bg-black'>
+
+                    <DialogContent className='text-white bg-black'>
                         <DialogHeader>
                             <DialogTitle className='flex gap-4 items-center'>
                                 <h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2>
@@ -49,7 +53,7 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                                     quality={80}
                                     width={1920}
                                     height={1080}
-                                    className='w-full h-full object-contain'
+                                    className='max-w-[70vh] max-h-[60vh] object-contain border-2 border-white'
                                     loading='lazy'
                                 />
                             </div>
@@ -57,20 +61,24 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="h-full w-1/2 bg-black items-center justify-center">
-            <Dialog>
+
+            {/* Same for the second image */}
+            <div className="h-full w-1/2 bg-black items-center justify-center overflow-hidden relative">
+                <Dialog>
                     <DialogTrigger className='w-full h-full'>
-                        <Image
-                            src={slide.largeImage.img}
-                            alt='Slide Large'
-                            quality={80}
-                            width={1920}
-                            height={1080}
-                            className='w-full h-full object-contain'
-                            loading='lazy'
-                        />
+                    <div className="w-full h-full overflow-hidden border-2 border-white">
+                            <Image
+                                src={slide.smallImages[0].img}
+                                alt='Slide Large'
+                                quality={80}
+                                width={1920}
+                                height={1080}
+                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                loading='lazy'
+                            />
+                        </div>
                     </DialogTrigger>
-                    <DialogContent className=' text-white bg-black'>
+                    <DialogContent className='text-white bg-black'>
                         <DialogHeader>
                             <DialogTitle className='flex gap-4 items-center'>
                                 <h2 className='2xl:text-4xl xl:text-2xl lg:text-xl'>{slide.largeImage.title}</h2>
@@ -86,6 +94,7 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                                     quality={80}
                                     width={1920}
                                     height={1080}
+                                    className='max-w-[70vh] max-h-[60vh] object-contain border-2 border-white'
                                     loading='lazy'
                                 />
                             </div>
@@ -93,7 +102,6 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                     </DialogContent>
                 </Dialog>
             </div>
-
         </div>
     );
 };

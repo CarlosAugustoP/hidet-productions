@@ -14,25 +14,25 @@ const Carousel = () => {
       const res = await fetch('/api/slides');
       const data = await res.json();
       data.sort((a: { order: number }, b: { order: number }) => a.order - b.order);
-  
+
       const updatedSlides = await Promise.all(
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
-  
+
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
           };
         })
       );
-  
+
       setSlides(updatedSlides);
     } catch (error) {
       console.error('Failed to fetch slides', error);
     }
   }
-  
+
 
   useEffect(() => {
     fetchSlides();
@@ -46,15 +46,39 @@ const Carousel = () => {
     setCurrentIndex((currentIndex - 1 + slides.length) % slides.length);
   };
 
+  const maxVisibleDots = 5; // Must be an odd number to center the current dot
+  const half = Math.floor(maxVisibleDots / 2);
+  let startDotIndex = 0;
+  let endDotIndex = slides.length - 1;
+
+  if (slides.length <= maxVisibleDots) {
+    // Show all dots
+    startDotIndex = 0;
+    endDotIndex = slides.length - 1;
+  } else {
+    if (currentIndex <= half) {
+      // Near the beginning
+      startDotIndex = 0;
+      endDotIndex = maxVisibleDots - 1;
+    } else if (currentIndex >= slides.length - half - 1) {
+      // Near the end
+      startDotIndex = slides.length - maxVisibleDots;
+      endDotIndex = slides.length - 1;
+    } else {
+      // Middle
+      startDotIndex = currentIndex - half;
+      endDotIndex = currentIndex + half;
+    }
+  }
   return (
-    <div className="relative overflow-hidden flex justify-center items-center w-5/6 h-[600px] mx-auto mt-24">
+    <div className='flex flex-col items-center justify-center'>
+    <div className="relative overflow-hidden flex justify-center items-center w-5/6 2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] mx-auto mt-24">
       <div
         className="flex transition-transform duration-700 ease-in-out w-full h-full"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {slides.map((slide, index) => {
           if (slide.smallImages.length === 0) {
-            console.log('Estou aqui');
             return (
               <div
                 key={index}
@@ -67,7 +91,6 @@ const Carousel = () => {
               </div>
             );
           } else if (slide.smallImages.length === 1) {
-            console.log('Estou aqui');
             return (
               <div
                 key={index}
@@ -80,7 +103,6 @@ const Carousel = () => {
               </div>
             );
           } else if (slide.smallImages.length === 2) {
-            console.log('Estou aqui');
             return (
               <div
                 key={index}
@@ -93,7 +115,6 @@ const Carousel = () => {
               </div>
             );
           } else if (slide.smallImages.length === 3) {
-            console.log('Estou aqui');
             return (
               <div
                 key={index}
@@ -105,7 +126,6 @@ const Carousel = () => {
                 </div>
               </div>);
           } else if (slide.smallImages.length === 4) {
-            console.log('Estou aqui');
             return (
               <div
                 key={index}
@@ -118,23 +138,48 @@ const Carousel = () => {
               </div>);
           }
           else {
-            console.log('Estou aqui');
             return null;
           }
         })}
       </div>
       <button
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2"
+        className="absolute left-0 top-1/2 rounded-full w-10 h-10 transform -translate-y-1/2 bg-gray-800 text-white p-2 border-white shadow-xl"
         onClick={prevSlide}
       >
         &#10094;
       </button>
       <button
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2"
+        className="absolute right-0 top-1/2 rounded-full w-10 h-10 transform -translate-y-1/2 bg-gray-800 text-white p-2 border-white shadow-xl"
         onClick={nextSlide}
       >
         &#10095;
       </button>
+
+    </div>
+      <div className="mt-6 flex justify-center items-center w-full overflow-hidden">
+      <div className="flex items-center">
+        {startDotIndex > 0 && (
+          <div className="mx-1 text-gray-500 select-none">...</div>
+        )}
+        {slides.slice(startDotIndex, endDotIndex + 1).map((_, index) => {
+          const actualIndex = startDotIndex + index;
+          return (
+            <button
+              key={actualIndex}
+              onClick={() => setCurrentIndex(actualIndex)}
+              className={`w-3 h-3 mx-1 rounded-full transition-all duration-300 transform ${
+                currentIndex === actualIndex ? 'bg-white scale-125' : 'bg-gray-800 scale-100'
+              }`}
+              aria-label={`Go to slide ${actualIndex + 1}`}
+              aria-current={currentIndex === actualIndex ? 'true' : 'false'}
+            />
+          );
+        })}
+        {endDotIndex < slides.length - 1 && (
+          <div className="mx-1 text-gray-500 select-none">...</div>
+        )}
+      </div>
+    </div>
     </div>
   );
 };

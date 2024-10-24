@@ -1,12 +1,25 @@
 import React from 'react';
 import Image from 'next/image';
 
-const Layout1 = () => {
+interface Slide {
+    largeImage: {
+        img: string;
+        title: string;
+        date: string;
+    };
+    smallImages: {
+        img: string;
+        title: string;
+        date: string;
+    }[];
+}
+
+const Layout1 = ({slide}: {slide: Slide}) => {
     return (
-       <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6'>
+        <div className='2xl:h-[600px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6'>
             <div className="h-full w-full bg-black border-2 border-white items-center justify-center">
                 <Image
-                    src='/img/1.jpg'
+                    src={slide.largeImage.img}
                     alt='Slide Large'
                     quality={80}
                     width={1920}
@@ -15,7 +28,7 @@ const Layout1 = () => {
                     loading='lazy'
                 />
             </div>
-       </div>
+        </div>
     );
 };
 

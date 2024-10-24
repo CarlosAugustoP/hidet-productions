@@ -7,6 +7,7 @@ interface Slide {
         img: string;
         title: string;
         date: string;
+        description: string;
     };
     smallImages: {
         img: string;
@@ -38,7 +39,7 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                                 <p className='text-lg font-thin'>{slide.largeImage.date}</p>
                             </DialogTitle>
                             <DialogDescription className='mt-4 2xl:text-lg xl:text-md lg:text-sm'>
-                                This is a very long description that should wrap to the next line when it exceeds the width of the dialog.
+                                {slide.largeImage.description}
                             </DialogDescription>
                             <div className='mt-6 mb-6 w-full items-center justify-center flex'>
                                 <Image
@@ -47,7 +48,6 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                                     quality={80}
                                     width={1920}
                                     height={1080}
-                                    className='w-full h-full object-contain'
                                     loading='lazy'
                                 />
                             </div>

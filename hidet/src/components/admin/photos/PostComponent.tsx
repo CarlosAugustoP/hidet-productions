@@ -39,8 +39,10 @@ export default function PostComponent({
   id,
   title,
   img,
+  video,
   description,
   postedAt,
+  isImg,
   onPostRemoval,
   onPostUpdate,
 }: PostProps) {
@@ -112,38 +114,43 @@ export default function PostComponent({
   const handleConfirmClick = async () => {
     const res = await removePost(id, password);
     if (res.status === 204) {
-        if (res.status === 204) {
-            toast({
-                title: "Successo! ✓",
-                description: "Imagem deletada com sucesso!",
-                variant: "default",
-            });
-            setIsRemoveDialogOpen(false);
-            onPostRemoval(id);
-        }
-        return true;
+      if (res.status === 204) {
+        toast({
+          title: "Successo! ✓",
+          description: "Imagem deletada com sucesso!",
+          variant: "default",
+        });
+        setIsRemoveDialogOpen(false);
+        onPostRemoval(id);
+      }
+      return true;
     }
     setErrorMessage("Chave de segurança inválida.");
     return false;
-};
+  };
 
-async function removePost(id: string, password: string) {
+  async function removePost(id: string, password: string) {
     // TODO: Remover post do firebase
     const res = await fetch(`/api/posts/${id}`, {
-        method: "DELETE",
-        body: JSON.stringify({ password }),
+      method: "DELETE",
+      body: JSON.stringify({ password }),
     });
     return res;
-}
+  }
 
 
   return (
     <div className="flex flex-col lg:flex-row gap-5 items-start w-full max-w-4xl bg-white shadow-md rounded-lg p-5 mb-8">
-      <img
-        src={img}
-        alt={title}
-        className="w-full lg:w-1/3 h-auto rounded-lg object-cover"
-      />
+      {isImg ? <img className='h-36 object-cover bg-black' src={img}></img> : (
+        <iframe
+          className="h-36 object-cover bg-black"
+          src={video ? video.split('?')[0] : ""}
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          title={title}
+        ></iframe>
+      )}
       <div className="flex flex-col justify-between w-full lg:w-2/3">
         <div>
           <h1 className="text-2xl font-semibold mb-2">{title}</h1>

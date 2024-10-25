@@ -35,6 +35,8 @@ export default function Posts({ slideId }: PostsProps) {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [videoLink, setVideoLink] = useState('');
+    const [isImg, setIsImg] = useState(true);
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
@@ -46,6 +48,22 @@ export default function Posts({ slideId }: PostsProps) {
             getSlidePosts(slideId).then(data => setPosts(data));
         }
     }, [slideId]);
+
+    const isValidVideoLink = (link: string) => {
+        const urlPattern = /^(https?:\/\/)?(www\.)?(vimeo\.com\/|youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)$/;
+        return urlPattern.test(link);
+    };
+    
+    const handleVideoLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const link = e.target.value;
+        setVideoLink(link);
+        setErrorMessage(""); // Limpa mensagem de erro
+    
+        if (!isValidVideoLink(link) && link !== "") {
+            setErrorMessage("Insira um link válido do Vimeo");
+        }
+    };
+    
 
     const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -212,8 +230,22 @@ export default function Posts({ slideId }: PostsProps) {
                 <DialogTrigger className="text-4xl text-white bg-black rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
                 <DialogContent className="bg-black p-6 rounded-lg">
                     <DialogHeader>
-                        <DialogTitle className="text-white mb-4">Publique uma nova foto</DialogTitle>
-                        <DialogDescription className="text-white mb-4">Insira os campos a frente:</DialogDescription>
+                        <DialogTitle className="text-white mb-4">Publique uma nova postagem</DialogTitle>
+                        <DialogDescription className="text-white mb-4">Escolha o tipo de conteúdo:</DialogDescription>
+                        <div className="flex space-x-4 mb-4">
+                            <button 
+                                onClick={() => setIsImg(true)}
+                                className={`px-4 py-2 rounded ${isImg ? 'bg-blue-500 text-white' : 'bg-gray-500 text-black'}`}
+                            >
+                                Imagem
+                            </button>
+                            <button 
+                                onClick={() => setIsImg(false)}
+                                className={`px-4 py-2 rounded ${!isImg ? 'bg-blue-500 text-white' : 'bg-gray-500 text-black'}`}
+                            >
+                                Vídeo
+                            </button>
+                        </div>
                         <form>
                             <div className="grid w-full items-center gap-4">
                                 <div className="flex flex-col space-y-1.5">
@@ -223,21 +255,30 @@ export default function Posts({ slideId }: PostsProps) {
                                     <Input className="bg-white" id="description" placeholder="Descrição da nova postagem" onChange={(e) => setDescription(e.target.value)} />
                                 </div>
                                 <div className="text-white flex flex-col space-y-1.5">
-                                    <Label htmlFor="media">Conteúdo (imagem)</Label>
-                                    <div className="relative">
-                                        <input
-                                            type="file"
-                                            id="media"
-                                            accept="image/*,video/*"
-                                            className="block w-full text-sm text-gray-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-gray-100 file:text-gray-700
-                                hover:file:bg-gray-200"
-                                            onChange={handleMediaChange}
-                                        />
-                                    </div>
+                                    {isImg ? (
+                                        <>
+                                            <Label htmlFor="media">Conteúdo (imagem)</Label>
+                                            <input
+                                                type="file"
+                                                id="media"
+                                                accept="image/*"
+                                                onChange={handleMediaChange}
+                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Label htmlFor="video">Link do vídeo</Label>
+                                            <Input
+                                                type="text"
+                                                id="video"
+                                                placeholder="Insira o link do vídeo"
+                                                value={videoLink}
+                                                onChange={handleVideoLinkChange}
+                                                className="bg-white text-black"
+                                            />
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </form>
@@ -256,7 +297,7 @@ export default function Posts({ slideId }: PostsProps) {
                         <div className="flex justify-center">
                             <DialogClose className="bg-black hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">Cancelar</DialogClose>
                             <button
-                                onClick={() => publishPost(title, imgFile, description)}
+                                onClick={() => isImg ? publishPost(title, imgFile, description) : addNewVideo(title, videoLink, description)}
                                 className="bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white"
                             >Adicionar</button>
                         </div>

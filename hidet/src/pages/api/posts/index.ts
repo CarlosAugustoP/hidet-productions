@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         img: req.body.img || null,
                         description: req.body.description || null,
                         video: req.body.video || null,
-                        isImg: req.body.isImg || true
+                        isImg: req.body.isImg !== undefined ? req.body.isImg : true
                     },
                 });
                 res.status(201).json(newPost);

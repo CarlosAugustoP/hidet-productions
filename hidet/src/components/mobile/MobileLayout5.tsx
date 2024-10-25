@@ -59,7 +59,6 @@ export default function MobileLayout5({ slide }: { slide: Slide }) {
                 </Dialog>
             </div>
 
-            {/* First Row of Small Images */}
             <div className="flex gap-2">
                 <div className="h-full w-1/2 bg-black border-2 border-white items-center justify-center overflow-hidden">
                     <Dialog>

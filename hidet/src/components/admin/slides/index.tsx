@@ -24,6 +24,8 @@ interface Post {
     title: string;
     content: string;
     img: string;
+    video: string;
+    isImg: boolean;
 }
 
 async function getAllSlides() {
@@ -37,6 +39,7 @@ async function getSlidesPosts(slideId: number) {
         method: 'GET',
     });
     const data = await res.json();
+    console.log(data);
     return data;
 }
 
@@ -185,8 +188,16 @@ export default function Slides() {
                         <div className="flex items-center gap-6 justify-start border-2 border-gray-400 w-full overflow-x-auto rounded-lg">
                             {slidesPosts[slide.id].map((post) => (
                                 <div key={post.id} className="post">
-                                    <img className='h-36 object-cover bg-black' src={post.img}></img>
-                                    <p>{post.content}</p>
+                                    {post.isImg ? <img className='h-36 object-cover bg-black' src={post.img}></img> : (
+        <iframe
+            className="h-36 object-cover bg-black"
+            src={`https://www.youtube.com/embed/${new URL(post.video).searchParams.get("v")}`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title={post.title}
+        ></iframe>
+    )}
                                 </div>
                             ))}
                         </div>

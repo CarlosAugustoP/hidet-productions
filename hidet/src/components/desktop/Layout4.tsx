@@ -8,16 +8,19 @@ interface Slide {
         title: string;
         date: string;
         description: string;
+        video:string;
+
     };
     smallImages: {
         img: string;
         title: string;
         date: string;
         description: string;
+        video:string;
     }[];
 }
 
-const Layout3 = ({ slide }: { slide: Slide }) => {
+const Layout3 = ({ slide }: { slide: Slide }, ) => {
     return (
         <div className='2xl:h-[500px]  xl:h-[400px]  md:h-[350px] w-5/6 flex gap-2'>
             <div className='flex flex-col w-1/2 h-full justify-between'

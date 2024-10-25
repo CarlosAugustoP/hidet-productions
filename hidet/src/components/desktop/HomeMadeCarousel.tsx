@@ -5,9 +5,28 @@ import Layout3 from './Layout3';
 import Layout4 from './Layout4';
 import Layout5 from './Layout5';
 
+interface Slide {
+  largeImage: {
+      img: string;
+      title: string;
+      date: string;
+      description: string;
+      video:string;
+      isImg: boolean;
+  };
+
+  smallImages: {
+      img: string;
+      title: string;
+      date: string;
+      description: string;
+      video: string;
+  }[];
+}
+
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slides, setSlides] = useState<any[]>([]);
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [isLoading, setIsLoading] = useState(true); // New loading state
 
   async function fetchSlides() {
@@ -20,6 +39,7 @@ const Carousel = () => {
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
+          console.log(`slide Data: ${slide.id}`, slideData);
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),

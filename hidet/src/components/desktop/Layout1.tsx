@@ -3,25 +3,44 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface Slide {
+    
+
+
     largeImage: {
         img: string;
         title: string;
         date: string;
         description: string;
+        video:string;
+        isImg: boolean 
+
     };
     smallImages: {
         img: string;
         title: string;
         date: string;
+        
     }[];
 }
 
 const Layout1 = ({ slide }: { slide: Slide }) => {
+    console.log(slide); 
+    const getVimeoEmbedUrl = (url: string) => {
+        const videoIdMatch = url;
+        if (videoIdMatch) {
+            const videoId = videoIdMatch[1];
+            return `https://player.vimeo.com/video/${videoId}`;
+        }
+        return '';
+    };
+
     return (
-        <div className='2xl:h-[500px] xl:h-[450px] lg:h-[400px] md:h-[350px] w-5/6 overflow-hidden'> 
+        
+        <div className='2xl:h-[500px] xl:h-[400px] md:h-[350px] w-5/6 overflow-hidden'> 
             <div className="h-full w-full bg-black border-2 border-white items-center justify-center overflow-hidden"> 
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
+                        { slide.largeImage.isImg ? 
                         <Image
                             src={slide.largeImage.img}
                             alt='Slide Large'
@@ -31,6 +50,17 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                             className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                             loading='lazy'
                         />
+                        :
+                        <iframe
+                            className="h-36 object-cover bg-black"
+                            src={slide.largeImage.video.split('?')[0]}
+                            frameBorder="0"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            allowFullScreen
+                            title={slide.largeImage.title}
+                            ></iframe>
+                        
+                        }
                     </DialogTrigger>
                     <DialogContent className='text-white bg-black'>
                         <DialogHeader>

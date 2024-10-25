@@ -28,8 +28,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const newPost = await db.post.create({
                     data: {
                         title: req.body.title,
-                        img: req.body.img,
+                        img: req.body.img || null,
                         description: req.body.description || null,
+                        video: req.body.video || null,
+                        isImg: req.body.isImg || true
                     },
                 });
                 res.status(201).json(newPost);

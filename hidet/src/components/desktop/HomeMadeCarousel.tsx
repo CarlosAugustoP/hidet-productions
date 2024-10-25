@@ -20,7 +20,6 @@ const Carousel = () => {
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
-
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
@@ -87,7 +86,9 @@ const Carousel = () => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {slides.map((slide, index) => {
-            if (slide.smallImages.length === 0) {
+            if (slide.largeImage == null) {
+              return null;
+            } else if (slide.smallImages.length === 0) {
               return (
                 <div
                   key={index}

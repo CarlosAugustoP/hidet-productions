@@ -22,6 +22,8 @@ model Post {
   slideId     Int?
   slide     Slide?   @relation(fields: [slideId], references: [id])
   order      Int?
+  video       String?
+  isImg       Boolean  @default(true)
 }
 
 model Slide {

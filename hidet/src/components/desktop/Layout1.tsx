@@ -52,7 +52,7 @@ const Layout1 = ({ slide }: { slide: Slide }) => {
                         />
                         :
                         <iframe
-                            className="h-36 object-cover bg-black"
+                            className="h-full w-full object-cover bg-black"
                             src={slide.largeImage.video.split('?')[0]}
                             frameBorder="0"
                             allow="autoplay; fullscreen; picture-in-picture"

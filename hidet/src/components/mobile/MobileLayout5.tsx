@@ -24,19 +24,27 @@ interface Slide {
 export default function MobileLayout5({ slide }: { slide: Slide }) {
     return (
         <div className='w-[80%] flex flex-col gap-2'>
-            {/* Large Image */}
             <div className="h-full w-full bg-black border-2 border-white items-center justify-center overflow-hidden">
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
-                        <Image
-                            src={slide.largeImage.img}
-                            alt={slide.largeImage.title}
-                            quality={80}
-                            width={1920}
-                            height={1080}
-                            className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                            loading='lazy'
-                        />
+                    {slide.largeImage.isImg ?
+                                <Image
+                                src={slide.largeImage.img}
+                                alt='Slide Large'
+                                quality={80}
+                                width={1920}
+                                height={1080}
+                                className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                loading='lazy'
+                            /> : 
+                            <iframe
+                                className="h-full w-full object-cover bg-black"
+                                src={slide.largeImage.video.split('?')[0]}
+                                frameBorder="0"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowFullScreen
+                                title={slide.largeImage.title}
+                            ></iframe>}
                     </DialogTrigger>
                     <DialogContent className='text-white bg-black'>
                         <DialogHeader>

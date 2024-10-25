@@ -8,8 +8,8 @@ interface Slide {
         title: string;
         date: string;
         description: string;
-        video:string;
-
+        video: string;
+        isImg: boolean;
     };
     smallImages: {
         img: string;
@@ -19,7 +19,7 @@ interface Slide {
     }[];
 }
 
-const Layout3 = ({ slide }: { slide: Slide }, ) => {
+const Layout3 = ({ slide }: { slide: Slide },) => {
     return (
         <div className='2xl:h-[500px]  xl:h-[400px]  md:h-[350px] w-5/6 flex gap-2'>
             <div className='flex flex-col w-1/2 h-full justify-between'
@@ -28,15 +28,27 @@ const Layout3 = ({ slide }: { slide: Slide }, ) => {
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
                             <div className="w-full h-full overflow-hidden border-2 border-white">
-                                <Image
-                                    src={slide.largeImage.img}
-                                    alt='Slide Large'
-                                    quality={80}
-                                    width={1920}
-                                    height={1080}
-                                    className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                                    loading='lazy'
-                                />
+                                {slide.largeImage.isImg ?
+                                    <Image
+                                        src={slide.largeImage.img}
+                                        alt='Slide Large'
+                                        quality={80}
+                                        width={1920}
+                                        height={1080}
+                                        className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                        loading='lazy'
+                                    />
+                                    :
+                                    <iframe
+                                        className="h-full w-full object-cover bg-black"
+                                        src={slide.largeImage.video.split('?')[0]}
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                        title={slide.largeImage.title}
+                                    ></iframe>
+
+                                }
                             </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
@@ -108,17 +120,17 @@ const Layout3 = ({ slide }: { slide: Slide }, ) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                        <div className="w-full h-full overflow-hidden border-2 border-white">
-                            <Image
-                                src={slide.smallImages[1].img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                                loading='lazy'
-                            />
-                        </div>
+                            <div className="w-full h-full overflow-hidden border-2 border-white">
+                                <Image
+                                    src={slide.smallImages[1].img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                />
+                            </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>
@@ -147,17 +159,17 @@ const Layout3 = ({ slide }: { slide: Slide }, ) => {
                 <div className="h-[49%] bg-black items-center justify-center">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                        <div className="w-full h-full overflow-hidden border-2 border-white">
-                            <Image
-                                src={slide.smallImages[2].img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                                loading='lazy'
-                            />
-                        </div>
+                            <div className="w-full h-full overflow-hidden border-2 border-white">
+                                <Image
+                                    src={slide.smallImages[2].img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                />
+                            </div>
                         </DialogTrigger>
                         <DialogContent className=' text-white bg-black'>
                             <DialogHeader>

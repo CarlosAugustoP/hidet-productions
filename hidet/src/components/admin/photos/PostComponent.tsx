@@ -16,9 +16,11 @@ import { Toaster } from "@/components/ui/toaster";
 interface PostProps {
   id: string;
   title: string;
-  img: string;
+  img?: string;
+  video?: string;
   description: string;
   postedAt: string;
+  isImg: boolean;
   onPostRemoval: (id: string) => void;
   onPostUpdate: (updatedPost: Post) => void;
 }
@@ -26,9 +28,11 @@ interface PostProps {
 interface Post {
   id: string;
   title: string;
-  img: string;
+  img?: string;
+  video?: string;
   description: string;
   postedAt: string;
+  isImg: boolean;
 }
 
 export default function PostComponent({

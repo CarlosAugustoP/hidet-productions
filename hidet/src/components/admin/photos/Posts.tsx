@@ -16,9 +16,11 @@ import { toast } from "@/hooks/use-toast";
 interface Post {
     id: string;
     title: string;
-    img: string;
+    img?: string;
+    video?: string;
     description: string;
     postedAt: string;
+    isImg: boolean;
 }
 
 interface PostsProps {
@@ -67,7 +69,7 @@ export default function Posts({ slideId }: PostsProps) {
     async function publishPost(title: string, imgFile: File | null, description: string) {
         try {
             if (!imgFile) {
-                alert("Por favor, selecione uma mídia (imagem ou vídeo).");
+                alert("Por favor, selecione uma imagem.");
                 return;
             }
             const formData = new FormData();
@@ -116,6 +118,7 @@ export default function Posts({ slideId }: PostsProps) {
                             img: downloadURL,
                             description,
                             postedAt: new Date().toISOString(),
+                            isImg: true,
                         },
                         ...prevPosts,
                     ]);
@@ -134,6 +137,68 @@ export default function Posts({ slideId }: PostsProps) {
             setErrorMessage('Erro ao criar post');
         }
     }
+
+    async function addNewVideo(title: string, video: string, description: string) {
+        try {
+            if (!video) {
+                alert("Por favor, insira o link de um vídeo.");
+                return;
+            }
+
+            const addingPostResponse = await fetch(`/api/posts`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, video, description, password, isImg: false })
+            });
+
+            const data = await addingPostResponse.json();
+
+            if (addingPostResponse.ok){
+                try {
+                    const postId = data.id;
+                    const bindingPostResponse = await fetch(`/api/slides/${slideId}/posts/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ postId , password })
+                    });
+                    if (bindingPostResponse.ok){
+                        toast({
+                            title: "Sucesso! ✓",
+                            description: "Vídeo adicionado com sucesso!",
+                            variant: "default",
+                        });
+                        setIsDialogOpen(false);
+                        setPosts(prevPosts => [
+                            {
+                                id: data.id, 
+                                title,
+                                video,
+                                description,
+                                postedAt: new Date().toISOString(),
+                                isImg: false,
+                            },
+                            ...prevPosts,
+
+                        ]);
+
+                    }
+                }catch(error){
+                    console.error('Erro ao criar post:', error);
+                    setErrorMessage('Falha em adicionar o video ao slide');        
+            }
+            
+        }   
+        }catch(error){
+            console.error('Erro ao criar post:', error);
+            setErrorMessage('Erro ao criar post com o video inserido');
+        }     
+
+    }
+
 
     const handlePostUpdate = (updatedPost: Post) => {
         setPosts(prevPosts =>
@@ -207,6 +272,8 @@ export default function Posts({ slideId }: PostsProps) {
                     img={post.img}
                     description={post.description}
                     postedAt={post.postedAt}
+                    video={post.video}
+                    isImg={post.isImg}
                     onPostRemoval={handlePostRemoval}
                     onPostUpdate={handlePostUpdate}
                 />

@@ -189,15 +189,15 @@ export default function Slides() {
                             {slidesPosts[slide.id].map((post) => (
                                 <div key={post.id} className="post">
                                     {post.isImg ? <img className='h-36 object-cover bg-black' src={post.img}></img> : (
-        <iframe
-            className="h-36 object-cover bg-black"
-            src={`https://www.youtube.com/embed/${new URL(post.video).searchParams.get("v")}`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title={post.title}
-        ></iframe>
-    )}
+                                        <iframe
+                                            className="h-36 object-cover bg-black"
+                                            src={post.video.split('?')[0]}
+                                            frameBorder="0"
+                                            allow="autoplay; fullscreen; picture-in-picture"
+                                            allowFullScreen
+                                            title={post.title}
+                                        ></iframe>
+                                    )}
                                 </div>
                             ))}
                         </div>

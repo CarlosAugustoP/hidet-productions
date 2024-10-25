@@ -8,22 +8,7 @@ import MobilePortfolioComponent from '../mobile/PortfolioComponent';
 import Footer from '../mobile/Footer';
 export default function PortfolioComponent() {
     const [isMobile, setIsMobile] = useState(false); 
-    const [slides, setSlides] = useState(slidesMock);
     const [viewportHeight, setViewportHeight] = useState('h-screen'); 
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const prevSlide = () => {
-        const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
-        setCurrentIndex(newIndex);
-    };
-
-    const nextSlide = () => {
-        const isLastSlide = currentIndex === slides.length - 1;
-        const newIndex = isLastSlide ? 0 : currentIndex + 1;
-        setCurrentIndex(newIndex);
-    };
 
     useEffect(() => {
         const handleResize = () => {

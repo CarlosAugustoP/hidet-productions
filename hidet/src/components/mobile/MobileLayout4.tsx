@@ -3,27 +3,27 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface Slide {
-  largeImage: {
-    img: string;
-    title: string;
-    date: string;
-    description: string;
-    video:string;
+    largeImage: {
+        img: string;
+        title: string;
+        date: string;
+        description: string;
+        video: string;
+        isImg: boolean;
 
-  };
-  smallImages: {
-    img: string;
-    title: string;
-    date: string;
-    description: string;
-    video:string;
+    };
+    smallImages: {
+        img: string;
+        title: string;
+        date: string;
+        description: string;
 
-  }[];
+    }[];
 }
 
 export default function MobileLayout4({ slide }: { slide: Slide }) {
     return (
-        <div className='w-[80%] flex flex-col gap-2'> 
+        <div className='w-[80%] flex flex-col gap-2'>
             <div className="flex gap-2">
                 {/* Large Image */}
                 <div className="h-full w-1/2 bg-black border-2 border-white items-center justify-center overflow-hidden">

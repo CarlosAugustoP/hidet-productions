@@ -8,13 +8,13 @@ interface Slide {
     title: string;
     date: string;
     description: string;
+    video:string;
+    isImg: boolean;
   };
   smallImages: {
     img: string;
     title: string;
     date: string;
-    video:string;
-
   }[];
 }
 

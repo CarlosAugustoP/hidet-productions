@@ -8,7 +8,8 @@ interface Slide {
         title: string;
         date: string;
         description: string;
-        video:string;
+        video: string;
+        isImg: boolean;
 
     };
     smallImages: {
@@ -16,7 +17,6 @@ interface Slide {
         title: string;
         date: string;
         description: string;
-        video:string;
 
     }[];
 }

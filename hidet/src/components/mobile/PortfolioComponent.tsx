@@ -6,19 +6,21 @@ import MobileLayout5 from "./MobileLayout5";
 import { useState, useEffect } from 'react';
 
 interface Slide {
-    largeImage: {
-      img: string;
-      title: string;
-      date: string;
-      description: string;
-    };
-    smallImages: {
-      img: string;
-      title: string;
-      date: string;
-      description: string;
-    }[];
-  }
+  largeImage: {
+    img: string;
+    title: string;
+    date: string;
+    description: string;
+    video: string;
+    isImg: boolean;
+  };
+  smallImages: {
+    img: string;
+    title: string;
+    date: string;
+    description: string;
+  }[];
+}
 
 export default function PortfolioComponent() {
   const [slides, setSlides] = useState<Slide[]>([]);

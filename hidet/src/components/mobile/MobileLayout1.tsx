@@ -13,6 +13,8 @@ interface Slide {
     img: string;
     title: string;
     date: string;
+    video:string;
+
   }[];
 }
 

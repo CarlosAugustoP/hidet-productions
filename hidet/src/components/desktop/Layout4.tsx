@@ -19,7 +19,7 @@ interface Slide {
 
 const Layout3 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[500px]  xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 flex gap-2'>
+        <div className='2xl:h-[500px]  xl:h-[400px]  md:h-[350px] w-5/6 flex gap-2'>
             <div className='flex flex-col w-1/2 h-full justify-between'
             >
                 <div className="h-[49%] bg-black items-center justify-center">

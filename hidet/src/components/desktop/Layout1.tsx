@@ -18,8 +18,8 @@ interface Slide {
 
 const Layout1 = ({ slide }: { slide: Slide }) => {
     return (
-        <div className='2xl:h-[500px] xl:h-[500px] lg:h-[400px] md:h-[350px] w-5/6 overflow-hidden'> {/* Ensure overflow is hidden */}
-            <div className="h-full w-full bg-black border-2 border-white items-center justify-center overflow-hidden"> {/* Ensure overflow is hidden */}
+        <div className='2xl:h-[500px] xl:h-[450px] lg:h-[400px] md:h-[350px] w-5/6 overflow-hidden'> 
+            <div className="h-full w-full bg-black border-2 border-white items-center justify-center overflow-hidden"> 
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
                         <Image

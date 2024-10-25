@@ -52,27 +52,23 @@ const Carousel = () => {
   let endDotIndex = slides.length - 1;
 
   if (slides.length <= maxVisibleDots) {
-    // Show all dots
     startDotIndex = 0;
     endDotIndex = slides.length - 1;
   } else {
     if (currentIndex <= half) {
-      // Near the beginning
       startDotIndex = 0;
       endDotIndex = maxVisibleDots - 1;
     } else if (currentIndex >= slides.length - half - 1) {
-      // Near the end
       startDotIndex = slides.length - maxVisibleDots;
       endDotIndex = slides.length - 1;
     } else {
-      // Middle
       startDotIndex = currentIndex - half;
       endDotIndex = currentIndex + half;
     }
   }
   return (
     <div className='flex flex-col items-center justify-center'>
-    <div className="relative overflow-hidden flex justify-center items-center w-5/6 2xl:h-[500px] xl:h-[500px] lg:h-[400px] md:h-[350px] mx-auto mt-24">
+    <div className="relative overflow-hidden flex justify-center items-center w-5/6 2xl:h-[500px] xl:h-[400px] md:h-[350px] mx-auto mt-24">
       <div
         className="flex transition-transform duration-700 ease-in-out w-full h-full"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}

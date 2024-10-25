@@ -4,11 +4,11 @@ import '../../app/globals.css';
 import MobileHeader from '../mobile/Header';
 import slidesMock from '../../mock/slides';
 import HomeMadeCarousel from './HomeMadeCarousel';
-
+import MobilePortfolioComponent from '../mobile/PortfolioComponent';
 export default function PortfolioComponent() {
-    const [isMobile, setIsMobile] = useState(false); // State to track if screen is mobile
+    const [isMobile, setIsMobile] = useState(false); 
     const [slides, setSlides] = useState(slidesMock);
-    const [viewportHeight, setViewportHeight] = useState('h-screen'); // State for dynamically setting height class
+    const [viewportHeight, setViewportHeight] = useState('h-screen'); 
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -24,7 +24,6 @@ export default function PortfolioComponent() {
         setCurrentIndex(newIndex);
     };
 
-    // Adjust height based on the window height
     useEffect(() => {
         const handleResize = () => {
             if (typeof window !== 'undefined') {
@@ -43,14 +42,12 @@ export default function PortfolioComponent() {
             }
         };
 
-        // Initial check
         handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Detect mobile view
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 820) {
@@ -60,35 +57,23 @@ export default function PortfolioComponent() {
             }
         };
 
-        // Initial check and adding event listener for resizing
         handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Render for mobile view
     if (isMobile) {
         return (
             <div className='w-full flex flex-col items-center'>
-                <MobileHeader />
-                <div className='w-4/5 flex flex-col gap-4 mt-4'>
-                    {slides.map((slide, index) => (
-                        <div key={index} className='flex flex-col'>
-                            <div className='bg-gray-300 w-full h-24 rounded-md mb-4'></div>
-                            <div className='grid grid-cols-2 gap-2'>
-                                {slide.smallImages.map((image, idx) => (
-                                    <div key={idx} className='bg-gray-300 w-full h-24 rounded-md'></div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                <div className='mt-6'>
+                    <MobileHeader />
                 </div>
+                <MobilePortfolioComponent />
             </div>
         );
     }
 
-    // Render for desktop view
     return (
         <div className={`relative ${viewportHeight}`}>
             <div className="w-2/3 flex flex-col justify-between p-12 absolute">

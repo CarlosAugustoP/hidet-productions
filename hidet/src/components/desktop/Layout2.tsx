@@ -16,6 +16,8 @@ interface Slide {
         title: string;
         date: string;
         description: string;
+        video: string;
+        isImg: boolean;
     }[];
 }
 
@@ -75,13 +77,11 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                     </DialogContent>
                 </Dialog>
             </div>
-
-            {/* Same for the second image */}
             <div className="h-full w-1/2 bg-black items-center justify-center overflow-hidden relative">
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
                         <div className="w-full h-full overflow-hidden border-2 border-white">
-                            <Image
+                            {slide.smallImages[0].isImg ? <Image
                                 src={slide.smallImages[0].img}
                                 alt='Slide Large'
                                 quality={80}
@@ -89,7 +89,14 @@ const Layout2 = ({ slide }: { slide: Slide }) => {
                                 height={1080}
                                 className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                 loading='lazy'
-                            />
+                            /> : <iframe
+                                className="h-full w-full object-cover bg-black"
+                                src={slide.smallImages[0].video.split('?')[0]}
+                                frameBorder="0"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowFullScreen
+                                title={slide.smallImages[0].title}
+                            ></iframe>}
                         </div>
                     </DialogTrigger>
                     <DialogContent className='text-white bg-black'>

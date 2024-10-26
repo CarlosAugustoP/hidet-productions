@@ -17,7 +17,8 @@ interface Slide {
         title: string;
         date: string;
         description: string;
-
+        video: string;
+        isImg: boolean;
     }[];
 }
 
@@ -27,8 +28,8 @@ export default function MobileLayout3({ slide }: { slide: Slide }) {
             <div className="w-full bg-black border-2 border-white overflow-hidden">
                 <Dialog>
                     <DialogTrigger className='w-full h-full'>
-                    {slide.largeImage.isImg ?
-                                <Image
+                        {slide.largeImage.isImg ?
+                            <Image
                                 src={slide.largeImage.img}
                                 alt='Slide Large'
                                 quality={80}
@@ -36,7 +37,7 @@ export default function MobileLayout3({ slide }: { slide: Slide }) {
                                 height={1080}
                                 className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                 loading='lazy'
-                            /> : 
+                            /> :
                             <iframe
                                 className="h-full w-full object-cover bg-black"
                                 src={slide.largeImage.video.split('?')[0]}
@@ -74,15 +75,24 @@ export default function MobileLayout3({ slide }: { slide: Slide }) {
                 <div className="h-full w-1/2 bg-black border-2 border-white items-center justify-center overflow-hidden">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                            <Image
-                                src={slide.smallImages[0].img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                                loading='lazy'
-                            />
+                            {slide.smallImages[0].isImg ?
+                                <Image
+                                    src={slide.smallImages[0].img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                /> :
+                                <iframe
+                                    className="w-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer max-h-[50vh]"
+                                    src={slide.smallImages[0].video.split('?')[0]}
+                                    frameBorder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                    title={slide.smallImages[0].title}
+                                ></iframe>}
                         </DialogTrigger>
                         <DialogContent className='text-white bg-black'>
                             <DialogHeader>
@@ -111,15 +121,24 @@ export default function MobileLayout3({ slide }: { slide: Slide }) {
                 <div className="h-full w-1/2 bg-black border-2 border-white items-center justify-center overflow-hidden">
                     <Dialog>
                         <DialogTrigger className='w-full h-full'>
-                            <Image
-                                src={slide.smallImages[1].img}
-                                alt='Slide Large'
-                                quality={80}
-                                width={1920}
-                                height={1080}
-                                className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
-                                loading='lazy'
-                            />
+                        {slide.smallImages[1].isImg ?
+                                <Image
+                                    src={slide.smallImages[1].img}
+                                    alt='Slide Large'
+                                    quality={80}
+                                    width={1920}
+                                    height={1080}
+                                    className='w-full max-h-[50vh] object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
+                                    loading='lazy'
+                                /> :
+                                <iframe
+                                    className="w-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer max-h-[50vh]"
+                                    src={slide.smallImages[1].video.split('?')[0]}
+                                    frameBorder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                    title={slide.smallImages[1].title}
+                                ></iframe>}
                         </DialogTrigger>
                         <DialogContent className='text-white bg-black'>
                             <DialogHeader>

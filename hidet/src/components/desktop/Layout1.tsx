@@ -19,20 +19,14 @@ interface Slide {
         img: string;
         title: string;
         date: string;
+        video: string;
+        isImg: boolean
         
     }[];
 }
 
 const Layout1 = ({ slide }: { slide: Slide }) => {
     console.log(slide); 
-    const getVimeoEmbedUrl = (url: string) => {
-        const videoIdMatch = url;
-        if (videoIdMatch) {
-            const videoId = videoIdMatch[1];
-            return `https://player.vimeo.com/video/${videoId}`;
-        }
-        return '';
-    };
 
     return (
         

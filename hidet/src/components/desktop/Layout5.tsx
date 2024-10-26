@@ -16,6 +16,8 @@ interface Slide {
         title: string;
         date: string;
         description: string;
+        video: string;
+        isImg: boolean;
     }[];
 }
 
@@ -78,7 +80,7 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                         <Dialog>
                             <DialogTrigger className='w-full h-full'>
                                 <div className="w-full h-full overflow-hidden border-2 border-white">
-                                    <Image
+                                    {slide.smallImages[0].isImg ? <Image
                                         src={slide.smallImages[0].img}
                                         alt='Slide Large'
                                         quality={80}
@@ -86,7 +88,14 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                                         height={1080}
                                         className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                         loading='lazy'
-                                    />
+                                    /> : <iframe
+                                        className="h-full w-full object-cover bg-black"
+                                        src={slide.smallImages[0].video.split('?')[0]}
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                        title={slide.smallImages[0].title}
+                                    ></iframe>}
                                 </div>
                             </DialogTrigger>
                             <DialogContent className=' text-white bg-black'>
@@ -117,7 +126,7 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                         <Dialog>
                             <DialogTrigger className='w-full h-full'>
                                 <div className="w-full h-full overflow-hidden border-2 border-white">
-                                    <Image
+                                    {slide.smallImages[1].isImg ? <Image
                                         src={slide.smallImages[1].img}
                                         alt='Slide Large'
                                         quality={80}
@@ -125,8 +134,14 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                                         height={1080}
                                         className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                         loading='lazy'
-                                    />
-                                </div>
+                                    /> : <iframe
+                                        className="h-full w-full object-cover bg-black"
+                                        src={slide.smallImages[1].video.split('?')[0]}
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                        title={slide.smallImages[1].title}
+                                    ></iframe>}                                </div>
                             </DialogTrigger>
                             <DialogContent className=' text-white bg-black'>
                                 <DialogHeader>
@@ -158,7 +173,7 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                         <Dialog>
                             <DialogTrigger className='w-full h-full'>
                                 <div className="w-full h-full overflow-hidden border-2 border-white">
-                                    <Image
+                                    {slide.smallImages[2].isImg ? <Image
                                         src={slide.smallImages[2].img}
                                         alt='Slide Large'
                                         quality={80}
@@ -166,7 +181,14 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                                         height={1080}
                                         className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                         loading='lazy'
-                                    />
+                                    /> : <iframe
+                                        className="h-full w-full object-cover bg-black"
+                                        src={slide.smallImages[2].video.split('?')[0]}
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture"
+                                        allowFullScreen
+                                        title={slide.smallImages[2].title}
+                                    ></iframe>}
                                 </div>
                             </DialogTrigger>
                             <DialogContent className=' text-white bg-black'>
@@ -198,7 +220,7 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                             <DialogTrigger className='w-full h-full'>
                                 <DialogTrigger className='w-full h-full'>
                                     <div className="w-full h-full overflow-hidden border-2 border-white">
-                                        <Image
+                                        {slide.smallImages[3].isImg ? <Image
                                             src={slide.smallImages[3].img}
                                             alt='Slide Large'
                                             quality={80}
@@ -206,7 +228,14 @@ const Layout5 = ({ slide }: { slide: Slide }) => {
                                             height={1080}
                                             className='w-full h-full object-contain transition-transform duration-200 hover:scale-110 cursor-pointer'
                                             loading='lazy'
-                                        />
+                                        /> : <iframe
+                                            className="h-full w-full object-cover bg-black"
+                                            src={slide.smallImages[3].video.split('?')[0]}
+                                            frameBorder="0"
+                                            allow="autoplay; fullscreen; picture-in-picture"
+                                            allowFullScreen
+                                            title={slide.smallImages[3].title}
+                                        ></iframe>}
                                     </div>
                                 </DialogTrigger>
 

@@ -19,6 +19,8 @@ interface Slide {
     title: string;
     date: string;
     description: string;
+    video: string;
+    isImg: boolean;
   }[];
 }
 

@@ -185,7 +185,7 @@ export default function Slides() {
                     <p>Ordem de apresentação: {slide.order}</p>
                     <p>Identificação: {slide.id}</p>
                     {slidesPosts[slide.id] ? (
-                        <div className="flex items-center gap-6 justify-start border-2 border-gray-400 w-full overflow-x-auto rounded-lg">
+                        <div className="flex items-center gap-6 justify-start border-2 border-gray-200 w-full overflow-x-auto rounded-lg">
                             {slidesPosts[slide.id].map((post) => (
                                 <div key={post.id} className="post">
                                     {post.isImg ? <img className='h-36 object-cover bg-black' src={post.img}></img> : (

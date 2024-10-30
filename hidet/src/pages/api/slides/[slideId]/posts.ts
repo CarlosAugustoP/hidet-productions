@@ -20,6 +20,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return;
             }
 
+            const slide : any = await db.slide.findUnique({
+                where: {
+                    id: parseInt(slideId as string, 10)
+                },
+                include: {
+                    posts: true, 
+                },
+            });
+
+            if (slide.posts.length >= 5) {
+                return res.status(400).json({ error: 'This slide already has the maximum of 5 images' });
+            }
+
             const updatedSlide = await db.slide.update({
                 where: {
                     id: parseInt(slideId as string, 10)

@@ -143,7 +143,7 @@ export default function Posts({ slideId }: PostsProps) {
                 } else if (addingPostResponse.status === 401 || response.status === 401) {
                     setErrorMessage('Chave de segurança inválida');
                 } else {
-                    setErrorMessage('Erro ao criar post');
+                    setErrorMessage('O slide possui o valor máximo de 5 posts.');
                 }
             } else if (responseFirebase.status === 401) {
                 setErrorMessage('Chave de segurança inválida');

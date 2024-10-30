@@ -2,14 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
+html, body {
+  height: 100%;
+  background: linear-gradient(45deg, #33158C, #0B0B0B, #410758);
+  font-family: 'Anek Tamil', sans-serif;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
-  background: linear-gradient(45deg,#33158C ,#0B0B0B,#410758 );
-  font-family: 'Anek Tamil', sans-serif;
-  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .small-ticker-wrapper {
@@ -79,3 +81,15 @@ body {
   }
 }
 
+.loader {
+  border-top-color: white;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

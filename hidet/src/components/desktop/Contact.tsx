@@ -56,12 +56,12 @@ export default function Contact() {
   return (
     <>
       <div className='h-auto py-24 w-full flex items-center justify-center bg-black border-t-2 border-b-2 border-white mt-10 mb-10' id="contact">
-        <div className='w-2/3 h-full flex items-center gap-10 '>
+        <div className='w-3/5 h-full flex items-center gap-10 '>
           <div className='flex flex-col w-1/2 h-full justify-center'>
             <StyledContainer width='100%'>
               <InsideContainer>
                 <div className='w-full p-10 h-full'>
-                  <h1 className='2xl:text-6xl xl:text-5xl lg:text-4xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
+                  <h1 className='2xl:text-5xl xl:text-4xl lg:text-3xl md:text-3xl text-white h-full w-1/2 md:w-2/3'>
                     Preencha o formulário e solicite agora seu orçamento!
                   </h1>
                 </div>

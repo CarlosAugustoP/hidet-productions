@@ -55,7 +55,15 @@ interface TickerProps {
       '/img/logo/vitor_andrade.png', 
       '/img/logo/premia_pao.png',
       '/img/logo/odontomedica.png',
-
+      '/img/logo/grao_natural_logo.png',
+      '/img/logo/hope_logo.png',
+      '/img/logo/uninassau.png',
+      '/img/logo/player_franchising.png',
+      '/img/logo/maida-health-logo.png',
+      '/img/logo/nissan_auto.png',
+      '/img/logo/loja_do_condominio.png',
+      '/img/logo/odontomedica.png',
+      '/img/logo/kero_coco_logo.png'
     ];
   
     return (

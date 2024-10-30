@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
 html, body {
-  height: 100%;
   background: linear-gradient(45deg, #33158C, #0B0B0B, #410758);
   font-family: 'Anek Tamil', sans-serif;
   overflow-x: hidden;

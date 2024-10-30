@@ -52,7 +52,16 @@ const Companies: React.FC = () => {
     { src: '/img/logo/portu.png', name: 'Portu' },
     { src: '/img/logo/vitor_andrade.png', name: 'Vitor Andrade Imobiliária' },
     { src: '/img/logo/premia_pao.png', name: 'Premia Pão' },
+    { src: '/img/logo/grao_natural_logo.png', name: 'Grão Natural' },
+    { src: '/img/logo/hope_logo.png', name: 'HOPE: Hospital de Olhos PE' },
+    { src: '/img/logo/uninassau.png', name: 'UNINASSAU' },
+    { src: '/img/logo/player_franchising.png', name: 'Odontomédica caruaru' },
+    { src: '/img/logo/maida-health-logo.png', name: 'Maida Health' },
+    { src: '/img/logo/nissan_auto.png', name: 'Nissan Auto Oriente' },
+    { src: '/img/logo/loja_do_condominio.png', name: 'Nissan Auto Oriente' },
     { src: '/img/logo/odontomedica.png', name: 'Odontomédica pesqueira' },
+    { src: '/img/logo/kero_coco_logo.png', name: 'Kero Coco' }
+
   ];
 
   return (

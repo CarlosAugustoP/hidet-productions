@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../app/globals.css';
 import { StyledContainer, InsideContainer } from './WhyChoose';
 import { useToast } from '@/hooks/use-toast';
-import { Toaster } from '@/components/ui/toaster';   // Importing the Toaster component
+import { Toaster } from '@/components/ui/toaster';
 
-const handleSubmit = async (event: any, toast: any) => {
+const handleSubmit = async (event: any, toast: any, setLoading: (isLoading: boolean) => void) => {
   event.preventDefault();
+  setLoading(true); // Start the loading spinner
 
   const data = new FormData(event.target);
   const formData = {
     subject: `Message from ${data.get('name')}`,
     text: data.get('message'),
+    contact: data.get('email'), // Including the email field
   };
 
   try {
@@ -38,15 +40,18 @@ const handleSubmit = async (event: any, toast: any) => {
     }
   } catch (error) {
     toast({
-      title: "Error",
-      description: "Something went wrong.",
+      title: "Erro!",
+      description: "Algo deu errado.",
       variant: "destructive",
     });
+  } finally {
+    setLoading(false); // Stop the loading spinner, no matter what
   }
 };
 
 export default function MobileContact() {
-  const { toast } = useToast(); // Using the toast hook from shadcn
+  const { toast } = useToast();
+  const [isLoading, setLoading] = useState(false); // State for controlling the loading spinner
 
   return (
     <>
@@ -57,7 +62,7 @@ export default function MobileContact() {
             <h1 className='text-white text-4xl font-semibold leading-normal'>
               Contato
             </h1>
-            <form onSubmit={(event) => handleSubmit(event, toast)}>
+            <form onSubmit={(event) => handleSubmit(event, toast, setLoading)}>
               <label htmlFor="name" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700">
                 Nome
               </label>
@@ -65,6 +70,18 @@ export default function MobileContact() {
                 <input
                   id="name"
                   name="name"
+                  className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
+                />
+              </div>
+
+              <label htmlFor="email" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700 mt-4">
+                Email
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
                   className="shadow-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md h-8"
                 />
               </div>
@@ -81,8 +98,16 @@ export default function MobileContact() {
                 />
               </div>
 
-              <button type="submit" className="mt-5 mb-10 sm:text-md md:text-lg lg:text-xl xl:text:2xl text-white bg-gray-600 w-full sm:text-sm rounded-md h-8">
-                Enviar
+              <button 
+                type="submit" 
+                className="mt-5 mb-10 sm:text-md md:text-lg lg:text-xl xl:text:2xl text-white bg-gray-600 w-full sm:text-sm rounded-md h-8 flex items-center justify-center"
+                disabled={isLoading} // Disable the button while loading
+              >
+                {isLoading ? (
+                  <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-5 h-5"></span>
+                ) : (
+                  "Enviar"
+                )}
               </button>
             </form>
             <div className='flex items-start mb-5 space-x-4'>

@@ -37,8 +37,8 @@ body {
   align-items: center;
   justify-content: center;
   width: max-content; 
-  animation: ticker 15s linear infinite;
-  gap: 12px;
+  animation: ticker 25s linear infinite;
+  gap: 15px;
 }
 
 .ticker-content > div {
@@ -58,14 +58,14 @@ body {
 
 .white-logo img {
   filter: brightness(0) invert(1); 
-  max-width: 100px;
-  max-height: 50px;
+  max-width: 150px;
+  max-height: 80px;
 }
 
 .small-white-logo img {
   filter: brightness(0) invert(1); 
-  max-width: 70px;
-  max-height: 35px;
+  max-width: 75px;
+  max-height: 40px;
 }
 
 .fade-in {
@@ -78,3 +78,4 @@ body {
     opacity: 1;
   }
 }
+

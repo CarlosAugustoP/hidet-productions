@@ -49,10 +49,10 @@ const Carousel = () => {
       );
 
       setSlides(updatedSlides);
-      setIsLoading(false); // Data is loaded, set isLoading to false
+      setIsLoading(false); 
     } catch (error) {
       console.error('Failed to fetch slides', error);
-      setIsLoading(false); // In case of error, also stop loading
+      setIsLoading(false); 
     }
   }
 
@@ -92,9 +92,7 @@ const Carousel = () => {
   if (isLoading) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
-        <div className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-gray-800'>
-          <span className='sr-only'>Loading...</span>
-        </div>
+         <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7  h-7"></span>
       </div>
     );
   }

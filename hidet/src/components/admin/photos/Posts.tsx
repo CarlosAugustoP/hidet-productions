@@ -107,7 +107,7 @@ export default function Posts({ slideId }: PostsProps) {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ title, img: downloadURL, description, password })
+                    body: JSON.stringify({ title, img: downloadURL, description, password, slideId })
                 });
     
                 const data = await addingPostResponse.json(); 
@@ -168,7 +168,7 @@ export default function Posts({ slideId }: PostsProps) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ title, video, description, password, isImg: false })
+                body: JSON.stringify({ title, video, description, password, isImg: false, slideId })
             });
 
             const data = await addingPostResponse.json();

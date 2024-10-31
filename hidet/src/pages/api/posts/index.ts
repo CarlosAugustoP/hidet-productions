@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             try {
                 const posts = await db.post.findMany({
-                    orderBy: {postedAt: 'desc'},
+                    orderBy: { postedAt: 'desc' },
                 });
                 res.status(200).json(posts);
             } catch (error) {
@@ -24,16 +24,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     res.status(401).json({ error: 'Invalid key' });
                     return;
                 }
-                
+
+                let maxOrder: any;
+
+                const { title, img, description, video, isImg, order, slideId } = req.body;
+
+                // Verifica se o slideId foi passado
+                if (!slideId) {
+                    res.status(400).json({ error: 'Slide ID is required' });
+                    return;
+                }
+
+                // Obtém a próxima ordem disponível no slide, caso a ordem não seja passada
+                let postOrder = order;
+                if (!postOrder) {
+                    maxOrder = await db.post.findFirst({
+                        where: { slideId },
+                        orderBy: { order: 'desc' },
+                    });
+                    postOrder = (maxOrder?.order ?? 0) + 1;
+                } else {
+                    // Verifica se já existe um post com a mesma ordem no slide
+                    const conflictingPost = await db.post.findFirst({
+                        where: {
+                            slideId,
+                            order: postOrder,
+                        },
+                    });
+
+                    // Se houver conflito, atualiza a ordem do post existente
+                    if (conflictingPost) {
+                        await db.post.update({
+                            where: { id: conflictingPost.id },
+                            data: { order: (maxOrder?.order ?? 0) + 1 },
+                        });
+                    }
+                }
+
+                // Cria o novo post com a ordem ajustada
                 const newPost = await db.post.create({
                     data: {
-                        title: req.body.title,
-                        img: req.body.img || null,
-                        description: req.body.description || null,
-                        video: req.body.video || null,
-                        isImg: req.body.isImg !== undefined ? req.body.isImg : true
+                        title,
+                        img: img || null,
+                        description: description || null,
+                        video: video || null,
+                        isImg: isImg !== undefined ? isImg : true,
+                        order: postOrder,
+                        slideId,
                     },
                 });
+
                 res.status(201).json(newPost);
             } catch (error) {
                 console.error('Error creating post:', error);

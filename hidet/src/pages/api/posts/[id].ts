@@ -20,30 +20,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             break;
 
-            case 'PUT': {
-                const { title, img, description, password } = req.body;
-          
-                // Password validation
-                if (password !== process.env.API_KEY) {
-                  return res.status(403).json({ error: 'Chave de segurança inválida.' });
+        case 'PUT': {
+            const { title, img, description, password, order } = req.body;
+
+            if (password !== process.env.API_KEY) {
+                return res.status(403).json({ error: 'Chave de segurança inválida.' });
+            }
+
+            const dataToUpdate: any = {};
+            if (title !== undefined) dataToUpdate.title = title;
+            if (img !== undefined) dataToUpdate.img = img;
+            if (description !== undefined) dataToUpdate.description = description;
+
+            try {
+                // Busca o post atual para pegar seu slideId e ordem
+                const currentPost = await db.post.findUnique({ where: { id: String(id) } });
+
+                // Verifica se uma nova ordem foi passada e se é diferente da ordem atual
+                if (order !== undefined && currentPost && currentPost.order !== order) {
+                    // Verifica se já existe um post com a nova ordem no mesmo slide
+                    const conflictingPost = await db.post.findFirst({
+                        where: {
+                            slideId: currentPost.slideId,
+                            order,
+                        },
+                    });
+
+                    // Se houver conflito, troca as ordens
+                    if (conflictingPost) {
+                        await db.post.update({
+                            where: { id: conflictingPost.id },
+                            data: { order: currentPost.order },
+                        });
+                    }
+
+                    // Define a nova ordem para o post atual
+                    dataToUpdate.order = order;
                 }
-          
-                const dataToUpdate: any = {};
-                if (title !== undefined) dataToUpdate.title = title;
-                if (img !== undefined) dataToUpdate.img = img;
-                if (description !== undefined) dataToUpdate.description = description;
-          
-                try {
-                  const updatedPost = await db.post.update({
+
+                // Atualiza o post com os dados ajustados
+                const updatedPost = await db.post.update({
                     where: { id: String(id) },
                     data: dataToUpdate,
-                  });
-                  return res.status(200).json(updatedPost);
-                } catch (error) {
-                  console.error('Error updating post:', error);
-                  return res.status(500).json({ error: 'Error updating post' });
-                }
-              }
+                });
+
+                return res.status(200).json(updatedPost);
+            } catch (error) {
+                console.error('Error updating post:', error);
+                return res.status(500).json({ error: 'Error updating post' });
+            }
+        }
+
 
         case 'DELETE':
             const password = JSON.parse(req.body).password;

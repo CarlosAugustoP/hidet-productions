@@ -26,6 +26,7 @@ interface Slide {
 
 export default function PortfolioComponent() {
   const [slides, setSlides] = useState<Slide[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchSlides() {
     try {
@@ -37,7 +38,7 @@ export default function PortfolioComponent() {
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
-
+          slideData.sort((a: {order: number}, b: {order: number}) => a.order - b.order);
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
@@ -46,6 +47,7 @@ export default function PortfolioComponent() {
       );
 
       setSlides(updatedSlides);
+      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch slides', error);
     }
@@ -54,6 +56,14 @@ export default function PortfolioComponent() {
   useEffect(() => {
     fetchSlides();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+         <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7  h-7"></span>
+      </div>
+    );
+  }
 
   return (
     <div className='w-full min-h-screen flex justify-center'>

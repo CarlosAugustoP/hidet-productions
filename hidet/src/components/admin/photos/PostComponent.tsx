@@ -51,6 +51,7 @@ export default function PostComponent({
     title: title || "",
     description: description || "",
     password: "",
+    order: 0
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
@@ -82,9 +83,10 @@ export default function PostComponent({
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: name === "order" ? parseInt(value, 10) : value,
     }));
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,6 +233,14 @@ export default function PostComponent({
                     name="title"
                     placeholder="Título"
                     value={formData.title}
+                    onChange={handleChange}
+                    className="w-full p-2 mb-4 rounded bg-gray-800 text-white"
+                  />
+                  <input
+                    type="number"
+                    name="order"
+                    placeholder="Ordem"
+                    value={formData.order}
                     onChange={handleChange}
                     className="w-full p-2 mb-4 rounded bg-gray-800 text-white"
                   />

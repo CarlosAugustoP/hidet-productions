@@ -28,7 +28,7 @@ interface Slide {
 const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slides, setSlides] = useState<Slide[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchSlides() {
     try {
@@ -40,6 +40,7 @@ const Carousel = () => {
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
+          slideData.sort((a: {order: number}, b: {order:number}) => a.order - b.order)
           console.log(`slide Data: ${slide.id}`, slideData);
           return {
             largeImage: slideData[0],
@@ -68,7 +69,7 @@ const Carousel = () => {
     setCurrentIndex((currentIndex - 1 + slides.length) % slides.length);
   };
 
-  const maxVisibleDots = 5; // Must be an odd number to center the current dot
+  const maxVisibleDots = 5;
   const half = Math.floor(maxVisibleDots / 2);
   let startDotIndex = 0;
   let endDotIndex = slides.length - 1;

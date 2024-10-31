@@ -29,6 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 },
             });
 
+            console.log(`Slide length: ${slide.posts.length}`);
+
             if (slide.posts.length >= 5) {
                 return res.status(400).json({ error: 'This slide already has the maximum of 5 images' });
             }

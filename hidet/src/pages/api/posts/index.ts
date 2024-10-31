@@ -69,8 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         description: description || null,
                         video: video || null,
                         isImg: isImg !== undefined ? isImg : true,
-                        order: postOrder,
-                        slideId,
+                        order: postOrder
                     },
                 });
 

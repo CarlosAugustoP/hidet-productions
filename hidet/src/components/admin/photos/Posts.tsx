@@ -37,6 +37,8 @@ export default function Posts({ slideId }: PostsProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [videoLink, setVideoLink] = useState('');
     const [isImg, setIsImg] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
@@ -50,20 +52,20 @@ export default function Posts({ slideId }: PostsProps) {
     }, [slideId]);
 
     const isValidVideoLink = (link: string) => {
-        const urlPattern = /^(https?:\/\/)?(www\.)?(vimeo\.com\/|youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)$/;
+        const urlPattern = /^(https?:\/\/)?(www\.)?(player\.)?vimeo\.com\/(video\/)?(\d+)$/;
         return urlPattern.test(link);
-    };
-    
+    };    
+
     const handleVideoLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const link = e.target.value;
         setVideoLink(link);
-        setErrorMessage(""); // Limpa mensagem de erro
-    
+
         if (!isValidVideoLink(link) && link !== "") {
             setErrorMessage("Insira um link válido do Vimeo");
+        } else {
+            setErrorMessage("");
         }
     };
-    
 
     const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -93,15 +95,15 @@ export default function Posts({ slideId }: PostsProps) {
             const formData = new FormData();
             formData.append('file', imgFile);
             formData.append('password', password);
-    
+
             const responseFirebase = await fetch('/api/firebase/upload', {
                 method: 'POST',
                 body: formData,
             });
-    
+
             if (responseFirebase.ok) {
                 const { downloadURL } = await responseFirebase.json();
-    
+
                 const addingPostResponse = await fetch(`/api/posts`, {
                     method: 'POST',
                     headers: {
@@ -109,11 +111,10 @@ export default function Posts({ slideId }: PostsProps) {
                     },
                     body: JSON.stringify({ title, img: downloadURL, description, password, slideId })
                 });
-    
-                const data = await addingPostResponse.json(); 
+
+                const data = await addingPostResponse.json();
                 const postId = data.id;
-                console.log(postId);
-    
+
                 const response = await fetch(`/api/slides/${slideId}/posts/`, {
                     method: 'POST',
                     headers: {
@@ -121,7 +122,7 @@ export default function Posts({ slideId }: PostsProps) {
                     },
                     body: JSON.stringify({ postId, password })
                 });
-    
+
                 if (addingPostResponse.ok && response.ok) {
                     toast({
                         title: "Sucesso! ✓",
@@ -131,7 +132,7 @@ export default function Posts({ slideId }: PostsProps) {
                     setIsDialogOpen(false);
                     setPosts(prevPosts => [
                         {
-                            id: data.id, 
+                            id: data.id,
                             title,
                             img: downloadURL,
                             description,
@@ -143,6 +144,10 @@ export default function Posts({ slideId }: PostsProps) {
                 } else if (addingPostResponse.status === 401 || response.status === 401) {
                     setErrorMessage('Chave de segurança inválida');
                 } else {
+                    const res = await fetch(`/api/posts/${postId}`, {
+                        method: 'DELETE',
+                        body: JSON.stringify({ password })
+                    });
                     setErrorMessage('O slide possui o valor máximo de 5 posts.');
                 }
             } else if (responseFirebase.status === 401) {
@@ -153,10 +158,13 @@ export default function Posts({ slideId }: PostsProps) {
         } catch (error) {
             console.error('Erro ao criar post:', error);
             setErrorMessage('Erro ao criar post');
+        } finally {
+            setIsLoading(false);
         }
     }
 
     async function addNewVideo(title: string, video: string, description: string) {
+        setIsLoading(true);
         try {
             if (!video) {
                 alert("Por favor, insira o link de um vídeo.");
@@ -173,7 +181,7 @@ export default function Posts({ slideId }: PostsProps) {
 
             const data = await addingPostResponse.json();
 
-            if (addingPostResponse.ok){
+            if (addingPostResponse.ok) {
                 try {
                     const postId = data.id;
                     const bindingPostResponse = await fetch(`/api/slides/${slideId}/posts/`, {
@@ -181,9 +189,9 @@ export default function Posts({ slideId }: PostsProps) {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ postId , password })
+                        body: JSON.stringify({ postId, password })
                     });
-                    if (bindingPostResponse.ok){
+                    if (bindingPostResponse.ok) {
                         toast({
                             title: "Sucesso! ✓",
                             description: "Vídeo adicionado com sucesso!",
@@ -192,7 +200,7 @@ export default function Posts({ slideId }: PostsProps) {
                         setIsDialogOpen(false);
                         setPosts(prevPosts => [
                             {
-                                id: data.id, 
+                                id: data.id,
                                 title,
                                 video,
                                 description,
@@ -203,20 +211,25 @@ export default function Posts({ slideId }: PostsProps) {
 
                         ]);
 
+                    } else {
+                        await fetch(`/api/posts/${postId}`, {
+                            method: 'DELETE',
+                            body: JSON.stringify({ password })
+                        });
+                        setErrorMessage('O slide possui o valor máximo de 5 posts.');
                     }
-                }catch(error){
+                } catch (error) {
                     console.error('Erro ao criar post:', error);
-                    setErrorMessage('Falha em adicionar o video ao slide');        
+                    setErrorMessage('Falha em adicionar o video ao slide');
+                } finally {
+                    setIsLoading(false);
+                }
             }
-            
-        }   
-        }catch(error){
+        } catch (error) {
             console.error('Erro ao criar post:', error);
             setErrorMessage('Erro ao criar post com o video inserido');
-        }     
-
+        }
     }
-
 
     const handlePostUpdate = (updatedPost: Post) => {
         setPosts(prevPosts =>
@@ -229,17 +242,22 @@ export default function Posts({ slideId }: PostsProps) {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="text-4xl text-white bg-black rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
                 <DialogContent className="bg-black p-6 rounded-lg">
+                    {isLoading && (
+                        <div className='flex justify-center items-center min-h-screen'>
+                            <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7  h-7"></span>
+                        </div>
+                    )}
                     <DialogHeader>
                         <DialogTitle className="text-white mb-4">Publique uma nova postagem</DialogTitle>
                         <DialogDescription className="text-white mb-4">Escolha o tipo de conteúdo:</DialogDescription>
                         <div className="flex space-x-4 mb-4">
-                            <button 
+                            <button
                                 onClick={() => setIsImg(true)}
                                 className={`px-4 py-2 rounded ${isImg ? 'bg-blue-500 text-white' : 'bg-gray-500 text-black'}`}
                             >
                                 Imagem
                             </button>
-                            <button 
+                            <button
                                 onClick={() => setIsImg(false)}
                                 className={`px-4 py-2 rounded ${!isImg ? 'bg-blue-500 text-white' : 'bg-gray-500 text-black'}`}
                             >
@@ -298,8 +316,11 @@ export default function Posts({ slideId }: PostsProps) {
                             <DialogClose className="bg-black hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">Cancelar</DialogClose>
                             <button
                                 onClick={() => isImg ? publishPost(title, imgFile, description) : addNewVideo(title, videoLink, description)}
-                                className="bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white"
-                            >Adicionar</button>
+                                className={`bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Adicionando...' : 'Adicionar'}
+                            </button>
                         </div>
                     </DialogHeader>
                 </DialogContent>

@@ -61,6 +61,41 @@ export default function Slides() {
     const [order, setOrder] = useState<number | undefined>(undefined);
     const [slides, setSlides] = useState<Slide[]>([]);
     const [slidesPosts, setSlidesPosts] = useState<{ [key: number]: Post[] }>({});
+    const [embedUrls, setEmbedUrls] = useState<{ [key: number]: string | null }>({});
+
+    const getVideoId = (url: string) => url.match(/(\d+)$/)?.[0] || null;
+
+    useEffect(() => {
+        getAllSlides().then((data) => {
+            setSlides(data);
+            data.forEach((slide: Slide) => {
+                getSlidesPosts(slide.id).then((posts: Post[]) => {
+                    setSlidesPosts((prevPosts) => ({
+                        ...prevPosts,
+                        [slide.id]: posts,
+                    }));
+                    
+                    posts.forEach((post) => {
+                        if (!post.isImg) {
+                            const videoId = getVideoId(post.video);
+                            if (videoId) {
+                                fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`)
+                                    .then((response) => response.json())
+                                    .then((data) => {
+                                        const embedSrc = data.html.match(/src="([^"]+)"/)?.[1] || null;
+                                        setEmbedUrls((prevUrls) => ({
+                                            ...prevUrls,
+                                            [post.id]: embedSrc,
+                                        }));
+                                    })
+                                    .catch((error) => console.error("Failed to fetch Vimeo embed URL:", error));
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    }, []);
 
     async function insertSlide(slide: Omit<Slide, "id">, password: string) {
         const res = await fetch(`/api/slides`, {
@@ -188,15 +223,19 @@ export default function Slides() {
                         <div className="flex items-center gap-6 justify-start border-2 border-gray-200 w-full overflow-x-auto rounded-lg">
                             {slidesPosts[slide.id].map((post) => (
                                 <div key={post.id} className="post">
-                                    {post.isImg ? <img className='h-36 object-cover bg-black' src={post.img}></img> : (
-                                        <iframe
-                                            className="h-36 object-cover bg-black"
-                                            src={post.video.split('?')[0]}
-                                            frameBorder="0"
-                                            allow="autoplay; fullscreen; picture-in-picture"
-                                            allowFullScreen
-                                            title={post.title}
-                                        ></iframe>
+                                   {post.isImg ? (
+                                        <img className="h-36 object-cover bg-black" src={post.img} alt={post.title} />
+                                    ) : (
+                                        embedUrls[post.id] && (
+                                            <iframe
+                                                className="h-36 object-cover bg-black"
+                                                src={embedUrls[post.id] || undefined}
+                                                frameBorder="0"
+                                                allow="autoplay; fullscreen; picture-in-picture"
+                                                allowFullScreen
+                                                title={post.title}
+                                            ></iframe>
+                                        )
                                     )}
                                 </div>
                             ))}

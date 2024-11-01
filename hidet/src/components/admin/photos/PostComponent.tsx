@@ -56,6 +56,7 @@ export default function PostComponent({
   const [errorMessage, setErrorMessage] = useState("");
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [embedUrl, setEmbedUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setFormData((prevData) => ({
@@ -64,6 +65,34 @@ export default function PostComponent({
       description: description || "",
     }));
   }, [title, description]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      title: title || "",
+      description: description || "",
+    }));
+  }, [title, description]);
+
+  useEffect(() => {
+    if (video && !isImg) {
+      const fetchEmbedUrl = async () => {
+        try {
+          const videoId = video.match(/(\d+)$/)?.[0];
+          if (videoId) {
+            const response = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`);
+            const data = await response.json();
+            const embedSrc = data.html.match(/src="([^"]+)"/)?.[1];
+            setEmbedUrl(embedSrc || null);
+          }
+        } catch (error) {
+          console.error("Failed to fetch Vimeo embed URL:", error);
+        }
+      };
+      fetchEmbedUrl();
+    }
+  }, [video, isImg]);
+
 
   async function editPost(formData: any) {
     const res = await fetch(`/api/posts/${id}`, {
@@ -144,14 +173,16 @@ export default function PostComponent({
   return (
     <div className="flex flex-col lg:flex-row gap-5 items-start w-full max-w-4xl bg-white shadow-md rounded-lg p-5 mb-8">
       {isImg ? <img className='h-36 object-cover bg-black' src={img}></img> : (
-        <iframe
-          className="h-36 object-cover bg-black"
-          src={video ? video.split('?')[0] : ""}
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          title={title}
-        ></iframe>
+        embedUrl && (
+          <iframe
+            className="h-36 object-cover bg-black"
+            src={embedUrl}
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            title={title}
+          ></iframe>
+        )
       )}
       <div className="flex flex-col justify-between w-full lg:w-2/3">
         <div>

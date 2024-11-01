@@ -54,7 +54,7 @@ export default function Posts({ slideId }: PostsProps) {
     const isValidVideoLink = (link: string) => {
         const urlPattern = /^(https?:\/\/)?(www\.)?(player\.)?vimeo\.com\/(video\/)?(\d+)$/;
         return urlPattern.test(link);
-    };    
+    };
 
     const handleVideoLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const link = e.target.value;
@@ -88,6 +88,8 @@ export default function Posts({ slideId }: PostsProps) {
 
     async function publishPost(title: string, imgFile: File | null, description: string) {
         try {
+            setIsLoading(true);
+
             if (!imgFile) {
                 alert("Por favor, selecione uma imagem.");
                 return;
@@ -242,11 +244,6 @@ export default function Posts({ slideId }: PostsProps) {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="text-4xl text-white bg-black rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
                 <DialogContent className="bg-black p-6 rounded-lg">
-                    {isLoading && (
-                        <div className='flex justify-center items-center min-h-screen'>
-                            <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7  h-7"></span>
-                        </div>
-                    )}
                     <DialogHeader>
                         <DialogTitle className="text-white mb-4">Publique uma nova postagem</DialogTitle>
                         <DialogDescription className="text-white mb-4">Escolha o tipo de conteúdo:</DialogDescription>
@@ -314,13 +311,19 @@ export default function Posts({ slideId }: PostsProps) {
                         )}
                         <div className="flex justify-center">
                             <DialogClose className="bg-black hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">Cancelar</DialogClose>
-                            <button
-                                onClick={() => isImg ? publishPost(title, imgFile, description) : addNewVideo(title, videoLink, description)}
-                                className={`bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Adicionando...' : 'Adicionar'}
-                            </button>
+                            {isLoading ? (
+                                <div className="flex items-center">
+                                    <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7 h-7"></span>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => isImg ? publishPost(title, imgFile, description) : addNewVideo(title, videoLink, description)}
+                                    className="bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white"
+                                >
+                                    Adicionar
+                                </button>
+                            )}
+
                         </div>
                     </DialogHeader>
                 </DialogContent>

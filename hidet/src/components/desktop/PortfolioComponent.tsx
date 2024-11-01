@@ -6,6 +6,7 @@ import slidesMock from '../../mock/slides';
 import HomeMadeCarousel from './HomeMadeCarousel';
 import MobilePortfolioComponent from '../mobile/PortfolioComponent';
 import Footer from '../mobile/Footer';
+
 export default function PortfolioComponent() {
     const [isMobile, setIsMobile] = useState(false); 
     const [viewportHeight, setViewportHeight] = useState('h-screen'); 

@@ -14,8 +14,6 @@ import { Input } from "@/components/ui/input";
 import Slides from "@/components/admin/slides";
 import Header from "@/components/admin/photos/Header";
 
-
-
 export default function SlidePage (){
     return (
         <>

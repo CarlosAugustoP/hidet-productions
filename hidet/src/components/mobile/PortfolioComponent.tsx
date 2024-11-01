@@ -69,6 +69,9 @@ export default function PortfolioComponent() {
     <div className='w-full min-h-screen flex justify-center'>
       <div className="w-full flex flex-col items-center mt-8 gap-6">
         {slides.map((slide, index) => {
+          if (!slide.largeImage) {
+            return null;
+          }
           if (slide.smallImages.length === 0) {
             return <MobileLayout1 key={index} slide={slide} />;
           } else if (slide.smallImages.length === 1) {
@@ -79,8 +82,6 @@ export default function PortfolioComponent() {
             return <MobileLayout4 key={index} slide={slide} />;
           } else if (slide.smallImages.length === 4) {
             return <MobileLayout5 key={index} slide={slide} />;
-          } else {
-            return null;
           }
         })}
       </div>

@@ -4,8 +4,10 @@ import Layout2 from './Layout2';
 import Layout3 from './Layout3';
 import Layout4 from './Layout4';
 import Layout5 from './Layout5';
+import { title } from 'process';
 
 interface Slide {
+  title: string;
   largeImage: {
       img: string;
       title: string;
@@ -45,6 +47,7 @@ const Carousel = () => {
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
+            title: slideData[0].title
           };
         })
       );
@@ -115,7 +118,7 @@ const Carousel = () => {
                   className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
                   style={{ width: '100%', height: '100%' }}
                 >
-                  <div className="w-full h-full flex items-center justify-center">
+                  <div className="w-full h-full flex flex-col items-center justify-center">
                     <Layout1 key={index} slide={slide} />
                   </div>
                 </div>

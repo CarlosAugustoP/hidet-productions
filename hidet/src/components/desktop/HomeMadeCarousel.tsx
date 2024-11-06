@@ -4,9 +4,8 @@ import Layout2 from './Layout2';
 import Layout3 from './Layout3';
 import Layout4 from './Layout4';
 import Layout5 from './Layout5';
-import { title } from 'process';
 
-interface Slide {
+export interface Slide {
   title: string;
   largeImage: {
       img: string;
@@ -16,7 +15,6 @@ interface Slide {
       video:string;
       isImg: boolean;
   };
-
   smallImages: {
       img: string;
       title: string;
@@ -27,7 +25,11 @@ interface Slide {
   }[];
 }
 
-const Carousel = () => {
+interface CarouselProps {
+  setTitle: (title: string) => void; // Add setTitle prop type
+}
+
+const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slides, setSlides] = useState<Slide[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,8 +44,7 @@ const Carousel = () => {
         data.map(async (slide: { id: number }) => {
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
           const slideData = await slideRes.json();
-          slideData.sort((a: {order: number}, b: {order:number}) => a.order - b.order)
-          console.log(`slide Data: ${slide.id}`, slideData);
+          slideData.sort((a: { order: number }, b: { order: number }) => a.order - b.order);
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
@@ -53,16 +54,23 @@ const Carousel = () => {
       );
 
       setSlides(updatedSlides);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error('Failed to fetch slides', error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
     fetchSlides();
   }, []);
+
+  // Update title when slides or currentIndex changes
+  useEffect(() => {
+    if (slides.length > 0) {
+      setTitle(slides[currentIndex].title);
+    }
+  }, [currentIndex, slides, setTitle]);
 
   const nextSlide = () => {
     setCurrentIndex((currentIndex + 1) % slides.length);

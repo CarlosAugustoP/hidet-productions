@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import '../../app/globals.css';
 import MobileHeader from '../mobile/Header';
-import slidesMock from '../../mock/slides';
 import HomeMadeCarousel from './HomeMadeCarousel';
 import MobilePortfolioComponent from '../mobile/PortfolioComponent';
 import Footer from '../mobile/Footer';
@@ -10,22 +9,21 @@ import Footer from '../mobile/Footer';
 export default function PortfolioComponent() {
     const [isMobile, setIsMobile] = useState(false); 
     const [viewportHeight, setViewportHeight] = useState('h-screen'); 
+    const [title, setTitle] = useState(''); // State for the title
+    const [fade, setFade] = useState(false); // State for triggering fade animation
 
+    // Handle viewport height based on screen size
     useEffect(() => {
         const handleResize = () => {
             if (typeof window !== 'undefined') {
                 const windowHeight = window.innerHeight;
-                if (windowHeight < 270) {
-                    setViewportHeight('h-[230vh]');
-                } else if (windowHeight < 350) {
-                    setViewportHeight('h-[180vh]');
-                } else if (windowHeight < 400) {
-                    setViewportHeight('h-[160vh]');
-                } else if (windowHeight < 500) {
-                    setViewportHeight('h-[140vh]');
-                } else {
-                    setViewportHeight('h-screen');
-                }
+                setViewportHeight(
+                    windowHeight < 270 ? 'h-[230vh]' :
+                    windowHeight < 350 ? 'h-[180vh]' :
+                    windowHeight < 400 ? 'h-[160vh]' :
+                    windowHeight < 500 ? 'h-[140vh]' :
+                    'h-screen'
+                );
             }
         };
 
@@ -35,20 +33,25 @@ export default function PortfolioComponent() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Detect mobile view
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth <= 820) {
-                setIsMobile(true);
-            } else {
-                setIsMobile(false);
-            }
-        };
+        const handleResize = () => setIsMobile(window.innerWidth <= 820);
 
         handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // Trigger fade animation on title change
+    useEffect(() => {
+        if (title) {
+            setFade(true);
+            const timer = setTimeout(() => setFade(false), 1000); // Reset fade after 1s
+
+            return () => clearTimeout(timer); // Cleanup timeout on unmount
+        }
+    }, [title]);
 
     if (isMobile) {
         return (
@@ -66,11 +69,18 @@ export default function PortfolioComponent() {
 
     return (
         <div className={`relative ${viewportHeight}`}>
-            <div className="w-2/3 flex flex-col justify-between p-12 absolute">
-                <Header />
+            <div className='w-full flex justify-between'>
+                <div className="w-full flex items-center justify-between p-12 absolute">
+                    <div className='w-2/3'>
+                        <Header />
+                    </div>
+                    <h1 className={`text-white 2xl:text-4xl xl:text-3xl lg:text-xl relative bottom-1 mr-16 ${fade ? 'fade' : ''}`}>
+                        Trabalho: {title && title}
+                    </h1> 
+                </div>
             </div>
             <div className={`flex items-center justify-center w-full h-full`}>
-                <HomeMadeCarousel />
+                <HomeMadeCarousel setTitle={setTitle} /> 
             </div>
         </div>
     );

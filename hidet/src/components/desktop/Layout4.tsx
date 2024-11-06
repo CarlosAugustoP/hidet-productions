@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from 'next/image';
-
-interface Slide {
-    largeImage: {
-        img: string;
-        title: string;
-        date: string;
-        description: string;
-        video: string;
-        isImg: boolean;
-    };
-    smallImages: {
-        img: string;
-        title: string;
-        date: string;
-        description: string;
-        video: string;
-        isImg: boolean;
-    }[];
-}
+import { Slide } from './HomeMadeCarousel';
 
 const getVideoId = (url: string) => {
     const match = url.match(/(\d+)$/);

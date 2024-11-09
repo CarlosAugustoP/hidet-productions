@@ -108,9 +108,9 @@ export default function MobileWhyChoose() {
                     <InsideContainer2>
                         <div className='w-full h-full p-8 text-white text-xl xs:text-sm xs:p-6 tiny:p-0 flex items-center justify-center font-light'>
                             <ul className='h-5/6 w-5/6 md:w-full flex flex-col justify-between '>
-                                <li>• Alta qualidade audiovisual </li>
-                                <li>• Foco em detalhes invisíveis</li>
-                                <li>• Uso das mais recentes tecnologias</li>
+                                <li>• Mais alta qualidade audiovisual </li>
+                                <li>• Foco em detalhes</li>
+                                <li>• Uso das mais recentes tecnologias (IA)</li>
                                 <li>• Padrão elevado</li>
                             </ul>
                         </div>

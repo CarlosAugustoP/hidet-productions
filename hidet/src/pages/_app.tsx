@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           rel="stylesheet"
         />
       </Head>
-      <div className="debug-screens">
+      <div>
         <Component {...pageProps} />
       </div>
     </>

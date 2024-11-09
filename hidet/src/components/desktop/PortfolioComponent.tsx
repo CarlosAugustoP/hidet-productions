@@ -74,7 +74,7 @@ export default function PortfolioComponent() {
                     <div className='w-2/3'>
                         <Header />
                     </div>
-                    <h1 className={`text-white 2xl:text-4xl xl:text-3xl lg:text-xl relative bottom-1 mr-16 ${fade ? 'fade' : ''}`}>
+                    <h1 className={`text-white font-bold 2xl:text-4xl xl:text-3xl lg:text-xl relative bottom-1 mr-16 ${fade ? 'fade' : ''}`}>
                         Trabalho: {title && title}
                     </h1> 
                 </div>

@@ -27,7 +27,7 @@ export default function Footer() {
                     </a>
                     <u>
                     </u>
-                    <a>
+                    <a href="#start" className="cursor-pointer">
                         <u>
                             Inicio
                         </u>

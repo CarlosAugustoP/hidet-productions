@@ -93,9 +93,9 @@ export default function WhyChoose() {
                     <InsideContainer2>
                         <div className={`w-full h-full ${isHeightExceeded ? 'p-14': '2xl:p-8 xl:p-6 lg:p-6 md:p-6'} text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light`}>
                             <ul className='h-full w-5/6 md:w-full flex flex-col justify-between'>
-                                <li>• Alta qualidade audiovisual </li>
-                                <li>• Foco em detalhes invisíveis</li>
-                                <li>• Uso das mais recentes tecnologias</li>
+                                <li>• Mais alta qualidade audiovisual </li>
+                                <li>• Foco em detalhes</li>
+                                <li>• Uso das mais recentes tecnologias (IA)</li>
                                 <li>• Padrão elevado</li>
                             </ul>
                         </div>
@@ -107,7 +107,7 @@ export default function WhyChoose() {
                     <StyledContainer2 width='40%'>
                         <InsideContainer2 className='justify-center'>
                             <div className='w-4/5 text-center flex flex-col justify-between text-white p-3'>
-                                <p className='2xl:text-3xl xl:text-xl lg:text-lg md:text-sm '>PADRAO</p>
+                                <p className='2xl:text-3xl xl:text-xl lg:text-lg md:text-sm '>PADRÃO</p>
                                 <p className='2xl:text-7xl xl:text-7xl lg:text-4xl md:text-4xl font-extrabold'>4K</p>
                                 <p className='2xl:text-3xl xl:text-xl lg:text-lg md:text-sm '>OU SUPERIOR</p>
                             </div>

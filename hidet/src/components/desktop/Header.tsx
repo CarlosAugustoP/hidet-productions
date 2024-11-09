@@ -32,7 +32,7 @@ export default function Header({ className: className }: HeaderProps) {
   };
 
   return (
-    <div className={`flex flex-col md:flex-row w-full justify-center items-center md:gap-10 gap-4 md:mt-0 mt-6 ${className}`}>
+    <div className={`flex flex-col md:flex-row w-full justify-center items-center md:gap-10 gap-4 md:mt-0 mt-6 ${className}`} id ="start">
       <div className="w-1/4">
         <Image onClick={() => handleNavigation('#hero')} src="/img/logo.png" alt="logo" layout="responsive" width={500} height={500} objectFit="contain" className='cursor-pointer' />
       </div>

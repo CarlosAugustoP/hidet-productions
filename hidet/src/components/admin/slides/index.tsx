@@ -1,454 +1,358 @@
-import React, { useState, useEffect } from "react";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/hooks/use-toast";
-import Router from "next/router";
+import React, { useState, useEffect } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { toast } from "@/hooks/use-toast"
+import { useRouter } from "next/router"
+import { Plus, Edit, Trash2, Eye, X } from "lucide-react"
 
 interface Slide {
-    title: string;
-    id: number;
-    order: number;
+  title: string
+  id: number
+  order: number
 }
 
 interface Post {
-    id: number;
-    title: string;
-    content: string;
-    img: string;
-    video: string;
-    isImg: boolean;
+  id: number
+  title: string
+  content: string
+  img: string
+  video: string
+  isImg: boolean
 }
 
-async function getAllSlides() {
-    const res = await fetch('/api/slides');
-    const data = await res.json();
-    return data;
-}
-
-async function getSlidesPosts(slideId: number) {
-    const res = await fetch(`/api/slides/${slideId}/posts`, {
-        method: 'GET',
-    });
-    const data = await res.json();
-    console.log(data);
-    return data;
-}
-
-async function deleteSlide(slideId: number) {
+const API = {
+  getAllSlides: async () => {
+    const res = await fetch("/api/slides")
+    return res.json()
+  },
+  getSlidesPosts: async (slideId: number) => {
+    const res = await fetch(`/api/slides/${slideId}/posts`)
+    return res.json()
+  },
+  insertSlide: async (slide: Omit<Slide, "id">, password: string) => {
+    const res = await fetch(`/api/slides`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...slide, password }),
+    })
+    if (!res.ok) {
+      throw new Error(res.status === 401 ? "Senha inválida" : "Falha ao adicionar slide")
+    }
+    return res.json()
+  },
+  updateSlide: async (slide: Slide, password: string) => {
+    const res = await fetch(`/api/slides/${slide.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...slide, password }),
+    })
+    if (!res.ok) {
+      throw new Error(res.status === 403 ? "Senha inválida" : "Falha ao atualizar slide")
+    }
+    return res.json()
+  },
+  deleteSlide: async (slideId: number, password: string) => {
     const res = await fetch(`/api/slides/${slideId}`, {
-        method: 'DELETE',
-    });
-    const data = await res.json();
-    return data;
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    })
+    if (!res.ok) {
+      throw new Error(res.status === 403 ? "Senha inválida" : "Falha ao deletar slide")
+    }
+  },
 }
-
-
 
 export default function Slides() {
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [title, setTitle] = useState('');
-    const [order, setOrder] = useState<number | undefined>(undefined);
-    const [slides, setSlides] = useState<Slide[]>([]);
-    const [slidesPosts, setSlidesPosts] = useState<{ [key: number]: Post[] }>({});
-    const [embedUrls, setEmbedUrls] = useState<{ [key: number]: string | null }>({});
+  const [slides, setSlides] = useState<Slide[]>([])
+  const [slidesPosts, setSlidesPosts] = useState<{ [key: number]: Post[] }>({})
+  const [embedUrls, setEmbedUrls] = useState<{ [key: number]: string | null }>({})
 
-    const getVideoId = (url: string) => url.match(/(\d+)$/)?.[0] || null;
+  useEffect(() => {
+    fetchSlides()
+  }, [])
 
-    useEffect(() => {
-        getAllSlides().then((data) => {
-            setSlides(data);
-            data.forEach((slide: Slide) => {
-                getSlidesPosts(slide.id).then((posts: Post[]) => {
-                    setSlidesPosts((prevPosts) => ({
-                        ...prevPosts,
-                        [slide.id]: posts,
-                    }));
-                    
-                    posts.forEach((post) => {
-                        if (!post.isImg) {
-                            const videoId = getVideoId(post.video);
-                            if (videoId) {
-                                fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`)
-                                    .then((response) => response.json())
-                                    .then((data) => {
-                                        const embedSrc = data.html.match(/src="([^"]+)"/)?.[1] || null;
-                                        setEmbedUrls((prevUrls) => ({
-                                            ...prevUrls,
-                                            [post.id]: embedSrc,
-                                        }));
-                                    })
-                                    .catch((error) => console.error("Failed to fetch Vimeo embed URL:", error));
-                            }
-                        }
-                    });
-                });
-            });
-        });
-    }, []);
+  const fetchSlides = async () => {
+    const data = await API.getAllSlides()
+    setSlides(data)
+    data.forEach((slide: Slide) => fetchSlidePosts(slide.id))
+  }
 
-    async function insertSlide(slide: Omit<Slide, "id">, password: string) {
-        const res = await fetch(`/api/slides`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ...slide, password }),
-        });
-        const data = await res.json();
-        if (res.status === 401) {
-            setErrorMessage("Senha invalida.");
-            return;
-        }
-        if (res.status === 500) {
-            setErrorMessage("Verifique se a ordem não foi colocada em outro slide.");
-            return;
-        }
-        return data;
+  const fetchSlidePosts = async (slideId: number) => {
+    const posts = await API.getSlidesPosts(slideId)
+    setSlidesPosts((prev) => ({ ...prev, [slideId]: posts }))
+    posts.forEach((post: Post) => {
+      if (!post.isImg) fetchVimeoEmbed(post)
+    })
+  }
+
+  const fetchVimeoEmbed = async (post: Post) => {
+    const videoId = post.video.match(/(\d+)$/)?.[0]
+    if (videoId) {
+      try {
+        const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`)
+        const data = await res.json()
+        const embedSrc = data.html.match(/src="([^"]+)"/)?.[1] || null
+        setEmbedUrls((prev) => ({ ...prev, [post.id]: embedSrc }))
+      } catch (error) {
+        console.error("Falha ao buscar URL de incorporação do Vimeo:", error)
+      }
     }
+  }
 
-    const handleRemoveSlide = (slideId: number) => {
-        setSlides((prevSlides) => prevSlides.filter((slide) => slide.id !== slideId));
-    };
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Gerenciamento de Slides</h1>
+        <AddSlideDialog onAddSlide={fetchSlides} />
+      </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {slides.map((slide) => (
+          <SlideCard
+            key={slide.id}
+            slide={slide}
+            posts={slidesPosts[slide.id] || []}
+            embedUrls={embedUrls}
+            onUpdate={fetchSlides}
+            onDelete={fetchSlides}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        setErrorMessage("");
-    };
+function SlideCard({ slide, posts, embedUrls, onUpdate, onDelete }: {
+  slide: Slide
+  posts: Post[]
+  embedUrls: { [key: number]: string | null }
+  onUpdate: () => void
+  onDelete: () => void
+}) {
+  const router = useRouter()
 
-    useEffect(() => {
-        getAllSlides().then((data) => {
-            setSlides(data);
-
-            data.forEach((slide: Slide) => {
-                getSlidesPosts(slide.id).then((posts) => {
-                    setSlidesPosts((prevPosts) => ({
-                        ...prevPosts,
-                        [slide.id]: posts,
-                    }));
-                });
-            });
-        });
-    }, []);
-
-    const addNewSlide = async () => {
-        if (!title || !order || !password) {
-            setErrorMessage("Preencha todos os campos e informe a senha.");
-            return;
-        }
-
-        const newSlide: Omit<Slide, "id"> = {
-            title,
-            order,
-        };
-
-        try {
-            const result = await insertSlide(newSlide, password);
-            if (result) {
-                toast({
-                    title: "Sucesso! ✓",
-                    description: "Slide adicionado com sucesso!",
-                    variant: "default",
-                });
-                setSlides([...slides, result]);
-                setIsDialogOpen(false);
-                setErrorMessage('');
-                setTitle('');
-                setOrder(undefined);
-                setPassword('');
-            }
-        } catch (error: any) {
-            setErrorMessage(error.message || "Erro ao adicionar o slide.");
-        }
-    };
-
-    return (
-        <div className="w-full flex flex-col items-center justify-center mt-16 gap-9">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger className="text-4xl text-white bg-black rounded-full mb-3 w-14 h-14 flex items-center justify-center border border-black shadow-lg hover:shadow-xl transition-transform transform hover:scale-125">+</DialogTrigger>
-                <DialogContent className="bg-black p-6 rounded-lg">
-                    <DialogHeader>
-                        <DialogTitle className="text-white mb-4">Adicionar Novo Slide</DialogTitle>
-                        <DialogDescription className="text-white mb-4">Preencha as informações do novo slide abaixo:</DialogDescription>
-                        <form>
-                            <div className="grid w-full items-center gap-4">
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label className="text-white" htmlFor="title">Título do Slide</Label>
-                                    <Input className="bg-white" id="title" placeholder="Título do Slide" value={title} onChange={(e) => setTitle(e.target.value)} />
-                                    <Label className="text-white" htmlFor="order">Ordem do Slide</Label>
-                                    <Input className="bg-white" id="order" placeholder="Ordem" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
-                                    <Label className="text-white" htmlFor="password">Senha</Label>
-                                    <Input className="bg-white" id="password" placeholder="Senha" type="password" value={password} onChange={handlePasswordChange} />
-                                </div>
-                            </div>
-                        </form>
-                        {errorMessage && (
-                            <div className="text-red-500 mb-4">{errorMessage}</div>
-                        )}
-                        <div className="flex justify-center mt-4">
-                            <DialogClose className="bg-gray-500 hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">Cancelar</DialogClose>
-                            <button
-                                onClick={addNewSlide}
-                                className="bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white"
-                            >
-                                Adicionar
-                            </button>
-                        </div>
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
-            {slides.map((slide) => (
-                <div key={slide.id} className="slide w-4/5 flex flex-col gap-3 bg-white shadow-md rounded-lg p-8">
-                    <div className="flex justify-between items-center">
-                        <h2 className="text-black font-bold xs:text-xl md:text-3xl">{slide.title}</h2>
-                        <div className="flex gap-3 xs:gap-1">
-                            <SlideEditDialog slide={slide} />
-                            <button className="bg-black hover:bg-yellow-700 text-white py-2 px-4 rounded sm:text-[10px] xs:text-[10px]" onClick={() => Router.push(`/admin/slides/${slide.id}`)}>Editar</button>
-                            <SlideRemoveDialog slide={slide} onRemove={handleRemoveSlide} />
-                        </div>
-                    </div>
-                    <p>Ordem de apresentação: {slide.order}</p>
-                    <p>Identificação: {slide.id}</p>
-                    {slidesPosts[slide.id] ? (
-                        <div className="flex items-center gap-6 justify-start border-2 border-gray-200 w-full overflow-x-auto rounded-lg">
-                            {slidesPosts[slide.id].map((post) => (
-                                <div key={post.id} className="post">
-                                   {post.isImg ? (
-                                        <img className="h-36 object-cover bg-black" src={post.img} alt={post.title} />
-                                    ) : (
-                                        embedUrls[post.id] && (
-                                            <iframe
-                                                className="h-36 object-cover bg-black"
-                                                src={embedUrls[post.id] || undefined}
-                                                frameBorder="0"
-                                                allow="autoplay; fullscreen; picture-in-picture"
-                                                allowFullScreen
-                                                title={post.title}
-                                            ></iframe>
-                                        )
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>Loading posts...</p>
-                    )}
-                </div>
-            ))}
+  return (
+    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-xl font-semibold">{slide.title}</h2>
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm" onClick={() => router.push(`/admin/slides/${slide.id}`)}>
+              <Eye className="w-4 h-4 mr-2" />
+              Ver
+            </Button>
+            <EditSlideDialog slide={slide} onUpdate={onUpdate} />
+            <DeleteSlideDialog slideId={slide.id} onDelete={onDelete} />
+          </div>
         </div>
-    );
+        <p className="text-sm text-gray-600">Ordem: {slide.order}</p>
+        <p className="text-sm text-gray-600">ID: {slide.id}</p>
+      </div>
+      <div className="border-t border-gray-200 p-4 overflow-x-auto">
+        <div className="flex space-x-4">
+          {posts.map((post) => (
+            <div key={post.id} className="flex-shrink-0 w-36 h-36">
+              {post.isImg ? (
+                <img className="w-full h-full object-cover" src={post.img} alt={post.title} />
+              ) : (
+                embedUrls[post.id] && (
+                  <iframe
+                    className="w-full h-full"
+                    src={embedUrls[post.id] || undefined}
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    title={post.title}
+                  ></iframe>
+                )
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
-function SlideRemoveDialog({ slide, onRemove }: { slide: Slide, onRemove: (slideId: number) => void }) {
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+function AddSlideDialog({ onAddSlide }: { onAddSlide: () => void }) {
+  const [title, setTitle] = useState("")
+  const [order, setOrder] = useState<number | undefined>(undefined)
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        setErrorMessage("");
-    };
-
-    const removeSlide = async () => {
-        if (!password) {
-            setErrorMessage("Informe a senha.");
-            return;
-        }
-
-        try {
-            const res = await fetch(`/api/slides/${slide.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ password }),
-            });
-            if (res.status === 403) {
-                setErrorMessage("Senha inválida.");
-                return;
-            }
-            if (res.status === 500) {
-                setErrorMessage("Erro ao remover slide.");
-                return;
-            }
-            if (res.status === 204) {
-                toast({
-                    title: "Sucesso! ✓",
-                    description: "Slide removido com sucesso!",
-                    variant: "default",
-                });
-                setIsDialogOpen(false);
-                onRemove(slide.id); // Chama a função passada por props para atualizar a lista
-            }
-        } catch (error: any) {
-            setErrorMessage(error.message || "Erro ao remover o slide.");
-        }
-    };
-
-    return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className="bg-black hover:bg-red-700 text-white px-4 py-2 rounded sm:text-[10px] xs:text-[10px]">Remover</DialogTrigger>
-            <DialogContent className="bg-black p-6 rounded-lg">
-                <DialogHeader>
-                    <DialogTitle className="text-white mb-4">Remover o slide {slide.title}</DialogTitle>
-                    <DialogDescription className="text-white mb-4">
-                        Você tem certeza que deseja remover o slide {slide.title}? Esta ação não pode ser desfeita. Informe a senha para confirmar.
-                    </DialogDescription>
-                    <form>
-                        <div className="grid w-full items-center gap-4">
-                            <div className="flex flex-col space-y-1.5">
-                                <Label className="text-white" htmlFor={`password-${slide.id}`}>Senha</Label>
-                                <Input
-                                    className="bg-white"
-                                    id={`password-${slide.id}`}
-                                    placeholder="Senha"
-                                    type="password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-                    <div className="flex justify-center mt-4">
-                        <DialogClose className="bg-gray-500 hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">
-                            Cancelar
-                        </DialogClose>
-                        <button
-                            onClick={removeSlide}
-                            className="bg-black hover:bg-red-500 text-white px-4 py-2 rounded border border-white"
-                        >
-                            Remover
-                        </button>
-                    </div>
-                </DialogHeader>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
-function SlideEditDialog({ slide }: { slide: Slide }) {
-    const [title, setTitle] = useState(slide.title);
-    const [order, setOrder] = useState(slide.order);
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        setErrorMessage("");
-    };
-
-    const updateSlide = async () => {
-        if (!title || !order || !password) {
-            setErrorMessage("Preencha todos os campos e informe a senha.");
-            return;
-        }
-
-        const updatedSlide: Slide = {
-            ...slide,
-            title,
-            order,
-        };
-
-        try {
-            const res = await fetch(`/api/slides/${slide.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...updatedSlide, password }),
-            });
-            if (res.status === 403) {
-                setErrorMessage("Senha inválida.");
-                return;
-            }
-            if (res.status === 500) {
-                setErrorMessage("Erro ao editar slide.");
-                return;
-            }
-            const data = await res.json();
-            if (data) {
-                toast({
-                    title: "Sucesso! ✓",
-                    description: "Slide atualizado com sucesso!",
-                    variant: "default",
-                });
-                Router.reload();
-            }
-        } catch (error: any) {
-            setErrorMessage(error.message || "Erro ao atualizar o slide.");
-        };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    if (!title || !order || !password) {
+      setError("Por favor, preencha todos os campos")
+      return
     }
+    try {
+      await API.insertSlide({ title, order }, password)
+      toast({ title: "Sucesso", description: "Slide adicionado com sucesso" })
+      onAddSlide()
+      setTitle("")
+      setOrder(undefined)
+      setPassword("")
+    } catch (error: any) {
+      setError(error.message)
+    }
+  }
 
-    return (
-        <Dialog>
-            <DialogTrigger className="bg-black hover:bg-yellow-700 px-4 rounded sm:text-[10px] xs:text-[10px] text-white flex items-center justify-center">
-                Alterar informações
-            </DialogTrigger>
-            <DialogContent className="bg-black p-6 rounded-lg">
-                <DialogHeader>
-                    <DialogTitle className="text-white mb-4">Alterar informações do slide {slide.title}</DialogTitle>
-                    <DialogDescription className="text-white mb-4">
-                        Preencha as novas informações abaixo:
-                    </DialogDescription>
-                    <form>
-                        <div className="grid w-full items-center gap-4">
-                            <div className="flex flex-col space-y-1.5">
-                                <Label className="text-white" htmlFor={`title-${slide.id}`}>Novo título do Slide</Label>
-                                <Input
-                                    className="bg-white"
-                                    id={`title-${slide.id}`}
-                                    placeholder="Título do Slide"
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                />
-                                <Label className="text-white" htmlFor={`order-${slide.id}`}>
-                                    Nova ordem do Slide (ordem atual: {slide.order})
-                                </Label>
-                                <Input
-                                    className="bg-white"
-                                    id={`order-${slide.id}`}
-                                    placeholder="Ordem"
-                                    type="number"
-                                    value={order}
-                                    onChange={(e) => setOrder(Number(e.target.value))}
-                                />
-                                <Label className="text-white" htmlFor={`password-${slide.id}`}>Senha</Label>
-                                <Input
-                                    className="bg-white"
-                                    id={`password-${slide.id}`}
-                                    placeholder="Senha"
-                                    type="password"
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                />
-                            </div>
-                        </div>
-                    </form>
-                    {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-                    <div className="flex justify-center mt-4">
-                        <DialogClose className="bg-gray-500 hover:bg-red-500 text-white px-4 py-2 rounded border border-white mr-4">
-                            Cancelar
-                        </DialogClose>
-                        <button
-                            onClick={updateSlide}
-                            className="bg-black hover:bg-blue-500 text-white px-4 py-2 rounded border border-white"
-                        >
-                            Salvar
-                        </button>
-                    </div>
-                </DialogHeader>
-            </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>
+          <Plus className="w-4 h-4 mr-2" />
+          Adicionar Slide
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-black p-6 rounded-lg">
+        <DialogHeader>
+          <DialogTitle className="text-white">Adicionar Novo Slide</DialogTitle>
+          <Button className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <span className="sr-only">Fechar</span>
+          </Button>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title" className="text-white">Título</Label>
+            <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-white" />
+          </div>
+          <div>
+            <Label htmlFor="order" className="text-white">Ordem</Label>
+            <Input
+              id="order"
+              type="number"
+              value={order || ""}
+              onChange={(e) => setOrder(Number(e.target.value))}
+              className="bg-white"
+            />
+          </div>
+          <div>
+            <Label htmlFor="password" className="text-white">Senha</Label>
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-white" />
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button type="submit" className="bg-yellow-600 text-white">Adicionar Slide</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function EditSlideDialog({ slide, onUpdate }: { slide: Slide; onUpdate: () => void }) {
+  const [title, setTitle] = useState(slide.title)
+  const [order, setOrder] = useState(slide.order)
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    if (!title || !order || !password) {
+      setError("Por favor, preencha todos os campos")
+      return
+    }
+    try {
+      await API.updateSlide({ ...slide, title, order }, password)
+      toast({ title: "Sucesso", description: "Slide atualizado com sucesso" })
+      onUpdate()
+    } catch (error: any) {
+      setError(error.message)
+    }
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          <Edit className="w-4 h-4 mr-2" />
+          Editar
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-black p-6 rounded-lg">
+        <DialogHeader>
+          <DialogTitle className="text-white">Editar Slide</DialogTitle>
+          <Button className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <span className="sr-only">Fechar</span>
+          </Button>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label className="text-white" htmlFor="title">Título</Label>
+            <Input className="bg-white" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div>
+            <Label className="text-white" htmlFor="order">Ordem</Label>
+            <Input className="bg-white" id="order" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
+          </div>
+          <div>
+            <Label className="text-white" htmlFor="password">Senha</Label>
+            <Input className="bg-white" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button type="submit" className="bg-yellow-600 text-white">Atualizar Slide</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function DeleteSlideDialog({ slideId, onDelete }: { slideId: number; onDelete: () => void }) {
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+
+  const handleDelete = async () => {
+    setError("")
+    if (!password) {
+      setError("Por favor, insira a senha")
+      return
+    }
+    try {
+      await API.deleteSlide(slideId, password)
+      toast({ title: "Sucesso", description: "Slide deletado com sucesso" })
+      onDelete()
+    } catch (error: any) {
+      setError(error.message)
+    }
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="destructive" size="sm">
+          <Trash2 className="w-4 h-4 mr-2" />
+          Deletar
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-black p-6 rounded-lg">
+        <DialogHeader>
+          <DialogTitle className="text-white">Deletar Slide</DialogTitle>
+          <Button className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <span className="sr-only">Fechar</span>
+          </Button>
+        </DialogHeader>
+        <div className="space-y-4 text-white">
+          <p>Tem certeza que deseja deletar este slide? Esta ação não pode ser desfeita.</p>
+          <div>
+            <Label htmlFor="password">Senha</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="bg-white text-black"
+            />
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button variant="destructive" className="bg-red-600" onClick={handleDelete}>
+            Deletar Slide
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
 }

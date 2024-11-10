@@ -110,8 +110,8 @@ const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <div className="relative overflow-hidden flex justify-center items-center w-5/6 2xl:h-[500px] xl:h-[400px] md:h-[350px] mx-auto mt-24">
+    <div className='flex flex-col items-center justify-center w-[85%]'>
+      <div className="relative overflow-hidden flex justify-center items-center w-full 2xl:h-[500px] xl:h-[400px] md:h-[350px] mx-auto mt-24">
         <div
           className="flex transition-transform duration-700 ease-in-out w-full h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}

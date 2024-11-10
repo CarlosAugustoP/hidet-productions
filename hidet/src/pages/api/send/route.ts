@@ -14,7 +14,7 @@ export default async function sendEmail(
     try {
       const data = await resend.emails.send({
         from: "Acme <onboarding@resend.dev>",
-        to: ["capv2004@gmail.com"],
+        to: ["vitormm2002@gmail.com"],
         subject,
         text: `${text}\n\nContato do usuário: ${contact}`,
       });

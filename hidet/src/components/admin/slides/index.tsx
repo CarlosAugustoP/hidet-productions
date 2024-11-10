@@ -210,10 +210,10 @@ export default function Slides() {
             {slides.map((slide) => (
                 <div key={slide.id} className="slide w-4/5 flex flex-col gap-3 bg-white shadow-md rounded-lg p-8">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-black font-bold text-3xl">{slide.title}</h2>
-                        <div className="flex gap-3">
+                        <h2 className="text-black font-bold xs:text-xl md:text-3xl">{slide.title}</h2>
+                        <div className="flex gap-3 xs:gap-1">
                             <SlideEditDialog slide={slide} />
-                            <button className="bg-black hover:bg-yellow-700 text-white py-2 px-4 rounded" onClick={() => Router.push(`/admin/slides/${slide.id}`)}>Editar</button>
+                            <button className="bg-black hover:bg-yellow-700 text-white py-2 px-4 rounded sm:text-[10px] xs:text-[10px]" onClick={() => Router.push(`/admin/slides/${slide.id}`)}>Editar</button>
                             <SlideRemoveDialog slide={slide} onRemove={handleRemoveSlide} />
                         </div>
                     </div>
@@ -297,7 +297,7 @@ function SlideRemoveDialog({ slide, onRemove }: { slide: Slide, onRemove: (slide
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className="bg-black hover:bg-red-700 text-white px-4 py-2 rounded">Remover</DialogTrigger>
+            <DialogTrigger className="bg-black hover:bg-red-700 text-white px-4 py-2 rounded sm:text-[10px] xs:text-[10px]">Remover</DialogTrigger>
             <DialogContent className="bg-black p-6 rounded-lg">
                 <DialogHeader>
                     <DialogTitle className="text-white mb-4">Remover o slide {slide.title}</DialogTitle>
@@ -392,7 +392,7 @@ function SlideEditDialog({ slide }: { slide: Slide }) {
 
     return (
         <Dialog>
-            <DialogTrigger className="bg-black hover:bg-yellow-700 px-4 rounded text-white flex items-center justify-center">
+            <DialogTrigger className="bg-black hover:bg-yellow-700 px-4 rounded sm:text-[10px] xs:text-[10px] text-white flex items-center justify-center">
                 Alterar informações
             </DialogTrigger>
             <DialogContent className="bg-black p-6 rounded-lg">

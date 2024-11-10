@@ -76,15 +76,15 @@ export default function PortfolioComponent() {
             return null;
           }
           if (slide.smallImages.length === 0) {
-            return (<><h1 className="text-white font-bold">Trabalho: {slide.title}</h1><MobileLayout1 key={index} slide={slide} /></>);
+            return (<><h1 className="text-white font-semibold"> {slide.title}</h1><MobileLayout1 key={index} slide={slide} /></>);
           } else if (slide.smallImages.length === 1) {
-            return (<><h1 className="text-white font-bold">Trabalho: {slide.title}</h1><MobileLayout2 key={index} slide={slide} /></>);
+            return (<><h1 className="text-white font-semibold"> {slide.title}</h1><MobileLayout2 key={index} slide={slide} /></>);
           } else if (slide.smallImages.length === 2) {
-            return (<><h1 className="text-white font-bold">Trabalho: {slide.title}</h1><MobileLayout3 key={index} slide={slide} /></>);
+            return (<><h1 className="text-white font-semibold"> {slide.title}</h1><MobileLayout3 key={index} slide={slide} /></>);
           } else if (slide.smallImages.length === 3) {
-            return (<><h1 className="text-white font-bold">Trabalho: {slide.title}</h1><MobileLayout4 key={index} slide={slide} /></>);
+            return (<><h1 className="text-white font-semibold"> {slide.title}</h1><MobileLayout4 key={index} slide={slide} /></>);
           } else if (slide.smallImages.length === 4) {
-            return (<><h1 className="text-white font-bold">Trabalho: {slide.title}</h1><MobileLayout5 key={index} slide={slide} /></>);
+            return (<><h1 className="text-white font-semibold"> {slide.title}</h1><MobileLayout5 key={index} slide={slide} /></>);
           }
         })}
       </div>

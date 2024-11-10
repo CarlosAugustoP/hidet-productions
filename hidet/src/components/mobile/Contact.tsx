@@ -63,7 +63,7 @@ export default function MobileContact() {
               Contato
             </h1>
             <form onSubmit={(event) => handleSubmit(event, toast, setLoading)}>
-              <label htmlFor="name" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700">
+              <label htmlFor="name" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-400">
                 Nome
               </label>
               <div className="mt-1">
@@ -74,7 +74,7 @@ export default function MobileContact() {
                 />
               </div>
 
-              <label htmlFor="email" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-700 mt-4">
+              <label htmlFor="email" className="block sm:text-md md:text-lg lg:text-xl xl:text:2xl font-medium text-gray-400 mt-4">
                 Email
               </label>
               <div className="mt-1">
@@ -86,7 +86,7 @@ export default function MobileContact() {
                 />
               </div>
 
-              <label htmlFor="message" className="block text-lg font-medium text-gray-700 mt-4">
+              <label htmlFor="message" className="block text-lg font-medium text-gray-400 mt-4">
                 Recado
               </label>
               <div className="mt-1">
@@ -110,12 +110,6 @@ export default function MobileContact() {
                 )}
               </button>
             </form>
-            <div className='flex items-start mb-5 space-x-4'>
-              <img src='/img/insta.png' alt="Instagram" className='w-7 h-7' />
-              <img src='/img/mail.png' alt="Email" className='w-7 h-7' />
-              <img src='/img/wpp.png' alt="WhatsApp" className='w-7 h-7' />
-              <img src='/img/linkedin.png' alt="LinkedIn" className='w-7 h-7' />
-            </div>
           </div>
         </div>
       </div>

@@ -93,9 +93,9 @@ export default function WhyChoose() {
                     <InsideContainer2>
                         <div className={`w-full h-full ${isHeightExceeded ? 'p-14': '2xl:p-8 xl:p-6 lg:p-6 md:p-6'} text-white 2xl:text-3xl xl:text-2xl lg:text-custom-md-lg md:text-custom-xs-sm flex items-center justify-center font-light`}>
                             <ul className='h-full w-5/6 md:w-full flex flex-col justify-between'>
-                                <li>• Mais alta qualidade audiovisual </li>
+                                <li>• <strong>Maior</strong> qualidade audiovisual </li>
                                 <li>• Foco em detalhes</li>
-                                <li>• Uso das mais recentes tecnologias (IA)</li>
+                                <li>• Uso das mais recentes tecnologias e IA</li>
                                 <li>• Padrão elevado</li>
                             </ul>
                         </div>

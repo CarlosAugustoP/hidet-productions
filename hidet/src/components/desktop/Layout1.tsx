@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Slide } from './HomeMadeCarousel';
+import { LayoutSlide } from './HomeMadeCarousel';
 
 const getVideoId = (url: string) => {
     const match = url.match(/(\d+)$/);
     return match ? match[0] : null;
 }
 
-const Layout1 = ({ slide }: { slide: Slide }) => {
+const Layout1 = ({ slide }: { slide: LayoutSlide }) => {
     const [embedUrl, setEmbedUrl] = useState<string | null>(null);
 
     useEffect(() => {

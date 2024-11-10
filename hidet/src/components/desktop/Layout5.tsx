@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from 'next/image';
-import { Slide } from './HomeMadeCarousel';
+import { LayoutSlide } from './HomeMadeCarousel';
 
 
 const getVideoId = (url: string) => {
@@ -9,7 +9,7 @@ const getVideoId = (url: string) => {
     return match ? match[0] : null;
 }
 
-const Layout5 = ({ slide }: { slide: Slide }) => {
+const Layout5 = ({ slide }: { slide: LayoutSlide }) => {
     const [embedUrls, setEmbedUrls] = useState<(string | null)[]>(Array(slide.smallImages.length + 1).fill(null));
 
     useEffect(() => {

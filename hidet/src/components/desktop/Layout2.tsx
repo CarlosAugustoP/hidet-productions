@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from 'next/image';
-import { Slide } from './HomeMadeCarousel';
+import { LayoutSlide } from './HomeMadeCarousel';
+
 
 
 const getVideoId = (url: string) => {
@@ -9,7 +10,7 @@ const getVideoId = (url: string) => {
     return match ? match[0] : null;
 }
 
-const Layout2 = ({ slide }: { slide: Slide }) => {
+const Layout2 = ({ slide }: { slide: LayoutSlide }) => {
     const [largeEmbedUrl, setLargeEmbedUrl] = useState<string | null>(null);
     const [smallEmbedUrl, setSmallEmbedUrl] = useState<string | null>(null);
 

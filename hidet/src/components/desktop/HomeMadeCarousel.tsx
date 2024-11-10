@@ -5,7 +5,23 @@ import Layout3 from './Layout3';
 import Layout4 from './Layout4';
 import Layout5 from './Layout5';
 
+export interface ImageData {
+  img: string;
+  title: string;
+  date: string;
+  description: string;
+  video: string;
+  isImg: boolean;
+  order: number;
+}
+
 export interface Slide {
+  title: string;
+  largeImage: ImageData;
+  smallImages: ImageData[];
+}
+
+export interface LayoutSlide {
   title: string;
   largeImage: {
       img: string;
@@ -26,7 +42,7 @@ export interface Slide {
 }
 
 interface CarouselProps {
-  setTitle: (title: string) => void; // Add setTitle prop type
+  setTitle: (title: string) => void;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
@@ -34,21 +50,39 @@ const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
   const [slides, setSlides] = useState<Slide[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  interface SlideAPIResponse {
+    id: number;
+    order: number;
+    // Add other properties if available
+  }
+
+  interface SlideDetailsResponse {
+    id: number;
+    title: string;
+    // Add other properties if available
+  }
+
   async function fetchSlides() {
     try {
       const res = await fetch('/api/slides');
-      const data = await res.json();
-      data.sort((a: { order: number }, b: { order: number }) => a.order - b.order);
+      const data: SlideAPIResponse[] = await res.json();
+      data.sort((a, b) => a.order - b.order);
 
-      const updatedSlides = await Promise.all(
-        data.map(async (slide: { id: number }) => {
+      const updatedSlides: Slide[] = await Promise.all(
+        data.map(async (slide) => {
+          // Fetch slide details to get the title
+          const slideDetailsRes = await fetch(`/api/slides/${slide.id}`);
+          const slideDetails: SlideDetailsResponse = await slideDetailsRes.json();
+
+          // Fetch posts for the slide
           const slideRes = await fetch(`/api/slides/${slide.id}/posts`);
-          const slideData = await slideRes.json();
-          slideData.sort((a: { order: number }, b: { order: number }) => a.order - b.order);
+          const slideData: ImageData[] = await slideRes.json();
+          slideData.sort((a, b) => a.order - b.order);
+
           return {
             largeImage: slideData[0],
             smallImages: slideData.slice(1),
-            title: slideData[0].title
+            title: slideDetails.title, // Use the title from slide details
           };
         })
       );
@@ -104,7 +138,7 @@ const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
   if (isLoading) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
-         <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7  h-7"></span>
+        <span className="loader border-t-white border-4 border-solid rounded-full animate-spin w-7 h-7"></span>
       </div>
     );
   }
@@ -117,71 +151,28 @@ const Carousel: React.FC<CarouselProps> = ({ setTitle }) => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {slides.map((slide, index) => {
-            if (slide.largeImage == null) {
-              return null;
-            } else if (slide.smallImages.length === 0) {
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <div className="w-full h-full flex flex-col items-center justify-center">
-                    <Layout1 key={index} slide={slide} />
-                  </div>
-                </div>
-              );
-            } else if (slide.smallImages.length === 1) {
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Layout2 key={index} slide={slide} />
-                  </div>
-                </div>
-              );
-            } else if (slide.smallImages.length === 2) {
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Layout3 key={index} slide={slide} />
-                  </div>
-                </div>
-              );
-            } else if (slide.smallImages.length === 3) {
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Layout4 key={index} slide={slide} />
-                  </div>
-                </div>
-              );
-            } else if (slide.smallImages.length === 4) {
-              return (
-                <div
-                  key={index}
-                  className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Layout5 key={index} slide={slide} />
-                  </div>
-                </div>
-              );
-            } else {
+            if (!slide.largeImage) {
               return null;
             }
+
+            const layoutProps = { key: index, slide };
+
+            return (
+              <div
+                key={index}
+                className="flex-shrink-0 flex items-center justify-center min-w-full h-full"
+                style={{ width: '100%', height: '100%' }}
+              >
+                <div className="w-full h-full flex items-center justify-center">
+                  {slide.smallImages.length === 0 && <Layout1 {...layoutProps} />}
+                  {slide.smallImages.length === 1 && <Layout2 {...layoutProps} />}
+                  {slide.smallImages.length === 2 && <Layout3 {...layoutProps} />}
+                  {slide.smallImages.length === 3 && <Layout4 {...layoutProps} />}
+                  {slide.smallImages.length === 4 && <Layout5 {...layoutProps} />}
+                  {slide.smallImages.length > 4 && <Layout5 {...layoutProps} />}
+                </div>
+              </div>
+            );
           })}
         </div>
         <button

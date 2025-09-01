@@ -1,13 +1,32 @@
 import { Resend } from "resend";
 import { NextApiRequest, NextApiResponse } from "next";
+import { LRUCache } from "lru-cache";
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 console.log("resend", resend);
+
+// Configure rate limiting
+const rateLimit = new LRUCache<string, number>({
+  max: 500, // Maximum number of unique IPs to track
+  ttl: 60 * 60 * 1000, // Time-to-live for each entry (1 hour)
+});
 
 export default async function sendEmail(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const ip = req.socket.remoteAddress;
+
+  if (ip) {
+    const currentCount = rateLimit.get(ip) || 0;
+
+    if (currentCount >= 1) {
+      return res.status(429).json({ error: "Too many requests, please try again later." });
+    }
+
+    rateLimit.set(ip, currentCount + 1);
+  }
+
   if (req.method === "POST") {
     const { subject, text, contact } = req.body;
 

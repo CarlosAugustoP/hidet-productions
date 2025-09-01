@@ -34,15 +34,15 @@ const handleSubmit = async (event: any, toast: any, setLoading: (isLoading: bool
     } else {
       toast({
         title: "Erro! X",
-        description: "Houve um problema desconhecido no envio.",
-        variant: "destructive",
+        description: "Por favor, aguarde antes de enviar novamente.",
+        variant: "success",
       });
     }
   } catch (error) {
     toast({
       title: "Erro!",
-      description: "Algo deu errado.",
-      variant: "destructive",
+      description: "Por favor, aguarde antes de enviar novamente.",
+      variant: "success",
     });
   } finally {
     setLoading(false); // Define isLoading como false para parar o spinner
